@@ -1,3 +1,5 @@
+Certainly! Here is the updated API documentation incorporating the previous answer and ensuring it is comprehensive for your project:
+
 ## API Documentation
 
 ### User Management
@@ -13,7 +15,6 @@
 1. **GET /api/puzzles** - Retrieve the list of available puzzles.
 2. **POST /api/puzzles/:puzzleId/try** - Submit a try for a specific puzzle.
 3. **GET /api/puzzles/:puzzleId/history** - Retrieve the try history for a specific puzzle and user.
-4. **GET /api/puzzles/:puzzleId/leaderboard** - Retrieve the leaderboard for a specific puzzle.
 
 ### Leaderboards
 
@@ -31,6 +32,33 @@
 1. **POST /api/transactions** - Create a new transaction (e.g., for retry purchases).
 2. **GET /api/transactions** - Retrieve the transaction history for the authenticated user.
 3. **GET /api/transactions/:transactionId** - Retrieve details of a specific transaction.
+
+### Daily Tries
+
+1. **GET /api/daily-tries** - Retrieve the daily tries information for the authenticated user.
+2. **PATCH /api/daily-tries** - Reset daily tries or update the number of tries remaining.
+
+### Items
+
+1. **GET /api/items** - Retrieve the list of items owned by the authenticated user.
+2. **POST /api/items** - Create a new item.
+3. **GET /api/items/:itemId** - Retrieve details of a specific item.
+4. **PATCH /api/items/:itemId** - Update the details of a specific item.
+5. **DELETE /api/items/:itemId** - Delete a specific item.
+
+### Auctions
+
+1. **GET /api/auctions** - Retrieve the list of active auctions.
+2. **POST /api/auctions** - Create a new auction.
+3. **GET /api/auctions/:auctionId** - Retrieve details of a specific auction.
+4. **POST /api/auctions/:auctionId/bid** - Place a bid on an auction.
+5. **PATCH /api/auctions/:auctionId** - Update details of an auction (e.g., end time).
+6. **DELETE /api/auctions/:auctionId** - Cancel an auction.
+
+### Bids
+
+1. **GET /api/bids** - Retrieve the list of bids made by the authenticated user.
+2. **GET /api/bids/:bidId** - Retrieve details of a specific bid.
 
 ### Social Features
 
