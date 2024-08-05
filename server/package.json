@@ -1,8 +1,8 @@
 {
-  "name": "median",
+  "name": "qubic-quest",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Qubic Quest - Multiple Puzzle Game",
+  "author": "real-venus",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

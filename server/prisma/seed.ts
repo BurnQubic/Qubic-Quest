@@ -1,35 +1,97 @@
-import { PrismaClient } from '@prisma/client';
+import {
+  PrismaClient,
+  PuzzleDifficulty,
+  TransactionType,
+  TransactionStatus,
+} from '@prisma/client';
 
 // initialize the Prisma Client
 const prisma = new PrismaClient();
 
 async function main() {
-  // create two dummy articles
-  const post1 = await prisma.article.upsert({
-    where: { title: 'Prisma Adds Support for MongoDB' },
+  // Create a user
+  const user = await prisma.user.upsert({
+    where: { email: 'user@example.com' },
     update: {},
     create: {
-      title: 'Prisma Adds Support for MongoDB',
-      body: 'Support for MongoDB has been one of the most requested features since the initial release of...',
-      description:
-        "We are excited to share that today's Prisma ORM release adds stable support for MongoDB!",
-      published: false,
+      username: 'testuser',
+      email: 'user@example.com',
+      password: 'hashedpassword',
+      walletAddress: '0x1234567890123456789012345678901234567890',
     },
   });
 
-  const post2 = await prisma.article.upsert({
-    where: { title: "What's new in Prisma? (Q1/22)" },
-    update: {},
-    create: {
-      title: "What's new in Prisma? (Q1/22)",
-      body: 'Our engineers have been working hard, issuing new releases with many improvements...',
-      description:
-        'Learn about everything in the Prisma ecosystem and community from January to March 2022.',
-      published: true,
+  // Create a game type
+  const gameType = await prisma.gameType.create({
+    data: {
+      name: 'Connect4',
+      description: 'Classic connect4 puzzle',
     },
   });
 
-  console.log({ post1, post2 });
+  // Create a puzzle
+  const puzzle = await prisma.puzzle.create({
+    data: {
+      name: 'Easy Connect4',
+      description: 'A beginner-friendly connect4 puzzle',
+      difficulty: PuzzleDifficulty.EASY,
+      gameTypeId: gameType.id,
+    },
+  });
+
+  // Create a try
+  await prisma.try.create({
+    data: {
+      userId: user.id,
+      puzzleId: puzzle.id,
+      tryCount: 1,
+      success: true,
+      timeTaken: 300, // 5 minutes in seconds
+    },
+  });
+
+  // Create a score
+  await prisma.score.create({
+    data: {
+      userId: user.id,
+      puzzleId: puzzle.id,
+      score: 1000,
+    },
+  });
+
+  // Create a leaderboard entry
+  await prisma.leaderboard.create({
+    data: {
+      userId: user.id,
+      puzzleId: puzzle.id,
+      score: 1000,
+      week: 1,
+      year: 2023,
+    },
+  });
+
+  // Create a reward
+  await prisma.reward.create({
+    data: {
+      userId: user.id,
+      quAmount: 100,
+      week: 1,
+      year: 2023,
+    },
+  });
+
+  // Create a transaction
+  await prisma.transaction.create({
+    data: {
+      userId: user.id,
+      amount: 100,
+      txId: 'tx_123456789',
+      type: TransactionType.DEPOSIT,
+      status: TransactionStatus.COMPLETED,
+    },
+  });
+
+  console.log('Seed data created successfully');
 }
 
 // execute the main function
