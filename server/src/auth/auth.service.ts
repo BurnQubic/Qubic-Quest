@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { UsersService } from "../users/users.service";
+import { JwtService } from "@nestjs/jwt";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -29,7 +29,7 @@ export class AuthService {
   async registerUser(email: string, password: string) {
     const existingUser = await this.usersService.findByEmail(email);
     if (existingUser) {
-      throw new UnauthorizedException('Email already in use');
+      throw new UnauthorizedException("Email already in use");
     }
     const newUser = await this.usersService.createUser(email, password);
     return this.login(newUser);
@@ -37,7 +37,7 @@ export class AuthService {
 
   async googleLogin(req) {
     if (!req.user) {
-      return 'No user from google';
+      return "No user from google";
     }
 
     const existingUser = await this.usersService.findByEmail(req.user.email);
