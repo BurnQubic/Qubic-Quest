@@ -15,9 +15,9 @@ async function main() {
     where: { email: "user@example.com" },
     update: {},
     create: {
+      uid: "1234567890",
       username: "testuser",
       email: "user@example.com",
-      password: "hashedpassword",
       walletAddress: "0x1234567890123456789012345678901234567890",
     },
   });
