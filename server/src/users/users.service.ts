@@ -11,12 +11,14 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async createUser(email: string, password: string): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 10);
+  async createUser(
+    uid: string,
+    email: string,
+  ): Promise<User> {
     return this.prisma.user.create({
       data: {
+        uid,
         email,
-        password: hashedPassword,
         username: email,
         walletAddress: "",
       },
