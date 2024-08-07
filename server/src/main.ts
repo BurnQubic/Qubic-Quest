@@ -11,8 +11,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const config = new DocumentBuilder()
-    .setTitle("Median")
-    .setDescription("The Median API description")
+    .setTitle("Quest Puzzle Game Backend")
+    .setDescription("The Quest Puzzle Game Backend API description")
     .setVersion("0.1")
     .build();
   const document = SwaggerModule.createDocument(app, config);
