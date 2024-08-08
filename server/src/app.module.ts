@@ -10,6 +10,7 @@ import { LeaderboardModule } from "./leaderboard/leaderboard.module";
 import { TransactionModule } from "./transaction/transaction.module";
 import { AuctionModule } from "./auction/auction.module";
 import { DailytriesModule } from "./dailytries/dailytries.module";
+import { NotiGateway } from './noti.gateway';
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { DailytriesModule } from "./dailytries/dailytries.module";
     DailytriesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, NotiGateway],
 })
 export class AppModule {}
