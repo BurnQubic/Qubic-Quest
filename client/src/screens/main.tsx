@@ -67,7 +67,7 @@ export const Main: NavioScreen = observer(({}) => {
       <ScrollView contentInsetAdjustmentBehavior="always">
         <NavioSection />
 
-        <Section title="Expo">
+        {/* <Section title="Expo">
           <Text text60R textColor>
             Session ID: {Constants.sessionId}
           </Text>
@@ -105,7 +105,11 @@ export const Main: NavioScreen = observer(({}) => {
 
         <Section title="API">
           <BButton margin-s1 label="Update counter value from API" onPress={getCounterValue} />
-        </Section>
+        </Section> */}
+
+        <Text>
+          
+        </Text>
       </ScrollView>
     </View>
   );
