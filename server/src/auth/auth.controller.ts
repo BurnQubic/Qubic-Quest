@@ -1,30 +1,42 @@
-import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
-import { AuthService } from './auth.service';
-// import { LocalAuthGuard } from './local-auth.guard';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Body, UnauthorizedException } from "@nestjs/common";
+import { FirebaseAdminService } from "./auth.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { ApiTags } from "@nestjs/swagger";
 
-@Controller('auth')
+@ApiTags("Auth")
+@Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private readonly firebaseAdminService: FirebaseAdminService,
+    private readonly prisma: PrismaService,
+  ) {}
 
-//   @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
-  }
+  @Post("verify-token")
+  async verifyToken(@Body("idToken") idToken: string) {
+    try {
+      const decodedToken = await this.firebaseAdminService.verifyIdToken(
+        idToken,
+      );
+      const { uid, email } = decodedToken;
 
-  @Post('register')
-  async register(@Body() body: { email: string; password: string }) {
-    return this.authService.registerUser(body.email, body.password);
-  }
+      let user = await this.prisma.user.findUnique({
+        where: { uid },
+      });
 
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Request() req) {}
+      if (!user) {
+        user = await this.prisma.user.create({
+          data: {
+            uid,
+            email,
+            username: email.split("@")[0],
+            walletAddress: "",
+          },
+        });
+      }
 
-  @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Request() req) {
-    return this.authService.googleLogin(req);
+      return { user };
+    } catch (error) {
+      throw new UnauthorizedException("Invalid token");
+    }
   }
 }
