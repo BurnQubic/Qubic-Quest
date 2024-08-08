@@ -10,7 +10,9 @@ import {
 import { DailytriesService } from "./dailytries.service";
 import { CreateDailytryDto } from "./dto/create-dailytry.dto";
 import { UpdateDailytryDto } from "./dto/update-dailytry.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Daily Tries")
 @Controller("dailytries")
 export class DailytriesController {
   constructor(private readonly dailytriesService: DailytriesService) {}

@@ -10,7 +10,9 @@ import {
 import { AuctionService } from "./auction.service";
 import { CreateAuctionDto } from "./dto/create-auction.dto";
 import { UpdateAuctionDto } from "./dto/update-auction.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Item Auction")
 @Controller("auction")
 export class AuctionController {
   constructor(private readonly auctionService: AuctionService) {}

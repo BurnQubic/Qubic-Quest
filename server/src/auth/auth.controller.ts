@@ -1,7 +1,9 @@
 import { Controller, Post, Body, UnauthorizedException } from "@nestjs/common";
 import { FirebaseAdminService } from "./auth.service";
 import { PrismaService } from "src/prisma/prisma.service";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Auth")
 @Controller("auth")
 export class AuthController {
   constructor(

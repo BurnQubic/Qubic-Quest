@@ -21,7 +21,7 @@ import {
   ApiParam,
 } from "@nestjs/swagger";
 
-@ApiTags("puzzle")
+@ApiTags("Puzzle")
 @Controller("puzzle")
 export class PuzzleController {
   constructor(private readonly puzzleService: PuzzleService) {}

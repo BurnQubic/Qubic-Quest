@@ -10,7 +10,9 @@ import {
 import { LeaderboardService } from "./leaderboard.service";
 import { CreateLeaderboardDto } from "./dto/create-leaderboard.dto";
 import { UpdateLeaderboardDto } from "./dto/update-leaderboard.dto";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("Leaderboard")
 @Controller("leaderboard")
 export class LeaderboardController {
   constructor(private readonly leaderboardService: LeaderboardService) {}
