@@ -9,12 +9,19 @@ import {
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateGameTypeDto {
-  @ApiProperty({ description: "The name of the game type", example: "My Puzzle" })
+  @ApiProperty({
+    description: "The name of the game type",
+    example: "My Puzzle",
+  })
   @IsNotEmpty()
   @IsString()
   name: string;
 
-  @ApiProperty({ description: "A description of the game type", example: "A challenging puzzle for experts", required: false })
+  @ApiProperty({
+    description: "A description of the game type",
+    example: "A challenging puzzle for experts",
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;

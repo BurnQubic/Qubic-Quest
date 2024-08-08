@@ -14,12 +14,20 @@ export class CreatePuzzleDto {
   @IsString()
   name: string;
 
-  @ApiProperty({ description: "A description of the puzzle", example: "A challenging puzzle for experts", required: false })
+  @ApiProperty({
+    description: "A description of the puzzle",
+    example: "A challenging puzzle for experts",
+    required: false,
+  })
   @IsOptional()
   @IsString()
   description?: string;
 
-  @ApiProperty({ description: "The difficulty level of the puzzle", example: "HARD", enum: PuzzleDifficulty })
+  @ApiProperty({
+    description: "The difficulty level of the puzzle",
+    example: "HARD",
+    enum: PuzzleDifficulty,
+  })
   @IsNotEmpty()
   @IsEnum(PuzzleDifficulty)
   difficulty: PuzzleDifficulty;

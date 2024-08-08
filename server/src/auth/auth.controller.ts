@@ -23,11 +23,11 @@ export class AuthController {
 
       if (!user) {
         user = await this.prisma.user.create({
-          data: { 
-            uid, 
-            email, 
-            username: email.split('@')[0], 
-            walletAddress: '' 
+          data: {
+            uid,
+            email,
+            username: email.split("@")[0],
+            walletAddress: "",
           },
         });
       }
