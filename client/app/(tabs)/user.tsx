@@ -15,6 +15,7 @@ import { Button } from "react-native";
 import { StyleSheet, Module } from "react-native"; // Ensure this import is present
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
+import * as Notifications from "expo-notifications";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -51,11 +52,27 @@ export default function UserProfile() {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: "Success",
+              body: "Sign up successful",
+              sound: "default",
+            },
+            trigger: null,
+          });
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: "Error",
+              body: errorMessage,
+              sound: "default",
+            },
+            trigger: null,
+          });
         });
     }
   };
@@ -66,11 +83,27 @@ export default function UserProfile() {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: "Success",
+              body: "Sign in successful",
+              sound: "default",
+            },
+            trigger: null,
+          });
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: "Error",
+              body: errorMessage,
+              sound: "default",
+            },
+            trigger: null,
+          });
         });
     }
   };
@@ -164,5 +197,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     marginTop: 10,
+  },
+  buttonView: {
+    display: "flex",
+    gap: 3,
   },
 });
