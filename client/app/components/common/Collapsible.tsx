@@ -3,7 +3,7 @@ import { PropsWithChildren, useState } from "react";
 import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
 
 
-import { Colors } from "@/constants/Colors";
+import { Colors } from "@/config/constants/Colors";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 

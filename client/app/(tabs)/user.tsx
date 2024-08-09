@@ -1,41 +1,78 @@
 import { Tabs } from "expo-router";
 import React, { useState } from "react";
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
+import { Colors } from "@/config/constants/Colors";
+import { useColorScheme } from "@/config/hooks/useColorScheme";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "@/config/firebase";
-import ParallaxScrollView from "@/components/common/ParallaxScrollView";
+import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedInput } from "@/components/common/ThemedInput"; // Updated import
+import { ThemedInput } from "@/app/components/common/ThemedInput"; // Updated import
 import { Button } from "react-native";
-import { StyleSheet } from "react-native"; // Ensure this import is present
-import { ThemedView } from "@/components/common/ThemedView";
-import { ThemedText } from "@/components/common/ThemedText";
+import { StyleSheet, Module } from "react-native"; // Ensure this import is present
+import { ThemedView } from "@/app/components/common/ThemedView";
+import { ThemedText } from "@/app/components/common/ThemedText";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
   const [isSignUp, setIsSignUp] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const handleAuth = () => {
-    const authMethod = isSignUp
-      ? createUserWithEmailAndPassword
-      : signInWithEmailAndPassword;
-    authMethod(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!regex.test(email)) {
+      setEmailError("Invalid email format");
+      return false;
+    } else {
+      setEmailError("");
+      return true;
+    }
+  };
+
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters");
+      return false;
+    } else {
+      setPasswordError("");
+      return true;
+    }
+  };
+
+  const handleSignUp = () => {
+    if (validateEmail(email) && validatePassword(password)) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+    }
+  };
+
+  const handleSignIn = () => {
+    if (validateEmail(email) && validatePassword(password)) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+        });
+    }
   };
 
   return (
@@ -45,36 +82,48 @@ export default function UserProfile() {
         <Ionicons size={310} name="code-slash" style={styles.headerImage} />
       }
     >
+      <ThemedText type="title">User Auth</ThemedText>
       <ThemedView style={styles.container}>
-        {" "}
-        {/* Updated from View to ThemedView */}
         <ThemedText style={styles.title}>
           {isSignUp ? "Sign Up" : "Sign In"}
-        </ThemedText>{" "}
-        {/* Updated from Text to ThemedText */}
+        </ThemedText>
         <ThemedInput
           placeholder="Email"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(text) => {
+            setEmail(text);
+            validateEmail(text);
+          }}
           style={styles.input}
         />
+        {emailError && (
+          <ThemedText style={{ color: "red" }}>{emailError}</ThemedText>
+        )}
         <ThemedInput
           placeholder="Password"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={(text) => {
+            setPassword(text);
+            validatePassword(text);
+          }}
           secureTextEntry
           style={styles.input}
         />
-        <Button
-          title={isSignUp ? "Sign Up" : "Sign In"}
-          onPress={handleAuth}
-          style={styles.button}
-        />
-        <Button
-          title={`Switch to ${isSignUp ? "Sign In" : "Sign Up"}`}
-          onPress={() => setIsSignUp(!isSignUp)}
-          style={styles.button}
-        />
+        {passwordError && (
+          <ThemedText style={{ color: "red" }}>{passwordError}</ThemedText>
+        )}
+        <ThemedView>
+          <Button
+            title="Sign Up"
+            onPress={handleSignUp}
+            style={styles.button}
+          />
+          <Button
+            title="Sign In"
+            onPress={handleSignIn}
+            style={styles.button}
+          />
+        </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
   );
