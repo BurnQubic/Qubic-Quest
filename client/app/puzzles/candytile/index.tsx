@@ -1,13 +1,16 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import LevelSelector from "./level-selector";
-import CandyTiles from "./candy-tiles/CandyTiles";
+import LevelSelector from "./components/level-selector";
+import CandyTiles from "./components/candy-tiles/CandyTiles";
+import LevelContextProvider from "./context/LevelContext";
 
 const CandyTilePuzzle = () => {
   return (
     <View style={styles.container}>
       <LevelSelector></LevelSelector>
-      <CandyTiles></CandyTiles>
+      <LevelContextProvider>
+        <CandyTiles></CandyTiles>
+      </LevelContextProvider>
     </View>
   );
 };
