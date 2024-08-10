@@ -7,7 +7,7 @@ import LevelContextProvider from "./context/LevelContext";
 const CandyTilePuzzle = () => {
   return (
     <View style={styles.container}>
-      <LevelSelector></LevelSelector>
+      {/* <LevelSelector></LevelSelector> */}
       <LevelContextProvider>
         <CandyTiles></CandyTiles>
       </LevelContextProvider>

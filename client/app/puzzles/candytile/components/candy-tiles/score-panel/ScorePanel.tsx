@@ -1,21 +1,25 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 
 const ScorePanel = () => {
-  return <View style={styles.scorePanel}></View>;
+  return (
+    <ImageBackground
+      source={require("@/assets/images/candy-tiles/border.png")}
+      style={styles.scorePanel}
+      imageStyle={styles.borderImage}
+    >
+      {/* Your content here */}
+    </ImageBackground>
+  );
 };
 
 const styles = StyleSheet.create({
   scorePanel: {
     minWidth: 250,
-    height: "80%",
-    backgroundColor: "purple",
     borderRadius: 8,
-    borderWidth: 20,
-    borderStyle: "solid",
-    borderColor: "transparent",
-    // borderImageSource: require("src/assets/borders/candy1.png"),
-    // borderImageSlice: 50,
-    // borderImageRepeat: "round",
+    overflow: "hidden", // Ensures the border radius is applied to the background image
+  },
+  borderImage: {
+    resizeMode: "stretch", // or "repeat", depending on your image
   },
 });
 

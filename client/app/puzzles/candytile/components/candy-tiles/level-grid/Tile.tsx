@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 type TileProps = {
-  selectedTiles: HTMLElement[];
+  selectedTiles: any[];
   index: number;
 };
 
@@ -12,10 +12,13 @@ const Tile = ({ selectedTiles, index }: TileProps) => {
   const itemElementRef = useRef<View | null>(null);
 
   return (
-    <View style={styles.tileContainer} ref={tileElementRef} data-index={index} data-tile>
-      <View style={{ position: "absolute", bottom: 0, right: 0, fontSize: 12, color: "white", fontWeight: "bold" }}>
-        {index}
-      </View>
+    <View
+      style={[styles.tileContainer, selected && styles.selectedTile]}
+      ref={tileElementRef}
+      data-index={index.toString()}
+      data-tile
+    >
+      <Text style={styles.tileText}>{index}</Text>
     </View>
   );
 };
@@ -23,10 +26,20 @@ const Tile = ({ selectedTiles, index }: TileProps) => {
 const styles = StyleSheet.create({
   tileContainer: {
     position: "relative",
+    backgroundColor: "rgba(9, 131, 237, 0.5)",
     borderWidth: 1,
     borderColor: "purple",
-    userSelect: "none",
-    backgroundColor: "#0983ed50",
+  },
+  selectedTile: {
+    backgroundColor: "rgba(255, 255, 204, 0.5)",
+  },
+  tileText: {
+    fontSize: 12,
+    color: "white",
+    fontWeight: "bold",
+    position: "absolute",
+    bottom: 0,
+    right: 0,
   },
 });
 

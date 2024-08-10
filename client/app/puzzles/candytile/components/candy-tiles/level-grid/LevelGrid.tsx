@@ -3,19 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import Candy from "./Candy";
 import LevelManager from "./level-manager";
 import uuid from "react-uuid";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, PanResponder, GestureResponderEvent } from "react-native";
 import { useLevelContext } from "../../../context/LevelContext";
 import { levelList } from "../../../data/level-layouts";
 import { tilesAreAdjacent } from "../../../utils/tile-matching";
 
-const elementIsTile = (element: HTMLElement) => element.hasAttribute("data-tile");
+const elementIsTile = (element: any) => element?.props?.["data-tile"];
 
 const LevelGrid = () => {
-  const [selectedTiles, setSelectedTiles] = useState<HTMLElement[]>([]);
+  const [selectedTiles, setSelectedTiles] = useState<any[]>([]);
   const dragging = useRef<boolean>(false);
   const selectedLevelLayout = levelList[0];
   const levelContext = useLevelContext();
-  const firstTile = useRef<HTMLElement | null>();
+  const firstTile = useRef<any | null>();
 
   useEffect(() => {
     const initialItems = selectedLevelLayout.items;
@@ -30,35 +30,44 @@ const LevelGrid = () => {
 
   useEffect(() => {}, [levelContext?.selectedTiles]);
 
-  const handleMouseDown = (e: React.MouseEvent): void => {
-    if (!elementIsTile(e.target as HTMLElement)) return;
-    dragging.current = true;
-    firstTile.current = e.target as HTMLElement;
-  };
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderGrant: (e: GestureResponderEvent) => {
+        const target = e.nativeEvent.target as any;
+        if (!elementIsTile(target)) return;
+        dragging.current = true;
+        firstTile.current = target;
+      },
+      onPanResponderRelease: () => {
+        firstTile.current = null;
+        dragging.current = false;
+      },
+      onPanResponderMove: (e: GestureResponderEvent) => {
+        if (!firstTile.current || !dragging.current) return;
 
-  const handleMouseUp = (e: React.MouseEvent): void => {
-    firstTile.current = null;
-    dragging.current = false;
-  };
+        const target = e.nativeEvent.target as any;
+        if (!elementIsTile(target)) return;
 
-  const handleMouseOver = (e: React.MouseEvent): void => {
-    if (!elementIsTile(e.target as HTMLElement) || !firstTile.current || !dragging.current) return;
+        const firstTileIndex = parseInt(firstTile.current.getAttribute("data-index") || "");
+        const secondTileIndex = parseInt(target.getAttribute("data-index") || "");
 
-    const firstTileIndex = parseInt(firstTile.current.getAttribute("data-index") || "");
-    const secondTileIndex = parseInt((e.target as HTMLElement).getAttribute("data-index") || "");
+        if (!tilesAreAdjacent(firstTileIndex, secondTileIndex)) {
+          levelContext?.updateSelectedTiles([null, null]);
+          return;
+        }
 
-    if (!tilesAreAdjacent(firstTileIndex, secondTileIndex)) {
-      levelContext?.updateSelectedTiles([null, null]);
-      return;
-    }
-
-    //levelContext?.updateSelectedTiles([firstTileIndex, secondTileIndex]);
-    LevelManager.swapItems([firstTileIndex, secondTileIndex]);
-    firstTile.current = null;
-  };
+        // levelContext?.updateSelectedTiles([firstTileIndex, secondTileIndex]);
+        LevelManager.swapItems([firstTileIndex, secondTileIndex]);
+        firstTile.current = null;
+      },
+    })
+  ).current;
 
   const styles = StyleSheet.create({
     container: {
+      width: "100%",
+      height: "100%",
       borderWidth: 1,
       borderColor: "white",
       flexGrow: 1,
@@ -74,19 +83,30 @@ const LevelGrid = () => {
       width: "100%",
       height: "100%",
       display: "flex",
-      flexDirection: "row", // Use flexDirection for layout
-      flexWrap: "wrap", // Allow wrapping of tiles
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
+    overlayGrid: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      pointerEvents: "none",
     },
   });
 
+  // Passing view size to Candy
+  const [pSize, setPSize] = useState({ width: 0, height: 0 });
+
+  const onLayout = (event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setPSize({ width, height });
+  };
+
   return (
-    <View style={styles.container}>
-      <View
-        style={styles.tileGrid}
-        // onMouseDown={handleMouseDown}
-        // onMouseUp={handleMouseUp}
-        // onMouseOver={handleMouseOver}
-      >
+    <View style={styles.container} {...panResponder.panHandlers}>
+      <View style={styles.tileGrid}>
         {selectedLevelLayout.tiles.map((tile, index) =>
           tile === null ? (
             <View key={index}></View>
@@ -96,13 +116,13 @@ const LevelGrid = () => {
         )}
       </View>
 
-      <View style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+      <View style={styles.overlayGrid} onLayout={onLayout}>
         {levelContext?.currentLevelItems.map((item, index) => {
           const id = uuid();
           return selectedLevelLayout.tiles[index] === null ? (
             <View key={index}></View>
-          ) : (item as Candy)?.type === "Candy" ? (
-            <Candy key={(item as Candy).key} color={(item as Candy).color} index={index} id={item?.key || ""}></Candy>
+          ) : item?.type === "Candy" ? (
+            <Candy key={item.key} color={item.color} index={index} id={item?.key || ""} pSize={pSize}></Candy>
           ) : (
             <View key={id}></View>
           );

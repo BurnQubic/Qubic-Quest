@@ -15,7 +15,7 @@ const CandyTiles = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    maxWidth: 900,
+    maxWidth: 800,
     maxHeight: "100%",
     marginRight: "auto",
     borderRadius: 8,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     gap: 15,
   },
