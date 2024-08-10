@@ -25,6 +25,8 @@ const Tile = ({ selectedTiles, index }: TileProps) => {
 
 const styles = StyleSheet.create({
   tileContainer: {
+    width: "11.125%",
+    height: "11.125%",
     position: "relative",
     backgroundColor: "rgba(9, 131, 237, 0.5)",
     borderWidth: 1,

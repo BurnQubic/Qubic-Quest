@@ -109,7 +109,7 @@ const LevelGrid = () => {
       <View style={styles.tileGrid}>
         {selectedLevelLayout.tiles.map((tile, index) =>
           tile === null ? (
-            <View key={index}></View>
+            <View key={index} style={{ width: "11.125%", height: "11.125%" }}>+</View>
           ) : (
             <Tile key={index} selectedTiles={selectedTiles} index={index}></Tile>
           )

@@ -3,16 +3,12 @@ import React, { useState } from "react";
 import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
 import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedInput } from "@/app/components/common/ThemedInput"; // Updated import
-import { Button } from "react-native";
-import { StyleSheet, Module } from "react-native"; // Ensure this import is present
+import { StyleSheet, Module, Pressable, Text, TouchableOpacity } from "react-native"; // Ensure this import is present
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import * as Notifications from "expo-notifications";
@@ -111,15 +107,11 @@ export default function UserProfile() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-      headerImage={
-        <Ionicons size={310} name="code-slash" style={styles.headerImage} />
-      }
+      headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}
     >
       <ThemedText type="title">User Auth</ThemedText>
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.title}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </ThemedText>
+        <ThemedText style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</ThemedText>
         <ThemedInput
           placeholder="Email"
           value={email}
@@ -129,9 +121,7 @@ export default function UserProfile() {
           }}
           style={styles.input}
         />
-        {emailError && (
-          <ThemedText style={{ color: "red" }}>{emailError}</ThemedText>
-        )}
+        {emailError && <ThemedText style={{ color: "red" }}>{emailError}</ThemedText>}
         <ThemedInput
           placeholder="Password"
           value={password}
@@ -142,20 +132,14 @@ export default function UserProfile() {
           secureTextEntry
           style={styles.input}
         />
-        {passwordError && (
-          <ThemedText style={{ color: "red" }}>{passwordError}</ThemedText>
-        )}
-        <ThemedView>
-          <Button
-            title="Sign Up"
-            onPress={handleSignUp}
-            style={styles.button}
-          />
-          <Button
-            title="Sign In"
-            onPress={handleSignIn}
-            style={styles.button}
-          />
+        {passwordError && <ThemedText style={{ color: "red" }}>{passwordError}</ThemedText>}
+        <ThemedView style={styles.buttonView}>
+          <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+            <Text>Sign Up</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+            <Text>Sign In</Text>
+          </TouchableOpacity>
         </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
@@ -190,7 +174,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    width: "100%",
+    width: "40%",
     height: 40,
     backgroundColor: Colors.light.background,
     justifyContent: "center",
@@ -199,7 +183,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonView: {
+    width: "100%",
     display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     gap: 3,
   },
 });
