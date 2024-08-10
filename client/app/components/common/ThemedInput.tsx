@@ -7,12 +7,7 @@ export type ThemedInputProps = TextInputProps & {
   darkColor?: string;
 };
 
-export function ThemedInput({
-  style,
-  lightColor,
-  darkColor,
-  ...otherProps
-}: ThemedInputProps) {
+export function ThemedInput({ style, lightColor, darkColor, ...otherProps }: ThemedInputProps) {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
 
   return <TextInput style={[{ color }, style]} {...otherProps} />;
