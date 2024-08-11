@@ -1,9 +1,4 @@
-import red from "@/assets/images/candy-tiles/candies/red.png";
-import orange from "@/assets/images/candy-tiles/candies/orange.png";
-import yellow from "@/assets/images/candy-tiles/candies/yellow.png";
-import green from "@/assets/images/candy-tiles/candies/green.png";
-import blue from "@/assets/images/candy-tiles/candies/blue.png";
-import purple from "@/assets/images/candy-tiles/candies/purple.png";
+import { CANDY_ASSETS } from "../../../extern";
 import { useEffect, useRef, useState } from "react";
 import uuid from "react-uuid";
 import LevelManager from "./level-manager";
@@ -13,15 +8,6 @@ import { useFocusEffect } from "expo-router";
 import { Button, Pressable, View } from "react-native";
 
 export const CandyColors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
-
-const candyImages: { [key: string]: any } = {
-  Red: red,
-  Orange: orange,
-  Yellow: yellow,
-  Green: green,
-  Blue: blue,
-  Purple: purple,
-};
 
 type CandyProps = {
   color: CandyColor;
@@ -90,7 +76,7 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
       data-color={color}
     >
       <Image
-        source={candyImages[color]}
+        source={CANDY_ASSETS[color]}
         style={{
           width: "100%",
           height: "100%",

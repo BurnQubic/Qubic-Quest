@@ -1,14 +1,11 @@
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { StyleSheet, View, ImageBackground, Image, type ImageSourcePropType } from "react-native";
+import { borderImage } from "../../../extern";
 
 const ScorePanel = () => {
   return (
-    <ImageBackground
-      source={require("@/assets/images/candy-tiles/border.png")}
-      style={styles.scorePanel}
-      imageStyle={styles.borderImage}
-    >
+    <Image source={borderImage as ImageSourcePropType} style={styles.scorePanel} imageStyle={styles.borderImage}>
       {/* Your content here */}
-    </ImageBackground>
+    </Image>
   );
 };
 
