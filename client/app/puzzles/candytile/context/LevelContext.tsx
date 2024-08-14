@@ -1,6 +1,6 @@
 import React, { useContext, createContext, useState, useEffect, useRef } from "react";
 import { checkForMatchings } from "../utils/tile-matching";
-import LevelManager from "../components/candy-tiles/level-grid/level-manager";
+import LevelManager from "../components/candy-tiles/level-item/level-manager";
 
 type TilePair = [number | null, number | null];
 
