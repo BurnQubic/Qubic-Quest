@@ -49,6 +49,7 @@
     "react-redux": "^9.1.2",
     "react-use": "^17.5.1",
     "react-uuid": "^2.0.0",
+    "recoil": "^0.7.7",
     "redux": "^5.0.1",
     "three": "^0.167.1"
   },
