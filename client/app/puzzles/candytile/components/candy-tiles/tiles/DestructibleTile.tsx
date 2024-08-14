@@ -61,7 +61,7 @@ const DestructibleTile = (props: Props, ref: ForwardedRef<DestructibleTileRef>) 
   };
 
   return (
-    <View style={[styles.tile, props.className && { ...StyleSheet.flatten(props.className) }]} ref={ref}>
+    <View style={[styles.tile]} ref={ref}>
       <Image source={{ uri: props.spriteSrc }} style={[styles.image, { opacity: damaged ? 0.6 : 1 }]} />
       <Text style={styles.indexText}>{props.index}</Text>
     </View>

@@ -1,18 +1,29 @@
-import { CANDY_ASSETS } from "../../../extern";
-import { useEffect, useRef, useState } from "react";
-import uuid from "react-uuid";
-import LevelManager from "./level-manager";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Image } from "expo-image";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { useFocusEffect } from "expo-router";
-import { Button, Pressable, View } from "react-native";
+import { useRecoilValue } from "recoil";
+import { View } from "react-native";
+import { levelItemsState } from "../../../store/levelItems";
+import { CANDY_ASSETS } from "../../../extern";
+import useScore from "../../../hooks/useScore";
+import LevelManager from "../../leve-manager/LevelManager";
+// import useAudio from '../../../../../hooks/useAudio';
 
 export const CandyColors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 
+let activeBounceSounds = 0;
+const activeBounceSoundsLimit = 10;
+
+const animateItemSpawn = (positionX: any, positionY: any) => {
+  positionX.value = withTiming((positionX.value * 1) / 100, { duration: 750 });
+  positionY.value = withTiming((positionY.value * 1) / 100, { duration: 750 });
+};
+
 type CandyProps = {
   color: CandyColor;
-  index: number;
   id: string;
+  index: number;
   pSize: any;
 };
 
@@ -20,17 +31,34 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
   const positionX = useSharedValue(0);
   const positionY = useSharedValue(-100);
   const opacity = useSharedValue(1);
+  // const playAudio = useAudio();
+  const [show, setShow] = useState(false);
+  const levelItems = useRecoilValue(levelItemsState);
+  const itemUsed = useRef(false);
+  const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
 
-  const initialIndex = LevelManager.levelData.items.findIndex((x) => x?.key === id);
-  const initailColumnIndex = initialIndex + 1 - (Math.ceil((initialIndex + 1) / 9) - 1) * 9;
+  useScore(matched, index, "Candy", color);
+
+  // const initialIndex = LevelManager.levelData.items.findIndex((x) => x?.key === id);
+  // const initailColumnIndex = initialIndex + 1 - (Math.ceil((initialIndex + 1) / 9) - 1) * 9;
+
   useFocusEffect(() => {
     updatePosition();
-    LevelManager.subscribeItemsChange(onLevelItemsChanged);
+    // LevelManager.subscribeItemsChange(onLevelItemsChanged);
 
     return () => {
       LevelManager.unsubscribeItemsChange(onLevelItemsChanged);
     };
   });
+
+  useEffect(() => {
+    animateItemSpawn(positionX, positionY);
+    playCandyBounceSound();
+  }, []);
+
+  useEffect(() => {
+    if (id) setShow(true);
+  }, [id]);
 
   const onLevelItemsChanged = (items: any[], matched: boolean): void => {
     const candyMatched = !items.some((x) => x?.key === id);
@@ -41,6 +69,11 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
       opacity.value = withTiming(1, { duration: 500 }); // Fade in
     }
   };
+
+  useEffect(() => {
+    if (itemUsed.current) return;
+    if (matched) onItemMatch();
+  }, [levelItems]);
 
   const updatePosition = () => {
     const currentIndex = LevelManager.levelData.items.findIndex((x) => x?.key === id);
@@ -60,6 +93,20 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
     };
   });
 
+  const playCandyBounceSound = () => {
+    if (activeBounceSounds > activeBounceSoundsLimit) return;
+    // playAudio({ audioName: 'candyBounce', volume: 0.25, speed: randomNumber(0.9, 1.5) });
+    activeBounceSounds += 1;
+    setTimeout(() => {
+      activeBounceSounds -= 1;
+    }, 1000);
+  };
+
+  const onItemMatch = () => {
+    itemUsed.current = true;
+    setShow(false);
+  };
+
   return (
     <Animated.View
       style={[
@@ -75,16 +122,17 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
       data-index={index}
       data-color={color}
     >
-      <Image
-        source={CANDY_ASSETS[color]}
-        style={{
-          width: "100%",
-          height: "100%",
-          borderRadius: 50,
-          margin: 0,
-          resizeMode: "cover",
-        }}
-      />
+      {show && (
+        <Image
+          source={CANDY_ASSETS[color]}
+          style={{
+            width: "100%",
+            height: "100%",
+            borderRadius: 50,
+            resizeMode: "cover",
+          }}
+        />
+      )}
     </Animated.View>
   );
 };
