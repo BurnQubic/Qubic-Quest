@@ -8,9 +8,9 @@ export const gameOverState = selector<boolean>({
 	key: 'gameOver',
 	get: ({ get }) => {
 		const levelComplete = get(levelCompleteState);
-		const finishedMoving = get(finishedMovingState);
-		const levelMoves = get(levelMovesState);
-		const possibleCombinations = get(possibleCombinationsState);
+		const finishedMoving = get(finishedMovingState) ?? false;
+		const levelMoves = get(levelMovesState) ?? { spentAllMoves: false };
+		const possibleCombinations = get(possibleCombinationsState) ?? true;
 
 		return finishedMoving && !levelComplete && (levelMoves.spentAllMoves || !possibleCombinations);
 	},

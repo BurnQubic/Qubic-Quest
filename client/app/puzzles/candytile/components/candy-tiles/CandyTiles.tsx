@@ -1,13 +1,13 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import LevelGrid from "./level-item";
 import ScorePanel from "./score-panel";
+import LevelContainer from "./LevelContainer";
 
 const CandyTiles = () => {
   return (
     <View style={styles.container}>
       <ScorePanel></ScorePanel>
-      <LevelGrid></LevelGrid>
+      <LevelContainer></LevelContainer>
     </View>
   );
 };

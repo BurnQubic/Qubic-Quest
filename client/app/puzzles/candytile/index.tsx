@@ -2,16 +2,22 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import LevelSelector from "./components/level-selector";
 import CandyTiles from "./components/candy-tiles/CandyTiles";
-import LevelContextProvider from "./context/LevelContext";
+import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "react-query";
+// import LevelContextProvider from "./context/LevelContext";
+
+const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
   return (
-    <View style={styles.container}>
-      {/* <LevelSelector></LevelSelector> */}
-      <LevelContextProvider>
-        <CandyTiles></CandyTiles>
-      </LevelContextProvider>
-    </View>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <View style={styles.container}>
+          {/* <LevelSelector></LevelSelector> */}
+          <CandyTiles></CandyTiles>
+        </View>
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 };
 
