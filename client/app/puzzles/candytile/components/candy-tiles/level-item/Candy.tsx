@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Image } from "expo-image";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 import { useFocusEffect } from "expo-router";
 import { useRecoilValue } from "recoil";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { levelItemsState } from "../../../store/levelItems";
 import { CANDY_ASSETS } from "../../../extern";
 import useScore from "../../../hooks/useScore";
@@ -24,35 +24,21 @@ type CandyProps = {
   color: CandyColor;
   id: string;
   index: number;
-  pSize: any;
+  pSize?: any;
 };
 
-const Candy = ({ color, index, id, pSize }: CandyProps) => {
-  const positionX = useSharedValue(0);
-  const positionY = useSharedValue(-100);
-  const opacity = useSharedValue(1);
-  // const playAudio = useAudio();
+const Candy = ({ color, id, index, pSize }: CandyProps) => {
   const [show, setShow] = useState(false);
   const levelItems = useRecoilValue(levelItemsState);
+  const translateY = useSharedValue(-500);
   const itemUsed = useRef(false);
+  // const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
 
-  useScore(matched, index, "Candy", color);
-
-  // const initialIndex = LevelManager.levelData.items.findIndex((x) => x?.key === id);
-  // const initailColumnIndex = initialIndex + 1 - (Math.ceil((initialIndex + 1) / 9) - 1) * 9;
-
-  useFocusEffect(() => {
-    updatePosition();
-    // LevelManager.subscribeItemsChange(onLevelItemsChanged);
-
-    return () => {
-      LevelManager.unsubscribeItemsChange(onLevelItemsChanged);
-    };
-  });
+  useScore(matched, index, 'Candy', color);
 
   useEffect(() => {
-    animateItemSpawn(positionX, positionY);
+    translateY.value = withSpring(0, { damping: 5, stiffness: 80 });
     playCandyBounceSound();
   }, []);
 
@@ -60,38 +46,10 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
     if (id) setShow(true);
   }, [id]);
 
-  const onLevelItemsChanged = (items: any[], matched: boolean): void => {
-    const candyMatched = !items.some((x) => x?.key === id);
-    if (candyMatched) {
-      opacity.value = withTiming(0, { duration: 500 }); // Fade out
-    } else {
-      updatePosition();
-      opacity.value = withTiming(1, { duration: 500 }); // Fade in
-    }
-  };
-
   useEffect(() => {
     if (itemUsed.current) return;
-    if (matched) onItemMatch();
+    matched && onItemMatch();
   }, [levelItems]);
-
-  const updatePosition = () => {
-    const currentIndex = LevelManager.levelData.items.findIndex((x) => x?.key === id);
-    const rowIndex = Math.ceil((currentIndex + 1) / 9);
-    const columnIndex = currentIndex + 1 - (rowIndex - 1) * 9;
-    positionX.value = withTiming((columnIndex - 1) * 11.125, { duration: 500 });
-    positionY.value = withTiming((rowIndex - 1) * 11.125, { duration: 500 });
-  };
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: (positionX.value * pSize.width) / 100 },
-        { translateY: (positionY.value * pSize.height) / 100 },
-      ],
-      opacity: opacity.value,
-    };
-  });
 
   const playCandyBounceSound = () => {
     if (activeBounceSounds > activeBounceSoundsLimit) return;
@@ -106,35 +64,38 @@ const Candy = ({ color, index, id, pSize }: CandyProps) => {
     itemUsed.current = true;
     setShow(false);
   };
+// const animatedStyle = useAnimatedStyle(() => {
+//     return {
+//       transform: [
+//         { translateX: (positionX.value * pSize.width) / 100 },
+//         { translateY: (positionY.value * pSize.height) / 100 },
+//       ],
+//       opacity: opacity.value,
+//     };
+//   });
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   return (
-    <Animated.View
-      style={[
-        {
-          width: "11.125%",
-          padding: "1.7%",
-          aspectRatio: 1,
-          position: "absolute",
-        },
-        animatedStyle,
-      ]}
-      data-candy
-      data-index={index}
-      data-color={color}
-    >
-      {show && (
-        <Image
-          source={CANDY_ASSETS[color]}
-          style={{
-            width: "100%",
-            height: "100%",
-            borderRadius: 50,
-            resizeMode: "cover",
-          }}
-        />
-      )}
+    <Animated.View style={[styles.container, animatedStyle, { display: show ? "flex" : "none" }]}>
+      <Image source={CANDY_ASSETS[color]} style={styles.image} />
     </Animated.View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+});
 
 export default Candy;

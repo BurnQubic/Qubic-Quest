@@ -1,3 +1,5 @@
+import { LevelTile } from "../../types/index";
+
 export default [
   null,
   null,

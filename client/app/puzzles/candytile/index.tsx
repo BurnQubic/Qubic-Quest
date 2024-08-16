@@ -4,6 +4,7 @@ import LevelSelector from "./components/level-selector";
 import CandyTiles from "./components/candy-tiles/CandyTiles";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
+import LevelContainer from "./components/candy-tiles/LevelContainer";
 // import LevelContextProvider from "./context/LevelContext";
 
 const queryClient = new QueryClient();
@@ -14,7 +15,7 @@ const CandyTilePuzzle = () => {
       <QueryClientProvider client={queryClient}>
         <View style={styles.container}>
           {/* <LevelSelector></LevelSelector> */}
-          <CandyTiles></CandyTiles>
+          <LevelContainer />
         </View>
       </QueryClientProvider>
     </RecoilRoot>

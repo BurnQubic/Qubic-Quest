@@ -22,6 +22,8 @@ import { LevelFile, LevelItem, LevelTile, MatchResult, SwappedItems } from "../.
 import useSelectedLevel from "../../hooks/useSelectedLevel";
 import { delay } from "../../utils/utils";
 import { ANIMATION_TIME_MS, COMBO_LIMIT } from "../../config";
+import levelItemsSnapshot from "../../data/mocks/levelItemsSnapshot";
+import levelTitlesSnapshot from "../../data/mocks/levelTitlesSnapshot";
 
 const applyMatches = (matchInfo: MatchResult, itemList: LevelItem[]) => {
   let itemsFused = false;
@@ -57,7 +59,7 @@ const validateInitialItems = (initialItems: readonly LevelItem[], initialTiles: 
 };
 
 const LevelManager = () => {
-  const selectedLevelQuery = useSelectedLevel();
+  // const selectedLevelQuery = useSelectedLevel();
   const [swappedItems, setSwappedItems] = useRecoilState<SwappedItems>(swappedItemsState);
   const [levelItems, setLevelItems] = useRecoilState(levelItemsState);
   const [levelTiles, setLevelTiles] = useRecoilState(levelTilesState);
@@ -66,7 +68,7 @@ const LevelManager = () => {
   const setMatchList = useSetRecoilState(matchListState);
   const setPossibleCombinations = useSetRecoilState(possibleCombinationsState);
   const [comboCount, setComboCount] = useRecoilState(comboCountState);
-  const selectedLevel = useMemo(() => selectedLevelQuery.data?.file, [selectedLevelQuery.data]) as LevelFile;
+  // const selectedLevel = useMemo(() => selectedLevelQuery.data?.file, [selectedLevelQuery.data]) as LevelFile;
   //   const playAudio = useAudio();
 
   const itemsWereSwapped = useRef(false);
@@ -82,10 +84,13 @@ const LevelManager = () => {
   }, [finishedMoving]);
 
   const setupLevel = () => {
-    const initialItems = validateInitialItems(selectedLevel.initialItems, selectedLevel.initialTiles);
-    setLevelTiles(selectedLevel.initialTiles);
-    setLevelItems(initialItems);
-    setLevelMoves({ done: 0, total: selectedLevel.maximumMoves, spentAllMoves: false });
+    // const initialItems = validateInitialItems(selectedLevel.initialItems, selectedLevel.initialTiles);
+    // setLevelTiles(selectedLevel.initialTiles);
+    // setLevelItems(initialItems);
+    setLevelItems(levelItemsSnapshot)
+    setLevelTiles(levelTitlesSnapshot)
+    // setLevelMoves({ done: 0, total: selectedLevel.maximumMoves, spentAllMoves: false });
+    setLevelMoves({ done: 0, total: 100, spentAllMoves: false });
   };
 
   const swapItems = (undo: boolean) => {

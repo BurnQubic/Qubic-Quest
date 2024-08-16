@@ -1,11 +1,14 @@
 import React, { ForwardedRef, forwardRef, useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { View, Image, Text, StyleSheet } from "react-native";
+import { View, Image, Text, StyleSheet, ViewProps, Dimensions } from "react-native";
 import useScore from "../../../hooks/useScore";
 import { matchListState } from "../../../store/matchList";
 import { levelTilesState } from "../../../store/levelTiles";
+import { COLUMN_NUMBER } from "../../../config";
 
-type Props = {
+const { width: screenWidth } = Dimensions.get("window");
+
+interface Props extends ViewProps {
   tileType: string;
   index: number;
   spriteSrc?: string;
@@ -61,7 +64,7 @@ const DestructibleTile = (props: Props, ref: ForwardedRef<DestructibleTileRef>) 
   };
 
   return (
-    <View style={[styles.tile]} ref={ref}>
+    <View style={[styles.tile, props.style]} ref={ref}>
       <Image source={{ uri: props.spriteSrc }} style={[styles.image, { opacity: damaged ? 0.6 : 1 }]} />
       <Text style={styles.indexText}>{props.index}</Text>
     </View>
@@ -75,6 +78,8 @@ const styles = StyleSheet.create({
     margin: "2%",
     borderRadius: 8,
     overflow: "hidden",
+    padding: "1.7%",
+    width: screenWidth / COLUMN_NUMBER,
   },
   image: {
     width: "100%",

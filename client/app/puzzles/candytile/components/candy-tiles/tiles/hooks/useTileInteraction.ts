@@ -1,4 +1,4 @@
-import { levelItemsState } from "@/app/puzzles/candytile/store/levelItems";
+import { levelItemsState } from "../../../../store/levelItems";
 import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 

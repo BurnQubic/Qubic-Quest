@@ -1,7 +1,7 @@
 export {};
 
 declare global {
-  type CandyColor = "Red" | "Orange" | "Yellow" | "Green" | "Blue" | "Purple";
+  type CandyColor = "Red" | "Orange" | "Yellow" | "Green" | "Blue" | "Purple" | "White";
 
   type Candy = {
     color: CandyColor;

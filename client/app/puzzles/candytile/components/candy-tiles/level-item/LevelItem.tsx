@@ -6,10 +6,12 @@ import SuperCandy from "./SuperCandy";
 import { liveItemsIds, removeLiveItem } from "../grids/ItemGrid";
 import IceCream from "./IceCream";
 import { LevelItem as LevelItemType } from "../../../types";
-import { Animated, View, StyleSheet } from "react-native";
+import { Animated, View, StyleSheet, Dimensions } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
 import { ANIMATION_TIME_MS, COLUMN_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
+
+const { width: screenWidth } = Dimensions.get("window");
 
 type ItemPosition = {
   x: number;
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     aspectRatio: 1,
     padding: "1.7%",
-    width: `calc(100%/${COLUMN_NUMBER})`,
+    width: screenWidth / COLUMN_NUMBER,
   },
 });
 
