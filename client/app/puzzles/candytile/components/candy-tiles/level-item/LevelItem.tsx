@@ -6,12 +6,11 @@ import SuperCandy from "./SuperCandy";
 import { liveItemsIds, removeLiveItem } from "../grids/ItemGrid";
 import IceCream from "./IceCream";
 import { LevelItem as LevelItemType } from "../../../types";
-import { Animated, View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
-import { ANIMATION_TIME_MS, COLUMN_NUMBER } from "../../../config";
+import { ANIMATION_TIME_MS, COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
-
-const { width: screenWidth } = Dimensions.get("window");
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 type ItemPosition = {
   x: number;
@@ -38,34 +37,23 @@ const getItemComponent = (item: LevelItemType | null, index: number): JSX.Elemen
       return <IceCream id={id} key={id} index={index} />;
 
     default:
-      return <View />;
+      return <Candy color={"Red"} id={id} key={id} index={index} />;
   }
 };
 
-const setPosition = (element: Animated.ValueXY, index: number): void => {
-  element.setValue({
-    x: 100 * (getItemColumnIndex(index) - 1),
-    y: 100 * (getItemRowIndex(index) - 1),
-  });
-};
-
-const animatePosition = (element: Animated.ValueXY, position: ItemPosition): void => {
-  Animated.timing(element, {
-    toValue: position,
-    duration: ANIMATION_TIME_MS,
-    // easing: Animated.Easing.out(Animated.Easing.back(1)),
-    useNativeDriver: true,
-  }).start();
+const setPosition = (x: Animated.SharedValue<number>, y: Animated.SharedValue<number>, index: number): void => {
+  x.value = 100 * (getItemColumnIndex(index) - 1);
+  y.value = 100 * (getItemRowIndex(index) - 1);
 };
 
 const LevelItem = ({ initialIndex }: LevelItemProps) => {
   const levelItems = useRecoilValue(levelItemsState);
   const [levelItemTarget, setLevelItemTarget] = useState<LevelItemType | null>(levelItems[initialIndex]);
 
-  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
   const rowIndexRef = useRef<number>(0);
   const columnIndexRef = useRef<number>(0);
-  const positionRef = useRef<ItemPosition>({ x: 0, y: 0 });
   const emptyTargetRef = useRef(false);
   const currentIndexRef = useRef(initialIndex);
 
@@ -86,7 +74,7 @@ const LevelItem = ({ initialIndex }: LevelItemProps) => {
 
   useEffect(() => {
     if (levelItemTarget) {
-      setPosition(position, getItemIndex());
+      setPosition(translateX, translateY, getItemIndex());
     }
   }, [levelItemTarget]);
 
@@ -111,14 +99,15 @@ const LevelItem = ({ initialIndex }: LevelItemProps) => {
     rowIndexRef.current = getItemRowIndex(emptyTargetRef.current ? initialIndex : gridIndex);
     columnIndexRef.current = getItemColumnIndex(emptyTargetRef.current ? initialIndex : gridIndex);
 
-    positionRef.current.x = 100 * (columnIndexRef.current - 1);
-    positionRef.current.y = 100 * (rowIndexRef.current - 1);
+    translateX.value = 100 * (columnIndexRef.current - 1);
+    translateY.value = 100 * (rowIndexRef.current - 1);
   };
 
   const updatePosition = () => {
     updateGridPosition();
     if (!emptyTargetRef.current) {
-      animatePosition(position, positionRef.current);
+      translateX.value = withTiming(translateX.value, { duration: ANIMATION_TIME_MS });
+      translateY.value = withTiming(translateY.value, { duration: ANIMATION_TIME_MS });
     }
   };
 
@@ -128,26 +117,27 @@ const LevelItem = ({ initialIndex }: LevelItemProps) => {
     return index;
   };
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
+    };
+  });
+
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        {
-          transform: [{ translateX: position.x }, { translateY: position.y }],
-        },
-      ]}
-    >
+    <View style={[styles.container, animatedStyle]}>
       {levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />}
-    </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: "relative",
+    borderRadius: 8,
+    overflow: "hidden",
+    width: `${100 / COLUMN_NUMBER}%`,
+    height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    padding: "1.7%",
-    width: screenWidth / COLUMN_NUMBER,
   },
 });
 

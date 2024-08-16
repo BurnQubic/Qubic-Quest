@@ -4,9 +4,7 @@ import { View, Image, Text, StyleSheet, ViewProps, Dimensions } from "react-nati
 import useScore from "../../../hooks/useScore";
 import { matchListState } from "../../../store/matchList";
 import { levelTilesState } from "../../../store/levelTiles";
-import { COLUMN_NUMBER } from "../../../config";
-
-const { width: screenWidth } = Dimensions.get("window");
+import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 
 interface Props extends ViewProps {
   tileType: string;
@@ -15,7 +13,7 @@ interface Props extends ViewProps {
   matched: boolean;
   onDestructed?: () => void;
   className?: string;
-};
+}
 
 type DestructibleTileRef = View;
 
@@ -74,12 +72,11 @@ const DestructibleTile = (props: Props, ref: ForwardedRef<DestructibleTileRef>) 
 const styles = StyleSheet.create({
   tile: {
     position: "relative",
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
-    margin: "2%",
     borderRadius: 8,
     overflow: "hidden",
-    padding: "1.7%",
-    width: screenWidth / COLUMN_NUMBER,
+    width: `${100 / COLUMN_NUMBER}%`,
+    height: `${100 / ROW_NUMBER}%`,
+    aspectRatio: 1,
   },
   image: {
     width: "100%",
@@ -93,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "rgba(255, 255, 255, 0.8)",
     fontWeight: "bold",
-    display: "none", // equivalent to hidden in React Native
+    display: "none",
   },
 });
 

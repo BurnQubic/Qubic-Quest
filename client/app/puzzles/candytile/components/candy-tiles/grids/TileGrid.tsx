@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import { View, StyleSheet, PanResponder, LayoutChangeEvent, FlatList, Dimensions } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { View, StyleSheet, PanResponder, LayoutChangeEvent, Dimensions } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { tilesAreAdjacent } from "../../../game-logic/tile-matching";
@@ -23,6 +23,8 @@ const getTileComponent = (tileType: string, index: number): JSX.Element => {
   }
 };
 
+const getEmptyTile = (index: number): JSX.Element => <View key={index} style={styles.emptyTile} />;
+
 const TileGrid = () => {
   const levelTiles = useRecoilValue(levelTilesState);
   const dragging = useRef<boolean>(false);
@@ -31,38 +33,31 @@ const TileGrid = () => {
   const finishedMoving = useRecoilValue(finishedMovingState);
   const [gridLayout, setGridLayout] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
 
-  const screenWidth = Dimensions.get("window").width;
-  const screenHeight = Dimensions.get("window").height;
-  const tileWidth = screenWidth / COLUMN_NUMBER;
-  const tileHeight = screenWidth / ROW_NUMBER;
-
-  const panResponder = useMemo(
-    () =>
-      PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderGrant: (e, gestureState) => {
-          const touchedElement = findTouchedTile(gestureState);
-          if (touchedElement !== null) {
-            dragging.current = true;
-            firstTile.current = touchedElement;
-          }
-        },
-        onPanResponderMove: (e, gestureState) => {
-          if (!dragging.current || !firstTile.current || !finishedMoving) return;
-          const touchedElement = findTouchedTile(gestureState);
-          if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
-            setSwappedItems([firstTile.current, touchedElement]);
-            dragging.current = false;
-            firstTile.current = null;
-          }
-        },
-        onPanResponderRelease: () => {
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderGrant: (e, gestureState) => {
+        const touchedElement = findTouchedTile(gestureState);
+        if (touchedElement !== null) {
+          dragging.current = true;
+          firstTile.current = touchedElement;
+        }
+      },
+      onPanResponderMove: (e, gestureState) => {
+        if (!dragging.current || !firstTile.current || !finishedMoving) return;
+        const touchedElement = findTouchedTile(gestureState);
+        if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
+          setSwappedItems([firstTile.current, touchedElement]);
           dragging.current = false;
           firstTile.current = null;
-        },
-      }),
-    [finishedMoving, gridLayout]
-  );
+        }
+      },
+      onPanResponderRelease: () => {
+        dragging.current = false;
+        firstTile.current = null;
+      },
+    })
+  ).current;
 
   const findTouchedTile = (gestureState: any): number | null => {
     const { moveX, moveY } = gestureState;
@@ -82,25 +77,10 @@ const TileGrid = () => {
     setGridLayout({ x, y, width, height });
   };
 
-  const renderItem = ({ item, index }) => {
-    return item === null ? (
-      <View style={[styles.emptyTile, { width: tileWidth, height: tileHeight }]} />
-    ) : (
-      getTileComponent(item.type, index)
-    );
-  };
-
   return (
-    <FlatList
-      data={levelTiles}
-      renderItem={renderItem}
-      keyExtractor={(_, index) => index.toString()}
-      numColumns={COLUMN_NUMBER}
-      columnWrapperStyle={styles.columnWrapper}
-      contentContainerStyle={styles.grid}
-      onLayout={handleLayout}
-      {...panResponder.panHandlers}
-    />
+    <View style={styles.grid} {...panResponder.panHandlers} onLayout={handleLayout}>
+      {levelTiles.map((tile, index) => (tile === null ? getEmptyTile(index) : getTileComponent(tile.type, index)))}
+    </View>
   );
 };
 
@@ -109,16 +89,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
+    bottom: 0,
+    right:0,
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   emptyTile: {
     backgroundColor: "rgba(0, 0, 0, 0.05)",
-    borderRadius: 8,
-    display: "none"
+    borderRadius: 3,
+    width: `${100 / COLUMN_NUMBER}%`,
+    height: `${100 / ROW_NUMBER}%`,
+    aspectRatio: 1,
   },
 });
 

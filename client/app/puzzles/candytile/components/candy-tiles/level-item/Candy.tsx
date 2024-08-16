@@ -35,7 +35,7 @@ const Candy = ({ color, id, index, pSize }: CandyProps) => {
   // const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
 
-  useScore(matched, index, 'Candy', color);
+  useScore(matched, index, "Candy", color);
 
   useEffect(() => {
     translateY.value = withSpring(0, { damping: 5, stiffness: 80 });
@@ -64,15 +64,15 @@ const Candy = ({ color, id, index, pSize }: CandyProps) => {
     itemUsed.current = true;
     setShow(false);
   };
-// const animatedStyle = useAnimatedStyle(() => {
-//     return {
-//       transform: [
-//         { translateX: (positionX.value * pSize.width) / 100 },
-//         { translateY: (positionY.value * pSize.height) / 100 },
-//       ],
-//       opacity: opacity.value,
-//     };
-//   });
+  // const animatedStyle = useAnimatedStyle(() => {
+  //     return {
+  //       transform: [
+  //         { translateX: (positionX.value * pSize.width) / 100 },
+  //         { translateY: (positionY.value * pSize.height) / 100 },
+  //       ],
+  //       opacity: opacity.value,
+  //     };
+  //   });
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+    resizeMode: "contain",
   },
 });
 

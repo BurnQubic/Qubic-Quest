@@ -3,9 +3,7 @@ import { View, Text, StyleSheet, Dimensions } from "react-native";
 import useTileInteraction from "./hooks/useTileInteraction";
 import { useRecoilValue } from "recoil";
 import { levelItemsState } from "../../../store/levelItems";
-import { COLUMN_NUMBER } from "../../../config";
-
-const { width: screenWidth } = Dimensions.get("window");
+import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 
 export type TileProps = {
   index: number;
@@ -43,12 +41,11 @@ const Tile = ({ index }: TileProps) => {
 const styles = StyleSheet.create({
   tile: {
     position: "relative",
-    backgroundColor: "rgba(0, 0, 0, 0.25)",
-    margin: "2%",
     borderRadius: 8,
     overflow: "hidden",
-    padding: "1.7%",
-    width: screenWidth / COLUMN_NUMBER,
+    width: `${100 / COLUMN_NUMBER}%`,
+    height: `${100 / ROW_NUMBER}%`,
+    aspectRatio: 1,
   },
   indexText: {
     position: "absolute",
