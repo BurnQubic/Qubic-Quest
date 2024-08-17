@@ -1,25 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import Candy from "./Candy";
 import Chocolate from "./Chocolate";
 import SuperCandy from "./SuperCandy";
 import { liveItemsIds, removeLiveItem } from "../grids/ItemGrid";
 import IceCream from "./IceCream";
 import { LevelItem as LevelItemType } from "../../../types";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
 import { ANIMATION_TIME_MS, COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
-type ItemPosition = {
-  x: number;
-  y: number;
-};
-
-type LevelItemProps = {
-  initialIndex: number;
-};
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const getItemComponent = (item: LevelItemType | null, index: number): JSX.Element => {
   const id = item?.id || "";
@@ -42,13 +35,15 @@ const getItemComponent = (item: LevelItemType | null, index: number): JSX.Elemen
 };
 
 const setPosition = (x: Animated.SharedValue<number>, y: Animated.SharedValue<number>, index: number): void => {
-  x.value = 100 * (getItemColumnIndex(index) - 1);
-  y.value = 100 * (getItemRowIndex(index) - 1);
+  x.value = (100 / COLUMN_NUMBER) * (getItemColumnIndex(index) - 1);
+  y.value = (100 / ROW_NUMBER) * (getItemRowIndex(index) - 1);
 };
 
-const LevelItem = ({ initialIndex }: LevelItemProps) => {
+const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
   const levelItems = useRecoilValue(levelItemsState);
   const [levelItemTarget, setLevelItemTarget] = useState<LevelItemType | null>(levelItems[initialIndex]);
+
+  const scale = useSharedValue(1); // Shared value for scaling
 
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -117,16 +112,24 @@ const LevelItem = ({ initialIndex }: LevelItemProps) => {
     return index;
   };
 
+  const handlePressIn = () => {
+    scale.value = withTiming(1.2, { duration: 200 }); // Increase size to 120%
+  };
+
+  const handlePressOut = () => {
+    scale.value = withTiming(1, { duration: 200 }); // Return to original size
+  };
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
+      transform: [{ translateX: translateX.value }, { translateY: translateY.value }, { scale: scale.value }],
     };
   });
 
   return (
-    <View style={[styles.container, animatedStyle]}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       {levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />}
-    </View>
+    </Animated.View>
   );
 };
 
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     borderRadius: 8,
-    overflow: "hidden",
+    // overflow: "hidden",
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,

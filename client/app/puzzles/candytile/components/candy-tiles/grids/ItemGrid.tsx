@@ -21,7 +21,7 @@ const ItemGrid = () => {
         .fill("")
         .map((_, index) => {
           return tilesLayout[index] === null ? (
-            <View key={index} style={[styles.emptyTile, { borderWidth: 3 }]} />
+            <View key={index} style={[styles.emptyTile]} />
           ) : (
             <LevelItem key={index} initialIndex={index} />
           );

@@ -46,7 +46,7 @@ const IceTile = ({ index }: TileProps) => {
       // damagedCrackSoundName="iceCrack2"
       matched={matched}
       onDestructed={onDestructed}
-      style={isAllowedType ? styles.allowed : styles.notAllowed}
+      // style={isAllowedType ? styles.allowed : styles.notAllowed}
     />
   );
 };
@@ -58,12 +58,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  allowed: {
-    backgroundColor: "green",
-  },
-  notAllowed: {
-    backgroundColor: "red",
-  },
+  // allowed: {
+  //   backgroundColor: "green",
+  // },
+  // notAllowed: {
+  //   backgroundColor: "red",
+  // },
 });
 
 export default IceTile;

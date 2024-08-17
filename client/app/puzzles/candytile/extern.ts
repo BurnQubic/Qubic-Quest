@@ -18,6 +18,8 @@ import superPurple from "@/assets/images/candy-tiles/candies/super-purple.png";
 
 import borderImage from "@/assets/images/candy-tiles/border.png";
 
+import backgroundImage from "@/assets/images/candy-tiles/illustrations/home-bg.jpg";
+
 export const CANDY_ASSETS = {
   Red: red,
   Orange: orange,
@@ -36,4 +38,4 @@ export const SUPER_CANDY_ASSETS = {
   Purple: superPurple,
 };
 
-export { borderImage, chocolateSprite, iceCreamSprite };
+export { borderImage, chocolateSprite, iceCreamSprite, backgroundImage };

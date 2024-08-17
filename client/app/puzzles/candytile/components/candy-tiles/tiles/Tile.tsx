@@ -28,7 +28,7 @@ const Tile = ({ index }: TileProps) => {
 
   return (
     <View
-      style={[styles.tile, isAllowedType ? styles.allowed : styles.notAllowed]}
+      style={[styles.tile]}
       data-index={index}
       data-tile
       ref={tileElementRef}
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     display: "none",
   },
-  allowed: {
-    backgroundColor: "green",
-  },
-  notAllowed: {
-    backgroundColor: "red",
-  },
+  // allowed: {
+  //   backgroundColor: "green",
+  // },
+  // notAllowed: {
+  //   backgroundColor: "red",
+  // },
 });
 
 export default Tile;

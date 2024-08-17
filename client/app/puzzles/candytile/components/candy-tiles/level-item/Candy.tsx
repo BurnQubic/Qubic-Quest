@@ -24,10 +24,9 @@ type CandyProps = {
   color: CandyColor;
   id: string;
   index: number;
-  pSize?: any;
 };
 
-const Candy = ({ color, id, index, pSize }: CandyProps) => {
+const Candy = ({ color, id, index }: CandyProps) => {
   const [show, setShow] = useState(false);
   const levelItems = useRecoilValue(levelItemsState);
   const translateY = useSharedValue(-500);
