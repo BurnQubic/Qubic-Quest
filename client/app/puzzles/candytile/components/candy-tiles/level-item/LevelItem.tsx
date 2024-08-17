@@ -127,9 +127,9 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
   });
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
+    <View style={[styles.container]}>
       {levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />}
-    </Animated.View>
+    </View>
   );
 };
 

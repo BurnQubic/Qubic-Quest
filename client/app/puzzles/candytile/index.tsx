@@ -14,18 +14,16 @@ const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-          <ImageBackground source={backgroundImage} style={styles.image}>
-            <View style={styles.container}>
-              {/* <LevelSelector></LevelSelector> */}
-              <LevelContainer />
-            </View>
-          </ImageBackground>
-        </QueryClientProvider>
-      </RecoilRoot>
-    </GestureHandlerRootView>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ImageBackground source={backgroundImage} style={styles.image}>
+          <View style={styles.container}>
+            {/* <LevelSelector></LevelSelector> */}
+            <LevelContainer />
+          </View>
+        </ImageBackground>
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 };
 
@@ -40,7 +38,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: "cover",
+    objectFit: "contain",
     justifyContent: "center",
   },
 });

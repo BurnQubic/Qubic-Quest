@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, PanResponder, LayoutChangeEvent, Dimensions } from "react-native";
+import { View, StyleSheet, LayoutChangeEvent } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { tilesAreAdjacent } from "../../../game-logic/tile-matching";
 import IceTile from "../tiles/IceTile";
@@ -33,37 +34,10 @@ const TileGrid = () => {
   const finishedMoving = useRecoilValue(finishedMovingState);
   const [gridLayout, setGridLayout] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
 
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderGrant: (e, gestureState) => {
-        const touchedElement = findTouchedTile(gestureState);
-        if (touchedElement !== null) {
-          dragging.current = true;
-          firstTile.current = touchedElement;
-        }
-      },
-      onPanResponderMove: (e, gestureState) => {
-        if (!dragging.current || !firstTile.current || !finishedMoving) return;
-        const touchedElement = findTouchedTile(gestureState);
-        if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
-          setSwappedItems([firstTile.current, touchedElement]);
-          dragging.current = false;
-          firstTile.current = null;
-        }
-      },
-      onPanResponderRelease: () => {
-        dragging.current = false;
-        firstTile.current = null;
-      },
-    })
-  ).current;
-
-  const findTouchedTile = (gestureState: any): number | null => {
-    const { moveX, moveY } = gestureState;
+  const findTouchedTile = (touchX: number, touchY: number): number | null => {
     if (gridLayout) {
-      const gridX = moveX - gridLayout.x;
-      const gridY = moveY - gridLayout.y;
+      const gridX = touchX - gridLayout.x;
+      const gridY = touchY - gridLayout.y;
       const columnIndex = Math.floor((gridX / gridLayout.width) * COLUMN_NUMBER);
       const rowIndex = Math.floor((gridY / gridLayout.height) * ROW_NUMBER);
       const index = rowIndex * COLUMN_NUMBER + columnIndex;
@@ -72,15 +46,39 @@ const TileGrid = () => {
     return null;
   };
 
+  const gesture = Gesture.Pan()
+    .onBegin((e) => {
+      const touchedElement = findTouchedTile(e.x, e.y);
+      if (touchedElement !== null) {
+        dragging.current = true;
+        firstTile.current = touchedElement;
+      }
+    })
+    .onUpdate((e) => {
+      if (!dragging.current || !firstTile.current || !finishedMoving) return;
+      const touchedElement = findTouchedTile(e.x, e.y);
+      if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
+        setSwappedItems([firstTile.current, touchedElement]);
+        dragging.current = false;
+        firstTile.current = null;
+      }
+    })
+    .onEnd(() => {
+      dragging.current = false;
+      firstTile.current = null;
+    });
+
   const handleLayout = (event: LayoutChangeEvent) => {
     const { x, y, width, height } = event.nativeEvent.layout;
     setGridLayout({ x, y, width, height });
   };
 
   return (
-    <View style={styles.grid} {...panResponder.panHandlers} onLayout={handleLayout}>
-      {levelTiles.map((tile, index) => (tile === null ? getEmptyTile(index) : getTileComponent(tile.type, index)))}
-    </View>
+    <GestureDetector gesture={gesture}>
+      <View style={styles.grid} onLayout={handleLayout}>
+        {levelTiles.map((tile, index) => (tile === null ? getEmptyTile(index) : getTileComponent(tile.type, index)))}
+      </View>
+    </GestureDetector>
   );
 };
 
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    right:0,
+    right: 0,
     flexDirection: "row",
     flexWrap: "wrap",
   },

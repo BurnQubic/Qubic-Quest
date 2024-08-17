@@ -51,11 +51,11 @@ const LevelContainer = () => {
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
       <LevelManager />
-      <TileGrid />
       <DelayComponent delayMs={ANIMATION_TIME_MS}>
         <ItemGrid />
       </DelayComponent>
       <FXGrid />
+      <TileGrid />
     </Animated.View>
   );
 };
