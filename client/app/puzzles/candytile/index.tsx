@@ -1,17 +1,29 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import LevelSelector from "./components/level-selector";
-import CandyTiles from "./components/candy-tiles/CandyTiles";
-import LevelContextProvider from "./context/LevelContext";
+// import CandyTiles from "./components/candy-tiles/CandyTiles";
+import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "react-query";
+import LevelContainer from "./components/candy-tiles/LevelContainer";
+import { ImageBackground } from "expo-image";
+import { backgroundImage } from "./extern";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+// import LevelContextProvider from "./context/LevelContext";
+
+const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
   return (
-    <View style={styles.container}>
-      {/* <LevelSelector></LevelSelector> */}
-      <LevelContextProvider>
-        <CandyTiles></CandyTiles>
-      </LevelContextProvider>
-    </View>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <ImageBackground source={backgroundImage} style={styles.image}>
+          <View style={styles.container}>
+            {/* <LevelSelector></LevelSelector> */}
+            <LevelContainer />
+          </View>
+        </ImageBackground>
+      </QueryClientProvider>
+    </RecoilRoot>
   );
 };
 
@@ -23,6 +35,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "white",
+  },
+  image: {
+    flex: 1,
+    objectFit: "contain",
+    justifyContent: "center",
   },
 });
 

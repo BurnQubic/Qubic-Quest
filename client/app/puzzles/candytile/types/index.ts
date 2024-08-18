@@ -89,3 +89,15 @@ export type LevelTasks = {
   iceTiles: number;
   rockTiles: number;
 };
+
+export type LevelFile = {
+  id: number;
+  title: string | null;
+  initialItems: LevelItem[];
+  initialTiles: LevelTile[];
+  score: number;
+  maximumMoves: number;
+  tasks: LevelTasks;
+};
+
+export type LevelData = LevelDb & { file: LevelFile; isMainLevel: boolean };

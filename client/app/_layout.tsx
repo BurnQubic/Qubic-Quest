@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import store from "@/config/redux/store";
 import NotificationService from "./notification";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
