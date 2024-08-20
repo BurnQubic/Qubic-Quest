@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, LayoutChangeEvent } from "react-native";
+import { View, StyleSheet, LayoutChangeEvent, SectionList } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
@@ -10,6 +10,7 @@ import RockTile from "../tiles/RockTiles";
 import { finishedMovingState } from "../../../store/finishedMoving";
 import { levelTilesState } from "../../../store/levelTiles";
 import { swappedItemsState } from "../../../store/swappedItems";
+import { levelItemsState } from "../../../store/levelItems";
 
 const getTileComponent = (tileType: string, index: number): JSX.Element => {
   switch (tileType) {
@@ -28,6 +29,7 @@ const getEmptyTile = (index: number): JSX.Element => <View key={index} style={st
 
 const TileGrid = () => {
   const levelTiles = useRecoilValue(levelTilesState);
+  const levelItems = useRecoilValue(levelItemsState);
   const dragging = useRef<boolean>(false);
   const firstTile = useRef<number | null>(null);
   const setSwappedItems = useSetRecoilState(swappedItemsState);
@@ -59,6 +61,8 @@ const TileGrid = () => {
       const touchedElement = findTouchedTile(e.x, e.y);
       if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
         setSwappedItems([firstTile.current, touchedElement]);
+        console.log(levelItems[firstTile.current]);
+        console.log(levelItems[touchedElement]);
         dragging.current = false;
         firstTile.current = null;
       }

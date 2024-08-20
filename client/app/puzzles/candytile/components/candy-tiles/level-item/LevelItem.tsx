@@ -19,7 +19,7 @@ const getItemComponent = (item: LevelItemType | null, index: number): JSX.Elemen
   switch (item?.type) {
     case "Candy":
       return <Candy color={item.color} id={id} key={id} index={index} />;
-
+    
     case "SuperCandy":
       return <SuperCandy color={item.color} id={id} key={id} index={index} />;
 
@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     borderRadius: 8,
-    // overflow: "hidden",
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,

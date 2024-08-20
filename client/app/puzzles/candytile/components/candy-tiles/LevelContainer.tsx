@@ -12,6 +12,7 @@ import LevelManager from "../leve-manager/LevelManager";
 import DelayComponent from "./DelayComponent";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import { ThemedView } from "@/app/components/common/ThemedView";
+import LevelStateManager from "../leve-manager/LevelStateManager";
 
 const LevelContainer = () => {
   const gameOver = useRecoilValue(gameOverState);
@@ -51,11 +52,12 @@ const LevelContainer = () => {
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
       <LevelManager />
+      <LevelStateManager />
+      <TileGrid />
       <DelayComponent delayMs={ANIMATION_TIME_MS}>
         <ItemGrid />
       </DelayComponent>
       <FXGrid />
-      <TileGrid />
     </Animated.View>
   );
 };

@@ -5,14 +5,15 @@ import LevelSelector from "./components/level-selector";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import LevelContainer from "./components/candy-tiles/LevelContainer";
-import { ImageBackground } from "expo-image";
-import { backgroundImage } from "./extern";
+import { Image, ImageBackground } from "expo-image";
+import { backgroundImage, SUPER_CANDY_ASSETS } from "./extern";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 // import LevelContextProvider from "./context/LevelContext";
 
 const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
+  console.log(backgroundImage)
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     padding: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "white",
   },
   image: {
     flex: 1,

@@ -11,7 +11,7 @@ export type TileProps = {
 
 const Tile = ({ index }: TileProps) => {
   const tileElementRef = useRef<View | null>(null);
-  // useTileInteraction(index, tileElementRef.current as any);
+  useTileInteraction(index, tileElementRef.current as any);
   const ALLOWED_ITEM_TYPES = ["Candy", "SuperCandy", "Chocolate"];
   const levelItems = useRecoilValue(levelItemsState);
   const [isAllowedType, setIsAllowedType] = useState(false);
@@ -27,12 +27,7 @@ const Tile = ({ index }: TileProps) => {
   };
 
   return (
-    <View
-      style={[styles.tile]}
-      data-index={index}
-      data-tile
-      ref={tileElementRef}
-    >
+    <View style={[styles.tile]} data-index={index} data-tile ref={tileElementRef}>
       <Text style={styles.indexText}>{index}</Text>
     </View>
   );
@@ -46,15 +41,14 @@ const styles = StyleSheet.create({
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
+    // backgroundColor: "rgba(199, 144, 0, 0.4)",
   },
   indexText: {
     position: "absolute",
     bottom: 0,
     right: 0,
     fontSize: 12,
-    color: "rgba(255, 255, 255, 0.5)",
     fontWeight: "bold",
-    display: "none",
   },
   // allowed: {
   //   backgroundColor: "green",
