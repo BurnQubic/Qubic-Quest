@@ -13,7 +13,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
-  console.log(backgroundImage)
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>

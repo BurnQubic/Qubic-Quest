@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Image } from "expo-image";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 import { useFocusEffect } from "expo-router";
 import { useRecoilValue } from "recoil";
 import { View, StyleSheet } from "react-native";
@@ -22,8 +22,8 @@ const animateItemSpawn = (positionX: any, positionY: any) => {
 
 type CandyProps = {
   color: CandyColor;
-  id: string;
   index: number;
+  id?: string;
 };
 
 const Candy = ({ color, id, index }: CandyProps) => {
@@ -63,21 +63,12 @@ const Candy = ({ color, id, index }: CandyProps) => {
     itemUsed.current = true;
     setShow(false);
   };
-  // const animatedStyle = useAnimatedStyle(() => {
-  //     return {
-  //       transform: [
-  //         { translateX: (positionX.value * pSize.width) / 100 },
-  //         { translateY: (positionY.value * pSize.height) / 100 },
-  //       ],
-  //       opacity: opacity.value,
-  //     };
-  //   });
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
 
   return (
-    <Animated.View style={[styles.container, animatedStyle, { display: show ? "flex" : "none" }]}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <Image source={CANDY_ASSETS[color]} style={styles.image} />
     </Animated.View>
   );

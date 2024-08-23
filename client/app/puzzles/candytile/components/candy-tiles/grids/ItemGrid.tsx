@@ -32,11 +32,9 @@ const ItemGrid = () => {
 
 const styles = StyleSheet.create({
   grid: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    position: "relative",
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
     pointerEvents: "none"
