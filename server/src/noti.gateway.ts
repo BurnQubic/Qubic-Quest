@@ -47,12 +47,14 @@ export class NotiGateway
 
   @SubscribeMessage("messageReceived")
   handleMessageReceived(client: any, payload: any) {
-    this.server.emit("messageReceived", payload);
+    this.server.to(payload.userId).emit("messageReceived", payload.message);
   }
 
   @SubscribeMessage("friendRequestReceived")
   handleFriendRequestReceived(client: any, payload: any) {
-    this.server.emit("friendRequestReceived", payload);
+    this.server
+      .to(payload.userId)
+      .emit("friendRequestReceived", payload.request);
   }
 
   @SubscribeMessage("auctionUpdate")
