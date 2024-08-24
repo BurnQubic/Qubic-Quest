@@ -6,10 +6,12 @@ const LevelSelector = () => {
 
   const toggleVisibility = (): void => setVisible(!visible);
 
+  const arrowStyle = visible ? styles.arrowOpen : styles.arrowClosed; // Implement styles correctly
+
   return (
     <View style={[styles.container, { width: visible ? 300 : 34 }]}>
       <TouchableOpacity style={styles.button} onPress={toggleVisibility}>
-        <Text style={styles.arrowIcon}>{visible ? "⬅️" : "➡️"}</Text>
+        <Text style={arrowStyle}>{visible ? "⬅️" : "➡️"}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -39,9 +41,13 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     padding: 5,
   },
-  arrowIcon: {
+  arrowOpen: {
     color: "purple",
     transform: "rotate(180deg)",
+  },
+  arrowClosed: {
+    color: "purple",
+    transform: "rotate(0deg)",
   },
 });
 

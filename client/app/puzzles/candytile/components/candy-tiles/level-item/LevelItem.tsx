@@ -6,13 +6,11 @@ import SuperCandy from "./SuperCandy";
 import { liveItemsIds, removeLiveItem } from "../grids/ItemGrid";
 import IceCream from "./IceCream";
 import { LevelItem as LevelItemType } from "../../../types";
-import { View, StyleSheet, Pressable, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
 import { ANIMATION_TIME_MS, COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from "react-native-reanimated";
 
 const getItemComponent = (item: LevelItemType | null, index: number): JSX.Element => {
   const id = item?.id || "";
@@ -99,7 +97,7 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
 
   const updateGridPosition = (): void => {
     const gridIndex = getItemIndex();
-
+    if (initialIndex == 38) console.log(gridIndex);
     rowIndexRef.current = getItemRowIndex(emptyTargetRef.current ? initialIndex : gridIndex);
     columnIndexRef.current = getItemColumnIndex(emptyTargetRef.current ? initialIndex : gridIndex);
 

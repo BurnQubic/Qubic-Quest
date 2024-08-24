@@ -16,12 +16,12 @@ const CandyTilePuzzle = () => {
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
-        <ImageBackground source={backgroundImage} style={styles.image}>
+        {/* <ImageBackground source={backgroundImage} style={styles.image}> */}
           <View style={styles.container}>
             {/* <LevelSelector></LevelSelector> */}
             <LevelContainer />
           </View>
-        </ImageBackground>
+        {/* </ImageBackground> */}
       </QueryClientProvider>
     </RecoilRoot>
   );

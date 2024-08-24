@@ -37,15 +37,13 @@ const TileGrid = () => {
   const [gridLayout, setGridLayout] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
 
   const findTouchedTile = (touchX: number, touchY: number): number | null => {
-    if (gridLayout) {
-      const gridX = touchX - gridLayout.x;
-      const gridY = touchY - gridLayout.y;
-      const columnIndex = Math.floor((gridX / gridLayout.width) * COLUMN_NUMBER);
-      const rowIndex = Math.floor((gridY / gridLayout.height) * ROW_NUMBER);
-      const index = rowIndex * COLUMN_NUMBER + columnIndex;
-      return index;
-    }
-    return null;
+    if (!gridLayout) return null; // Add null check
+    const gridX = touchX - gridLayout.x;
+    const gridY = touchY - gridLayout.y;
+    const columnIndex = Math.floor((gridX / gridLayout.width) * COLUMN_NUMBER);
+    const rowIndex = Math.floor((gridY / gridLayout.height) * ROW_NUMBER);
+    const index = rowIndex * COLUMN_NUMBER + columnIndex;
+    return index;
   };
 
   const gesture = Gesture.Pan()
@@ -54,6 +52,7 @@ const TileGrid = () => {
       if (touchedElement !== null) {
         dragging.current = true;
         firstTile.current = touchedElement;
+        console.log(levelItems[firstTile.current]);
       }
     })
     .onUpdate((e) => {
@@ -61,7 +60,6 @@ const TileGrid = () => {
       const touchedElement = findTouchedTile(e.x, e.y);
       if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
         setSwappedItems([firstTile.current, touchedElement]);
-        console.log(levelItems[touchedElement]);
         dragging.current = false;
         firstTile.current = null;
       }
