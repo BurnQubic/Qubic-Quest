@@ -87,8 +87,8 @@ const LevelManager = () => {
     // const initialItems = validateInitialItems(selectedLevel.initialItems, selectedLevel.initialTiles);
     // setLevelTiles(selectedLevel.initialTiles);
     // setLevelItems(initialItems);
-    setLevelItems(levelItemsSnapshot)
-    setLevelTiles(levelTitlesSnapshot)
+    setLevelItems(levelItemsSnapshot);
+    setLevelTiles(levelTitlesSnapshot);
     // setLevelMoves({ done: 0, total: selectedLevel.maximumMoves, spentAllMoves: false });
     setLevelMoves({ done: 0, total: 100, spentAllMoves: false });
   };

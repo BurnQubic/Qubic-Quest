@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import Candy from "./Candy";
 import Chocolate from "./Chocolate";
@@ -6,13 +6,11 @@ import SuperCandy from "./SuperCandy";
 import { liveItemsIds, removeLiveItem } from "../grids/ItemGrid";
 import IceCream from "./IceCream";
 import { LevelItem as LevelItemType } from "../../../types";
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
 import { ANIMATION_TIME_MS, COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from "react-native-reanimated";
 
 const getItemComponent = (item: LevelItemType | null, index: number): JSX.Element => {
   const id = item?.id || "";
@@ -34,14 +32,23 @@ const getItemComponent = (item: LevelItemType | null, index: number): JSX.Elemen
   }
 };
 
-const setPosition = (x: Animated.SharedValue<number>, y: Animated.SharedValue<number>, index: number): void => {
-  x.value = (100 / COLUMN_NUMBER) * (getItemColumnIndex(index) - 1);
-  y.value = (100 / ROW_NUMBER) * (getItemRowIndex(index) - 1);
+const setPosition = (
+  x: Animated.SharedValue<number>,
+  y: Animated.SharedValue<number>,
+  index: number,
+  width: number,
+  height: number
+): void => {
+  x.value = width * (getItemColumnIndex(index) - 1);
+  y.value = height * (getItemRowIndex(index) - 1);
 };
 
 const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
   const levelItems = useRecoilValue(levelItemsState);
   const [levelItemTarget, setLevelItemTarget] = useState<LevelItemType | null>(levelItems[initialIndex]);
+
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
 
   const scale = useSharedValue(1); // Shared value for scaling
 
@@ -68,10 +75,10 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
   }, [levelItems]);
 
   useEffect(() => {
-    if (levelItemTarget) {
-      setPosition(translateX, translateY, getItemIndex());
+    if (levelItemTarget && containerWidth && containerHeight) {
+      setPosition(translateX, translateY, getItemIndex(), containerWidth, containerHeight);
     }
-  }, [levelItemTarget]);
+  }, [levelItemTarget, containerHeight, containerWidth]);
 
   const spawnItem = () => {
     removeLiveItem(levelItemTarget?.id || "");
@@ -90,12 +97,12 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
 
   const updateGridPosition = (): void => {
     const gridIndex = getItemIndex();
-
+    if (initialIndex == 38) console.log(gridIndex);
     rowIndexRef.current = getItemRowIndex(emptyTargetRef.current ? initialIndex : gridIndex);
     columnIndexRef.current = getItemColumnIndex(emptyTargetRef.current ? initialIndex : gridIndex);
 
-    translateX.value = 100 * (columnIndexRef.current - 1);
-    translateY.value = 100 * (rowIndexRef.current - 1);
+    translateX.value = containerWidth * (columnIndexRef.current - 1);
+    translateY.value = containerHeight * (rowIndexRef.current - 1);
   };
 
   const updatePosition = () => {
@@ -112,35 +119,38 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
     return index;
   };
 
-  const handlePressIn = () => {
-    scale.value = withTiming(1.2, { duration: 200 }); // Increase size to 120%
-  };
-
-  const handlePressOut = () => {
-    scale.value = withTiming(1, { duration: 200 }); // Return to original size
-  };
-
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }, { translateY: translateY.value }, { scale: scale.value }],
     };
   });
 
+  const item = useMemo(() => {
+    return levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />;
+  }, [levelItemTarget]);
+
   return (
-    <View style={[styles.container]}>
-      {levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />}
-    </View>
+    <Animated.View
+      style={[styles.container, animatedStyle]}
+      onLayout={(event) => {
+        const { width, height } = event.nativeEvent.layout;
+        setContainerWidth(width);
+        setContainerHeight(height);
+      }}
+    >
+      {item}
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    position: "absolute",
     borderRadius: 8,
-    // overflow: "hidden",
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
+    backgroundColor: "rgba(144, 144, 0, 0.3)",
   },
 });
 

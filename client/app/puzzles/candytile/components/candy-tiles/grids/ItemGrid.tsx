@@ -11,7 +11,7 @@ export const removeLiveItem = (id: string): void => {
 };
 
 const ItemGrid = () => {
-  const selectedLevel = useSelectedLevel();
+  // const selectedLevel = useSelectedLevel();
   // const tilesLayout = useMemo(() => selectedLevel.data?.file.initialTiles || [], [selectedLevel.data]);
   const tilesLayout = levelTitlesSnapshot;
 
@@ -32,13 +32,12 @@ const ItemGrid = () => {
 
 const styles = StyleSheet.create({
   grid: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    position: "relative",
+    width: "100%",
+    height: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
+    pointerEvents: "none"
   },
   emptyTile: {
     backgroundColor: "rgba(0, 0, 0, 0.05)",

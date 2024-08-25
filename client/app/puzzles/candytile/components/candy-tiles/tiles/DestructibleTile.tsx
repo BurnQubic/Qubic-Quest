@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
+    backgroundColor: "rgba(199, 144, 0, 0.3)"
   },
   image: {
     width: "100%",
@@ -88,9 +89,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     fontSize: 12,
-    color: "rgba(255, 255, 255, 0.8)",
     fontWeight: "bold",
-    display: "none",
   },
 });
 

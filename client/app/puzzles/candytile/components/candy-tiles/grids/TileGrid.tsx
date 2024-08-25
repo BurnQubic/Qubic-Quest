@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, LayoutChangeEvent } from "react-native";
+import { View, StyleSheet, LayoutChangeEvent, SectionList } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
@@ -10,6 +10,7 @@ import RockTile from "../tiles/RockTiles";
 import { finishedMovingState } from "../../../store/finishedMoving";
 import { levelTilesState } from "../../../store/levelTiles";
 import { swappedItemsState } from "../../../store/swappedItems";
+import { levelItemsState } from "../../../store/levelItems";
 
 const getTileComponent = (tileType: string, index: number): JSX.Element => {
   switch (tileType) {
@@ -28,6 +29,7 @@ const getEmptyTile = (index: number): JSX.Element => <View key={index} style={st
 
 const TileGrid = () => {
   const levelTiles = useRecoilValue(levelTilesState);
+  const levelItems = useRecoilValue(levelItemsState);
   const dragging = useRef<boolean>(false);
   const firstTile = useRef<number | null>(null);
   const setSwappedItems = useSetRecoilState(swappedItemsState);
@@ -35,15 +37,13 @@ const TileGrid = () => {
   const [gridLayout, setGridLayout] = useState<{ x: number; y: number; width: number; height: number } | null>(null);
 
   const findTouchedTile = (touchX: number, touchY: number): number | null => {
-    if (gridLayout) {
-      const gridX = touchX - gridLayout.x;
-      const gridY = touchY - gridLayout.y;
-      const columnIndex = Math.floor((gridX / gridLayout.width) * COLUMN_NUMBER);
-      const rowIndex = Math.floor((gridY / gridLayout.height) * ROW_NUMBER);
-      const index = rowIndex * COLUMN_NUMBER + columnIndex;
-      return index;
-    }
-    return null;
+    if (!gridLayout) return null; // Add null check
+    const gridX = touchX - gridLayout.x;
+    const gridY = touchY - gridLayout.y;
+    const columnIndex = Math.floor((gridX / gridLayout.width) * COLUMN_NUMBER);
+    const rowIndex = Math.floor((gridY / gridLayout.height) * ROW_NUMBER);
+    const index = rowIndex * COLUMN_NUMBER + columnIndex;
+    return index;
   };
 
   const gesture = Gesture.Pan()
@@ -52,6 +52,7 @@ const TileGrid = () => {
       if (touchedElement !== null) {
         dragging.current = true;
         firstTile.current = touchedElement;
+        console.log(levelItems[firstTile.current]);
       }
     })
     .onUpdate((e) => {

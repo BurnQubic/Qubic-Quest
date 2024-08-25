@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { PuzzleService } from "./puzzle.service";
 import { CreatePuzzleDto } from "./dto/create-puzzle.dto";
@@ -54,8 +55,8 @@ export class PuzzleController {
     status: 200,
     description: "The puzzle has been successfully retrieved.",
   })
-  findOnePuzzle(@Param("id") id: string) {
-    return this.puzzleService.findOnePuzzle(+id);
+  findOnePuzzle(@Param("id", ParseIntPipe) id: number) {
+    return this.puzzleService.findOnePuzzle(id);
   }
 
   @Patch(":id")
@@ -67,10 +68,10 @@ export class PuzzleController {
     description: "The puzzle has been successfully updated.",
   })
   updatePuzzle(
-    @Param("id") id: string,
+    @Param("id", ParseIntPipe) id: number,
     @Body() updatePuzzleDto: UpdatePuzzleDto,
   ) {
-    return this.puzzleService.updatePuzzle(+id, updatePuzzleDto);
+    return this.puzzleService.updatePuzzle(id, updatePuzzleDto);
   }
 
   @Delete(":id")
@@ -80,8 +81,8 @@ export class PuzzleController {
     status: 200,
     description: "The puzzle has been successfully deleted.",
   })
-  removePuzzle(@Param("id") id: string) {
-    return this.puzzleService.removePuzzle(+id);
+  removePuzzle(@Param("id", ParseIntPipe) id: number) {
+    return this.puzzleService.removePuzzle(id);
   }
 
   @Post("/gametype")
@@ -112,8 +113,8 @@ export class PuzzleController {
     status: 200,
     description: "The game type has been successfully retrieved.",
   })
-  findOneGameType(@Param("id") id: string) {
-    return this.puzzleService.findOneGameType(+id);
+  findOneGameType(@Param("id", ParseIntPipe) id: number) {
+    return this.puzzleService.findOneGameType(id);
   }
 
   @Patch("/gametype/:id")
@@ -125,10 +126,10 @@ export class PuzzleController {
     description: "The game type has been successfully updated.",
   })
   updateGameType(
-    @Param("id") id: string,
+    @Param("id", ParseIntPipe) id: number,
     @Body() updateGameTypeDto: UpdateGameTypeDto,
   ) {
-    return this.puzzleService.updateGameType(+id, updateGameTypeDto);
+    return this.puzzleService.updateGameType(id, updateGameTypeDto);
   }
 
   @Delete("/gametype/:id")
@@ -138,7 +139,7 @@ export class PuzzleController {
     status: 200,
     description: "The game type has been successfully deleted.",
   })
-  removeGameType(@Param("id") id: string) {
-    return this.puzzleService.removeGameType(+id);
+  removeGameType(@Param("id", ParseIntPipe) id: number) {
+    return this.puzzleService.removeGameType(id);
   }
 }
