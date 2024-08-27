@@ -27,16 +27,16 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
+            <TabBarIcon name={focused ? "search" : "search-outline"} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="game"
+        name="games"
         options={{
-          title: "Game",
+          title: "Games",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
+            <TabBarIcon name={focused ? "game-controller" : "game-controller-outline"} color={color} />
           ),
         }}
       />
@@ -45,7 +45,7 @@ export default function TabLayout() {
         options={{
           title: "User",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
+            <TabBarIcon name={focused ? "person" : "person-outline"} color={color} />
           ),
         }}
       />

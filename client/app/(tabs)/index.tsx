@@ -1,15 +1,14 @@
-import { StyleSheet, Platform, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, Platform, TouchableOpacity, Text, View } from "react-native";
 
 import { HelloWave } from "@/app/components/HelloWave";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
-import GameScreen from "./game";
+import GameScreen from "./games";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 
 import candyImage from "@/assets/images/main/candy-game.jpg";
 import ghostImage from "@/assets/images/main/candy-game.jpg";
 import numbersImage from "@/assets/images/main/candy-game.jpg";
-import { View } from "@react-three/drei";
 
 const images = [
   {
