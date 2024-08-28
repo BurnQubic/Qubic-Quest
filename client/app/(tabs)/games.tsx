@@ -6,12 +6,13 @@ import candyImage from "@/assets/images/main/candy-game.jpg";
 import ghostImage from "@/assets/images/main/candy-game.jpg";
 import numbersImage from "@/assets/images/main/candy-game.jpg";
 import { Image } from "expo-image";
+import ParallaxScrollView from "../components/common/ParallaxScrollView";
 
 const games = [
-  { title: "Candy sort", levels: "1/800", image: candyImage },
-  { title: "Robotic flows", levels: "1/480", image: ghostImage },
-  { title: "Draw one line", levels: "1/235", image: numbersImage },
-  { title: "Connect the dots", levels: "1/300", image: numbersImage },
+  { title: "Candy Crush", levels: "1/800", image: candyImage },
+  { title: "Candy Crush", levels: "1/480", image: ghostImage },
+  { title: "Candy Crush", levels: "1/235", image: numbersImage },
+  { title: "Candy Crush", levels: "1/300", image: numbersImage },
 ];
 
 export default function GamesScreen() {
@@ -32,42 +33,55 @@ export default function GamesScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Games</Text>
-      <ScrollView>
-        <Text style={styles.subHeader}>Free game of the day</Text>
-        <Animated.View style={[styles.featuredGame, animatedStyle]}>
-          <TouchableOpacity style={styles.featuredGameButton} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-            <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />{" "}
-            {/* Replace with actual image path */}
-            <View style={styles.featuredGameText}>
-              <Text style={styles.featuredTitle}>Strange signals</Text>
-              <Text style={styles.playButtonText}>PLAY GAME</Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
+    <View style={styles.mainContainer}>
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: "#A1CEDC", dark: "#A1CEDC" }}
+        headerImage={<Image source={require("@/assets/images/partial-react-logo.png")} style={styles.logo} />}
+      >
+        <View style={styles.container}>
+          <Text style={styles.header}>Games</Text>
+          <ScrollView>
+            <Text style={styles.subHeader}>Free game of the day</Text>
+            <Animated.View style={[styles.featuredGame, animatedStyle]}>
+              <TouchableOpacity style={styles.featuredGameButton} onPressIn={handlePressIn} onPressOut={handlePressOut}>
+                <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
+                <View style={styles.featuredGameText}>
+                  <Text style={styles.featuredTitle}>Strange signals</Text>
+                  <Text style={styles.playButtonText}>PLAY GAME</Text>
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
 
-        <Text style={styles.subHeader}>Free games</Text>
-        <View style={styles.gamesGrid}>
-          {games.map((game, index) => (
-            <View key={index} style={styles.gameCard}>
-              <Image source={game.image} style={styles.gameImage} />
-              <Text style={styles.gameTitle}>{game.title}</Text>
-              <Text style={styles.levels}>{`LEVEL ${game.levels}`}</Text>
+            <Text style={styles.subHeader}>Free games</Text>
+            <View style={styles.gamesGrid}>
+              {games.map((game, index) => (
+                <TouchableOpacity key={index} style={styles.gameCard}>
+                  <Image source={game.image} style={styles.gameImage} />
+                  <Text style={styles.gameTitle}>{game.title}</Text>
+                  <Text style={styles.levels}>{`LEVEL ${game.levels}`}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          ))}
+          </ScrollView>
         </View>
-      </ScrollView>
+      </ParallaxScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f4f4f4",
-    paddingHorizontal: 16,
-    paddingTop: 40,
+  },
+  logo: {
+    height: 178,
+    width: 290,
+    bottom: 0,
+    left: 0,
+    position: "absolute",
   },
   header: {
     fontSize: 24,
@@ -93,6 +107,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginRight: 16,
+    borderRadius: 10,
   },
   featuredGameText: {
     flexDirection: "column",
@@ -128,6 +143,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginBottom: 10,
+    borderRadius: 10,
   },
   gameTitle: {
     fontSize: 16,

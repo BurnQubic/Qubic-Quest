@@ -1,14 +1,14 @@
 import { Tabs } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
 import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedInput } from "@/app/components/common/ThemedInput"; // Updated import
-import { StyleSheet, Module, Pressable, Text, TouchableOpacity } from "react-native"; // Ensure this import is present
+import { ThemedInput } from "@/app/components/common/ThemedInput";
+import { StyleSheet, Module, Pressable, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import * as Notifications from "expo-notifications";
@@ -20,6 +20,16 @@ export default function UserProfile() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const validateEmail = (email) => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -42,65 +52,81 @@ export default function UserProfile() {
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (validateEmail(email) && validatePassword(password)) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Success",
-              body: "Sign up successful",
-              sound: "default",
-            },
-            trigger: null,
-          });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Error",
-              body: errorMessage,
-              sound: "default",
-            },
-            trigger: null,
-          });
+      setLoading(true);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log(user);
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Success",
+            body: "Sign up successful",
+            sound: "default",
+          },
+          trigger: null,
         });
+      } catch (error) {
+        console.log(error.code, error.message);
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Error",
+            body: error.message,
+            sound: "default",
+          },
+          trigger: null,
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     if (validateEmail(email) && validatePassword(password)) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Success",
-              body: "Sign in successful",
-              sound: "default",
-            },
-            trigger: null,
-          });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Error",
-              body: errorMessage,
-              sound: "default",
-            },
-            trigger: null,
-          });
+      setLoading(true);
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log(user);
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Success",
+            body: "Sign in successful",
+            sound: "default",
+          },
+          trigger: null,
         });
+      } catch (error) {
+        console.log(error.code, error.message);
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Error",
+            body: error.message,
+            sound: "default",
+          },
+          trigger: null,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut();
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Success",
+          body: "Signed out successfully",
+          sound: "default",
+        },
+        trigger: null,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -111,36 +137,58 @@ export default function UserProfile() {
     >
       <ThemedText type="title">User Auth</ThemedText>
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</ThemedText>
-        <ThemedInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            validateEmail(text);
-          }}
-          style={styles.input}
-        />
-        {emailError && <ThemedText style={{ color: "red" }}>{emailError}</ThemedText>}
-        <ThemedInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            validatePassword(text);
-          }}
-          secureTextEntry
-          style={styles.input}
-        />
-        {passwordError && <ThemedText style={{ color: "red" }}>{passwordError}</ThemedText>}
-        <ThemedView style={styles.buttonView}>
-          <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-            <Text>Sign Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
-            <Text>Sign In</Text>
-          </TouchableOpacity>
-        </ThemedView>
+        {user ? (
+          <>
+            <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText>
+            <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+              <Text>Sign Out</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <ThemedText style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</ThemedText>
+            <ThemedInput
+              placeholder="Email"
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                validateEmail(text);
+              }}
+              style={styles.input}
+            />
+            {emailError && <ThemedText style={styles.errorText}>{emailError}</ThemedText>}
+            <ThemedInput
+              placeholder="Password"
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                validatePassword(text);
+              }}
+              secureTextEntry
+              style={styles.input}
+            />
+            {passwordError && <ThemedText style={styles.errorText}>{passwordError}</ThemedText>}
+            <ThemedView style={styles.buttonView}>
+              {loading ? (
+                <ActivityIndicator size="large" color={Colors[colorScheme].text} />
+              ) : (
+                <>
+                  <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+                    <Text style={styles.buttonText}>Sign In</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </ThemedView>
+            <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)} style={styles.switchButton}>
+              <ThemedText>
+                {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+              </ThemedText>
+            </TouchableOpacity>
+          </>
+        )}
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -176,11 +224,14 @@ const styles = StyleSheet.create({
   button: {
     width: "40%",
     height: 40,
-    backgroundColor: Colors.light.background,
+    backgroundColor: "#00aaff",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
     marginTop: 10,
+  },
+  buttonText: {
+    color: "white",
   },
   buttonView: {
     width: "100%",
@@ -188,5 +239,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 3,
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
+  },
+  switchButton: {
+    marginTop: 20,
   },
 });

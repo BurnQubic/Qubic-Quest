@@ -12,60 +12,66 @@ import numbersImage from "@/assets/images/main/candy-game.jpg";
 
 const images = [
   {
-    title: "Identical items",
-    category: "ATTENTION",
+    title: "Candy Crush",
+    category: "Difficult",
     image: candyImage,
   },
   {
-    title: "Hidden ghosts",
-    category: "MEMORY",
+    title: "Candy Crush",
+    category: "Easy",
     image: ghostImage,
   },
   {
-    title: "Ancient numbers",
-    category: "ATTENTION",
+    title: "Candy Crush",
+    category: "Intermediate",
     image: numbersImage,
   },
 ];
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={<Image source={require("@/assets/images/partial-react-logo.png")} style={styles.logo} />}
-    >
-      <View style={styles.container}>
-        <Text style={styles.header}>Today</Text>
-        <Text style={styles.subtitle}>Your personal selection of exercises for different brain areas</Text>
-        <ScrollView>
-          <View style={styles.timelineContainer}>
-            {images.map((exercise, index) => (
-              <View key={index} style={styles.exerciseContainer}>
-                <View style={styles.circle} />
-                <TouchableOpacity style={styles.exercise}>
-                  <Image source={exercise.image} style={styles.image} />
-                  <View>
-                    <Text style={styles.title}>{exercise.title}</Text>
-                    <Text style={styles.category}>{exercise.category}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Start playing</Text>
-        </TouchableOpacity>
-      </View>
-    </ParallaxScrollView>
+    <View style={styles.mainContainer}>
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: "#A1CEDC", dark: "#A1CEDC" }}
+        headerImage={<Image source={require("@/assets/images/partial-react-logo.png")} style={styles.logo} />}
+      >
+        <View style={styles.container}>
+          <Text style={styles.header}>Today</Text>
+          <Text style={styles.subtitle}>Your personal selection of puzzles for different brain areas</Text>
+          <ScrollView>
+            <View style={styles.timelineContainer}>
+              {images.map((puzzle, index) => (
+                <View key={index} style={styles.puzzleContainer}>
+                  <View style={styles.circle} />
+                  <TouchableOpacity style={styles.puzzle}>
+                    <Image source={puzzle.image} style={styles.image} />
+                    <View>
+                      <Text style={styles.title}>{puzzle.title}</Text>
+                      <Text style={styles.category}>{puzzle.category}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      </ParallaxScrollView>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Start playing</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 40,
+    paddingHorizontal: 8,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
   header: {
     fontSize: 24,
@@ -79,10 +85,20 @@ const styles = StyleSheet.create({
   timelineContainer: {
     flexDirection: "column",
   },
-  exerciseContainer: {
+  puzzleContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    marginHorizontal: 10,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   circle: {
     width: 12,
@@ -92,7 +108,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginTop: 20,
   },
-  exercise: {
+  puzzle: {
     flexDirection: "row",
     alignItems: "center",
     padding: 16,
@@ -100,9 +116,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     marginRight: 16,
+    borderRadius: 10,
   },
   title: {
     fontSize: 16,
@@ -112,15 +129,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   button: {
-    paddingVertical: 16,
-    borderRadius: 30,
+    position: "absolute",
+    bottom: 10,
+    left: 16,
+    right: 16,
+    paddingVertical: 12,
+    borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 20,
     backgroundColor: "#00aaff",
   },
   buttonText: {
     fontSize: 16,
+    color: "white",
     fontWeight: "bold",
   },
   logo: {
