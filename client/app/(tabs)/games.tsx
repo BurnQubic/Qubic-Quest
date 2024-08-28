@@ -77,10 +77,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+    color: "#808080",
+    bottom: -90,
+    left: -35,
     position: "absolute",
   },
   header: {

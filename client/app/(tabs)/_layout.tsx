@@ -45,9 +45,13 @@ export default function TabLayout() {
         name="user"
         options={{
           title: "User",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "person" : "person-outline"} color={color} />
-          ),
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? "person" : "person-outline"} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="auth"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

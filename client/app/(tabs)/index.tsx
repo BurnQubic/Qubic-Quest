@@ -9,6 +9,7 @@ import { Image } from "expo-image";
 import candyImage from "@/assets/images/main/candy-game.jpg";
 import ghostImage from "@/assets/images/main/candy-game.jpg";
 import numbersImage from "@/assets/images/main/candy-game.jpg";
+import { Ionicons } from "@expo/vector-icons";
 
 const images = [
   {
@@ -33,7 +34,7 @@ export default function HomeScreen() {
     <View style={styles.mainContainer}>
       <ParallaxScrollView
         headerBackgroundColor={{ light: "#A1CEDC", dark: "#A1CEDC" }}
-        headerImage={<Image source={require("@/assets/images/partial-react-logo.png")} style={styles.logo} />}
+        headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
       >
         <View style={styles.container}>
           <Text style={styles.header}>Today</Text>
@@ -145,10 +146,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+    color: "#808080",
+    bottom: -90,
+    left: -35,
     position: "absolute",
   },
 });
