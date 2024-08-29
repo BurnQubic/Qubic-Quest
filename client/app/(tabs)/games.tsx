@@ -5,6 +5,7 @@ import { Image } from "expo-image";
 import ParallaxScrollView from "../components/common/ParallaxScrollView";
 import { gameList } from "@/config/game-list";
 import { Link } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function GamesScreen() {
   const scale = useSharedValue(1);
@@ -26,8 +27,8 @@ export default function GamesScreen() {
   return (
     <View style={styles.mainContainer}>
       <ParallaxScrollView
-        headerBackgroundColor={{ light: "#A1CEDC", dark: "#A1CEDC" }}
-        headerImage={<Image source={require("@/assets/images/partial-react-logo.png")} style={styles.logo} />}
+        headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
+        headerImage={<Ionicons size={310} name="game-controller-outline" style={styles.logo} />}
       >
         <View style={styles.container}>
           <Text style={styles.header}>Games</Text>
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    color: "#808080",
+    color: "#dddddd",
     bottom: -90,
     left: -35,
     position: "absolute",

@@ -6,13 +6,14 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { gameList } from "@/config/game-list";
+import { Link } from "expo-router";
 
 export default function HomeScreen() {
   return (
     <View style={styles.mainContainer}>
       <ParallaxScrollView
-        headerBackgroundColor={{ light: "#A1CEDC", dark: "#A1CEDC" }}
-        headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
+        headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
+        headerImage={<Ionicons size={310} name="home-outline" style={styles.logo} />}
       >
         <View style={styles.container}>
           <Text style={styles.header}>Today</Text>
@@ -22,13 +23,15 @@ export default function HomeScreen() {
               {gameList.map((puzzle, index) => (
                 <View key={index} style={styles.puzzleContainer}>
                   <View style={styles.circle} />
-                  <TouchableOpacity style={styles.puzzle}>
-                    <Image source={puzzle.image} style={styles.image} />
-                    <View>
-                      <Text style={styles.title}>{puzzle.title}</Text>
-                      <Text style={styles.category}>{puzzle.levels}</Text>
-                    </View>
-                  </TouchableOpacity>
+                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }}>
+                    <TouchableOpacity style={styles.puzzle}>
+                      <Image source={puzzle.image} style={styles.image} />
+                      <View>
+                        <Text style={styles.title}>{puzzle.title}</Text>
+                        <Text style={styles.category}>{puzzle.levels}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Link>
                 </View>
               ))}
             </View>
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logo: {
-    color: "#808080",
+    color: "#dddddd",
     bottom: -90,
     left: -35,
     position: "absolute",
