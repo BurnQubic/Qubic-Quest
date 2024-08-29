@@ -1,10 +1,10 @@
-import { Tabs } from "expo-router";
+import { Tabs, router } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
 import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/config/firebase";
+import { firebaseAuth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedInput } from "@/app/components/common/ThemedInput";
@@ -12,6 +12,8 @@ import { StyleSheet, Module, Pressable, Text, TouchableOpacity, ActivityIndicato
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import * as Notifications from "expo-notifications";
+import { useRecoilState } from "recoil";
+import { authState } from "@/config/store/auth";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -21,17 +23,24 @@ export default function UserProfile() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [auth, setAuth] = useRecoilState(authState);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      console.log("FIREBASE AUTH");
+      console.log(currentUser);
+      // setUser(currentUser);
+      // if (currentUser) {
+      //   router.replace("/user");
+
+      //   router.replace("/user");
+      // }
     });
 
     return () => unsubscribe();
   }, []);
 
-  const validateEmail = (email) => {
+  const validateEmail = (email: string) => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!regex.test(email)) {
       setEmailError("Invalid email format");
@@ -42,7 +51,7 @@ export default function UserProfile() {
     }
   };
 
-  const validatePassword = (password) => {
+  const validatePassword = (password: string) => {
     if (password.length < 8) {
       setPasswordError("Password must be at least 8 characters");
       return false;
@@ -116,7 +125,7 @@ export default function UserProfile() {
 
   const handleSignOut = async () => {
     try {
-      await auth.signOut();
+      await firebaseAuth.signOut();
       await Notifications.scheduleNotificationAsync({
         content: {
           title: "Success",
@@ -133,13 +142,13 @@ export default function UserProfile() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-      headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}
+      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />}
     >
       <ThemedText type="title">User Auth</ThemedText>
       <ThemedView style={styles.container}>
-        {user ? (
+        {auth.isAuthenticated ? (
           <>
-            <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText>
+            {/* <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText> */}
             <TouchableOpacity onPress={handleSignOut} style={styles.button}>
               <Text>Sign Out</Text>
             </TouchableOpacity>

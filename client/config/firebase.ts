@@ -1,7 +1,5 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import Config from "react-native-config";
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_API_KEY,
@@ -15,9 +13,7 @@ const firebaseConfig = {
 
 console.log(firebaseConfig);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-// const analytics = getAnalytics(app);
+const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAuth = getAuth(firebaseApp);
 
-export { app, auth };
+export { firebaseApp, firebaseAuth };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/config/firebase";
+import { firebaseAuth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "@/app/components/common/ThemedView";
@@ -9,14 +9,19 @@ import { ThemedText } from "@/app/components/common/ThemedText";
 import * as Notifications from "expo-notifications";
 import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/config/store/auth";
+import AuthScreen from "./auth";
+import { router, useFocusEffect } from "expo-router";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const auth = useRecoilValue(authState);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
     });
@@ -26,7 +31,7 @@ export default function UserProfile() {
 
   const handleSignOut = async () => {
     try {
-      await auth.signOut();
+      await firebaseAuth.signOut();
       await Notifications.scheduleNotificationAsync({
         content: {
           title: "Success",

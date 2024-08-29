@@ -54,6 +54,12 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="puzzles/[id]"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

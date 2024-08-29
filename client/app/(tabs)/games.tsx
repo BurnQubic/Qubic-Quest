@@ -1,19 +1,10 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
-
-import candyImage from "@/assets/images/main/candy-game.jpg";
-import ghostImage from "@/assets/images/main/candy-game.jpg";
-import numbersImage from "@/assets/images/main/candy-game.jpg";
 import { Image } from "expo-image";
 import ParallaxScrollView from "../components/common/ParallaxScrollView";
-
-const games = [
-  { title: "Candy Crush", levels: "1/800", image: candyImage },
-  { title: "Candy Crush", levels: "1/480", image: ghostImage },
-  { title: "Candy Crush", levels: "1/235", image: numbersImage },
-  { title: "Candy Crush", levels: "1/300", image: numbersImage },
-];
+import { gameList } from "@/config/game-list";
+import { Link } from "expo-router";
 
 export default function GamesScreen() {
   const scale = useSharedValue(1);
@@ -41,20 +32,22 @@ export default function GamesScreen() {
         <View style={styles.container}>
           <Text style={styles.header}>Games</Text>
           <ScrollView>
-            <Text style={styles.subHeader}>Free game of the day</Text>
+            <Text style={styles.subHeader}>Free gam e of the day</Text>
             <Animated.View style={[styles.featuredGame, animatedStyle]}>
               <TouchableOpacity style={styles.featuredGameButton} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-                <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
-                <View style={styles.featuredGameText}>
-                  <Text style={styles.featuredTitle}>Strange signals</Text>
-                  <Text style={styles.playButtonText}>PLAY GAME</Text>
-                </View>
+                <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
+                  <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
+                  <View style={styles.featuredGameText}>
+                    <Text style={styles.featuredTitle}>{gameList[0].title}</Text>
+                    <Text style={styles.playButtonText}>PLAY GAME</Text>
+                  </View>
+                </Link>
               </TouchableOpacity>
             </Animated.View>
 
             <Text style={styles.subHeader}>Free games</Text>
             <View style={styles.gamesGrid}>
-              {games.map((game, index) => (
+              {gameList.map((game, index) => (
                 <TouchableOpacity key={index} style={styles.gameCard}>
                   <Image source={game.image} style={styles.gameImage} />
                   <Text style={styles.gameTitle}>{game.title}</Text>

@@ -14,16 +14,16 @@ const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
   return (
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        {/* <ImageBackground source={backgroundImage} style={styles.image}> */}
-          <View style={styles.container}>
-            {/* <LevelSelector></LevelSelector> */}
-            <LevelContainer />
-          </View>
-        {/* </ImageBackground> */}
-      </QueryClientProvider>
-    </RecoilRoot>
+    // <RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <ImageBackground source={backgroundImage} style={styles.image}>
+        <View style={styles.container}>
+          {/* <LevelSelector></LevelSelector> */}
+          <LevelContainer />
+        </View>
+      </ImageBackground>
+    </QueryClientProvider>
+    // </RecoilRoot>
   );
 };
 

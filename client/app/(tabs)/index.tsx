@@ -1,33 +1,11 @@
 import { StyleSheet, Platform, TouchableOpacity, Text, View } from "react-native";
-
 import { HelloWave } from "@/app/components/HelloWave";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import GameScreen from "./games";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-
-import candyImage from "@/assets/images/main/candy-game.jpg";
-import ghostImage from "@/assets/images/main/candy-game.jpg";
-import numbersImage from "@/assets/images/main/candy-game.jpg";
 import { Ionicons } from "@expo/vector-icons";
-
-const images = [
-  {
-    title: "Candy Crush",
-    category: "Difficult",
-    image: candyImage,
-  },
-  {
-    title: "Candy Crush",
-    category: "Easy",
-    image: ghostImage,
-  },
-  {
-    title: "Candy Crush",
-    category: "Intermediate",
-    image: numbersImage,
-  },
-];
+import { gameList } from "@/config/game-list";
 
 export default function HomeScreen() {
   return (
@@ -41,14 +19,14 @@ export default function HomeScreen() {
           <Text style={styles.subtitle}>Your personal selection of puzzles for different brain areas</Text>
           <ScrollView>
             <View style={styles.timelineContainer}>
-              {images.map((puzzle, index) => (
+              {gameList.map((puzzle, index) => (
                 <View key={index} style={styles.puzzleContainer}>
                   <View style={styles.circle} />
                   <TouchableOpacity style={styles.puzzle}>
                     <Image source={puzzle.image} style={styles.image} />
                     <View>
                       <Text style={styles.title}>{puzzle.title}</Text>
-                      <Text style={styles.category}>{puzzle.category}</Text>
+                      <Text style={styles.category}>{puzzle.levels}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
