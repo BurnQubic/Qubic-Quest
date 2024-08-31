@@ -10,7 +10,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
 import { ANIMATION_TIME_MS, COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 const getItemComponent = (item: LevelItemType | null, index: number): JSX.Element => {
   const id = item?.id || "";
@@ -39,8 +39,8 @@ const setPosition = (
   width: number,
   height: number
 ): void => {
-  x.value = width * (getItemColumnIndex(index) - 1);
-  y.value = height * (getItemRowIndex(index) - 1);
+  x.value = withTiming(width * (getItemColumnIndex(index) - 1), { duration: ANIMATION_TIME_MS });
+  y.value = withTiming(height * (getItemRowIndex(index) - 1), { duration: ANIMATION_TIME_MS });
 };
 
 const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
@@ -49,8 +49,6 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
 
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
-
-  const scale = useSharedValue(1); // Shared value for scaling
 
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -97,20 +95,15 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
 
   const updateGridPosition = (): void => {
     const gridIndex = getItemIndex();
-    if (initialIndex == 38) console.log(gridIndex);
+
     rowIndexRef.current = getItemRowIndex(emptyTargetRef.current ? initialIndex : gridIndex);
     columnIndexRef.current = getItemColumnIndex(emptyTargetRef.current ? initialIndex : gridIndex);
 
-    translateX.value = containerWidth * (columnIndexRef.current - 1);
-    translateY.value = containerHeight * (rowIndexRef.current - 1);
+    setPosition(translateX, translateY, gridIndex, containerWidth, containerHeight);
   };
 
   const updatePosition = () => {
     updateGridPosition();
-    if (!emptyTargetRef.current) {
-      translateX.value = withTiming(translateX.value, { duration: ANIMATION_TIME_MS });
-      translateY.value = withTiming(translateY.value, { duration: ANIMATION_TIME_MS });
-    }
   };
 
   const getItemIndex = (): number => {
@@ -121,7 +114,7 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: translateX.value }, { translateY: translateY.value }, { scale: scale.value }],
+      transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
     };
   });
 
@@ -151,6 +144,8 @@ const styles = StyleSheet.create({
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
     backgroundColor: "rgba(144, 144, 0, 0.3)",
+    borderWidth: 1,
+    borderColor: "red",
   },
 });
 

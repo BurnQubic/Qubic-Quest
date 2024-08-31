@@ -11,6 +11,7 @@ import { finishedMovingState } from "../../../store/finishedMoving";
 import { levelTilesState } from "../../../store/levelTiles";
 import { swappedItemsState } from "../../../store/swappedItems";
 import { levelItemsState } from "../../../store/levelItems";
+import EmptyTile from "../tiles/EmptyTile";
 
 const getTileComponent = (tileType: string, index: number): JSX.Element => {
   switch (tileType) {
@@ -24,8 +25,6 @@ const getTileComponent = (tileType: string, index: number): JSX.Element => {
       return <Tile key={index} index={index} />;
   }
 };
-
-const getEmptyTile = (index: number): JSX.Element => <View key={index} style={styles.emptyTile} />;
 
 const TileGrid = () => {
   const levelTiles = useRecoilValue(levelTilesState);
@@ -77,7 +76,9 @@ const TileGrid = () => {
   return (
     <GestureDetector gesture={gesture}>
       <View style={styles.grid} onLayout={handleLayout}>
-        {levelTiles.map((tile, index) => (tile === null ? getEmptyTile(index) : getTileComponent(tile.type, index)))}
+        {levelTiles.map((tile, index) =>
+          tile === null ? <EmptyTile key={index} index={index} /> : getTileComponent(tile.type, index)
+        )}
       </View>
     </GestureDetector>
   );
@@ -86,19 +87,12 @@ const TileGrid = () => {
 const styles = StyleSheet.create({
   grid: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-  },
-  emptyTile: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    borderRadius: 3,
-    width: `${100 / COLUMN_NUMBER}%`,
-    height: `${100 / ROW_NUMBER}%`,
-    aspectRatio: 1,
   },
 });
 
