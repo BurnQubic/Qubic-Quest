@@ -38,9 +38,7 @@ const Tile = ({ index }: TileProps) => {
       data-index={index}
       data-tile
       ref={tileElementRef}
-    >
-      <Text style={styles.indexText}>{index}</Text>
-    </View>
+    ></View>
   );
 };
 

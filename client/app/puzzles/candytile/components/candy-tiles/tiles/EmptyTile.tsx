@@ -4,7 +4,6 @@ import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 const EmptyTile = ({ index }: { index: number }) => {
   const rowIndex = Math.floor(index / COLUMN_NUMBER);
   const columnIndex = index % COLUMN_NUMBER;
-  console.log("EmptyTile", rowIndex, columnIndex);
   return (
     <View
       style={[

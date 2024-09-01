@@ -88,8 +88,10 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
     if (!newTargetIsValid) return;
 
     liveItemsIds.push(newTarget?.id || "");
+    console.log(levelItems);
     currentIndexRef.current = levelItems.findIndex((x) => x?.id === newTarget.id);
     setLevelItemTarget(newTarget);
+    console.log(initialIndex, Math.floor(currentIndexRef.current / COLUMN_NUMBER), currentIndexRef.current % COLUMN_NUMBER);
     emptyTargetRef.current = false;
   };
 
@@ -132,6 +134,7 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
       }}
     >
       {item}
+      <Text> {Math.floor(initialIndex / COLUMN_NUMBER)}/{initialIndex % COLUMN_NUMBER}</Text>
     </Animated.View>
   );
 };

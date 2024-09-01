@@ -1,64 +1,16 @@
 export default [
-  {
-    type: "Candy",
-    color: "Blue",
-    id: "a53d2162-0055-3d06-712a-f6f770f8cbbe",
-  },
-  {
-    type: "Candy",
-    color: "Yellow",
-    id: "302e9e99-8035-88a5-b3ba-b3c9839e94ad",
-  },
-  {
-    type: "Candy",
-    color: "Green",
-    id: "67366b1f-d5ba-e169-ec56-fc1f686556a1",
-  },
-  {
-    type: "Candy",
-    color: "Orange",
-    id: "aa31b745-42b9-c3f5-cf39-d1552c3b7959",
-  },
-  {
-    type: "Candy",
-    color: "Green",
-    id: "46c0c868-4459-a7af-51ae-f4e2ea8fd0df",
-  },
-  {
-    type: "Candy",
-    color: "Green",
-    id: "1ba3a952-bf10-40c8-dc22-bed39b6e4489",
-  },
-  {
-    type: "Candy",
-    color: "Green",
-    id: "c26873ca-1edc-ed5f-a9f6-90499f59f27e",
-  },
-  {
-    type: "Candy",
-    color: "Yellow",
-    id: "05278a25-2c4d-9b57-4b60-4cb42cc79f7e",
-  },
-  {
-    type: "Candy",
-    color: "Green",
-    id: "d64a3b2b-8365-4c37-84a6-bcb1f8229f45",
-  },
-  {
-    type: "Candy",
-    color: "Purple",
-    id: "edd26be6-222b-3a8d-6fc7-be4d3b02e761",
-  },
-  {
-    type: "Candy",
-    color: "Orange",
-    id: "4362a9d9-444d-437b-eef0-2c635867df8d",
-  },
-  {
-    type: "Candy",
-    color: "Yellow",
-    id: "d53f1fd3-7ca3-34e1-af2b-19e75291349d",
-  },
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
   {
     type: "Candy",
     color: "Purple",
@@ -73,21 +25,9 @@ export default [
     color: "Purple",
     id: "aed5b801-68b1-c223-d1cc-bb011e1f71a7",
   },
-  {
-    type: "Candy",
-    color: "Yellow",
-    id: "56469fe4-f6ec-7134-00ea-acbb9928c1f2",
-  },
-  {
-    type: "Candy",
-    color: "Blue",
-    id: "51bf1af2-421c-0b79-f451-afdeb5edeb2c",
-  },
-  {
-    type: "Candy",
-    color: "Purple",
-    id: "3da80448-3ea6-a333-3610-f27935391aa3",
-  },
+  null,
+  null,
+  null,
   {
     type: "Candy",
     color: "Orange",
