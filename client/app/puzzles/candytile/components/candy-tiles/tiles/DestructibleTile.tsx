@@ -74,7 +74,6 @@ const DestructibleTile = (props: Props, ref: ForwardedRef<DestructibleTileRef>) 
       ref={ref}
     >
       <Image source={{ uri: props.spriteSrc }} style={[styles.image, { opacity: damaged ? 0.6 : 1 }]} />
-      <Text style={styles.indexText}>{props.index}</Text>
     </View>
   );
 };

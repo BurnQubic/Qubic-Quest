@@ -51,13 +51,12 @@ const TileGrid = () => {
       if (touchedElement !== null) {
         dragging.current = true;
         firstTile.current = touchedElement;
-        console.log(levelItems[firstTile.current]);
       }
     })
     .onUpdate((e) => {
       if (!dragging.current || !firstTile.current || !finishedMoving) return;
       const touchedElement = findTouchedTile(e.x, e.y);
-      if (touchedElement !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
+      if (levelItems[touchedElement] !== null && tilesAreAdjacent(firstTile.current, touchedElement)) {
         setSwappedItems([firstTile.current, touchedElement]);
         dragging.current = false;
         firstTile.current = null;

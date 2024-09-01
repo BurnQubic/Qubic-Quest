@@ -17,8 +17,6 @@ const EmptyTile = ({ index }: { index: number }) => {
 const styles = StyleSheet.create({
   emptyTile: {
     position: "absolute",
-    backgroundColor: "rgba(1, 1, 1, 1)",
-    borderRadius: 3,
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,

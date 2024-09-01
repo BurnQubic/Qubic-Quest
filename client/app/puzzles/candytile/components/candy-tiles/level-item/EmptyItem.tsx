@@ -12,9 +12,7 @@ const EmptyItem = ({ index }: { index: number }) => {
         styles.emptyItem,
         { left: `${(columnIndex / COLUMN_NUMBER) * 100}%`, top: `${(rowIndex / ROW_NUMBER) * 100}%` },
       ]}
-    >
-      <Text>{index}</Text>
-    </View>
+    ></View>
   );
 };
 
@@ -24,8 +22,6 @@ const styles = StyleSheet.create({
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    borderWidth: 1,
-    borderColor: "blue",
   },
 });
 

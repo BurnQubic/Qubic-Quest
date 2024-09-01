@@ -134,7 +134,6 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
       }}
     >
       {item}
-      <Text> {Math.floor(initialIndex / COLUMN_NUMBER)}/{initialIndex % COLUMN_NUMBER}</Text>
     </Animated.View>
   );
 };
@@ -146,9 +145,6 @@ const styles = StyleSheet.create({
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    backgroundColor: "rgba(144, 144, 0, 0.3)",
-    borderWidth: 1,
-    borderColor: "red",
   },
 });
 
