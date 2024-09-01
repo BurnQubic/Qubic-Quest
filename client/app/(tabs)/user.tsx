@@ -1,146 +1,75 @@
-import { Tabs } from "expo-router";
-import React, { useState } from "react";
-import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
-import { Colors } from "@/config/constants/Colors";
-import { useColorScheme } from "@/config/hooks/useColorScheme";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/config/firebase";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { onAuthStateChanged } from "firebase/auth";
+import { firebaseAuth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedInput } from "@/app/components/common/ThemedInput"; // Updated import
-import { StyleSheet, Module, Pressable, Text, TouchableOpacity } from "react-native"; // Ensure this import is present
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import * as Notifications from "expo-notifications";
+import { Colors } from "@/config/constants/Colors";
+import { useColorScheme } from "@/config/hooks/useColorScheme";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/config/store/auth";
+import AuthScreen from "./auth";
+import { router, useFocusEffect } from "expo-router";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
-  const [isSignUp, setIsSignUp] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const auth = useRecoilValue(authState);
 
-  const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (!regex.test(email)) {
-      setEmailError("Invalid email format");
-      return false;
-    } else {
-      setEmailError("");
-      return true;
-    }
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
 
-  const validatePassword = (password) => {
-    if (password.length < 8) {
-      setPasswordError("Password must be at least 8 characters");
-      return false;
-    } else {
-      setPasswordError("");
-      return true;
-    }
-  };
+    return () => unsubscribe();
+  }, []);
 
-  const handleSignUp = () => {
-    if (validateEmail(email) && validatePassword(password)) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Success",
-              body: "Sign up successful",
-              sound: "default",
-            },
-            trigger: null,
-          });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Error",
-              body: errorMessage,
-              sound: "default",
-            },
-            trigger: null,
-          });
-        });
-    }
-  };
-
-  const handleSignIn = () => {
-    if (validateEmail(email) && validatePassword(password)) {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Success",
-              body: "Sign in successful",
-              sound: "default",
-            },
-            trigger: null,
-          });
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: "Error",
-              body: errorMessage,
-              sound: "default",
-            },
-            trigger: null,
-          });
-        });
+  const handleSignOut = async () => {
+    try {
+      await firebaseAuth.signOut();
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Success",
+          body: "Signed out successfully",
+          sound: "default",
+        },
+        trigger: null,
+      });
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-      headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}
+      headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
+      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
     >
-      <ThemedText type="title">User Auth</ThemedText>
+      <ThemedText type="title">User Profile</ThemedText>
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</ThemedText>
-        <ThemedInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-            validateEmail(text);
-          }}
-          style={styles.input}
-        />
-        {emailError && <ThemedText style={{ color: "red" }}>{emailError}</ThemedText>}
-        <ThemedInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-            validatePassword(text);
-          }}
-          secureTextEntry
-          style={styles.input}
-        />
-        {passwordError && <ThemedText style={{ color: "red" }}>{passwordError}</ThemedText>}
-        <ThemedView style={styles.buttonView}>
-          <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-            <Text>Sign Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSignIn} style={styles.button}>
-            <Text>Sign In</Text>
-          </TouchableOpacity>
-        </ThemedView>
+        {loading ? (
+          <ActivityIndicator size="large" color={Colors[colorScheme].text} />
+        ) : user ? (
+          <>
+            <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText>
+            <ThemedText style={styles.info}>Email: {user.email}</ThemedText>
+            <ThemedText style={styles.info}>User ID: {user.uid}</ThemedText>
+            <ThemedText style={styles.info}>Account created: {user.metadata.creationTime}</ThemedText>
+            <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+              <Text style={styles.buttonText}>Sign Out</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <ThemedText style={styles.title}>Not Signed In</ThemedText>
+            <ThemedText style={styles.info}>Please sign in to view your profile</ThemedText>
+          </>
+        )}
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -156,37 +85,29 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.light.text,
     marginBottom: 20,
   },
-  headerImage: {
-    color: "#808080",
+  logo: {
+    color: "#dddddd",
     bottom: -90,
     left: -35,
     position: "absolute",
   },
-  input: {
-    width: "100%",
-    height: 40,
+  info: {
+    fontSize: 16,
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
   },
   button: {
     width: "40%",
     height: 40,
-    backgroundColor: Colors.light.background,
+    backgroundColor: "#00aaff",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    marginTop: 10,
+    marginTop: 20,
   },
-  buttonView: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 3,
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
 });

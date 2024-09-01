@@ -1,61 +1,135 @@
-import { Image, StyleSheet, Platform } from "react-native";
-
+import { StyleSheet, Platform, TouchableOpacity, Text, View } from "react-native";
 import { HelloWave } from "@/app/components/HelloWave";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
-import { ThemedView } from "@/app/components/common/ThemedView";
-import { ThemedText } from "@/app/components/common/ThemedText";
-import GameScreen from "./game";
+import GameScreen from "./games";
+import { ScrollView } from "react-native-gesture-handler";
+import { Image } from "expo-image";
+import { Ionicons } from "@expo/vector-icons";
+import { gameList } from "@/config/game-list";
+import { Link } from "expo-router";
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={<Image source={require("@/assets/images/partial-react-logo.png")} style={styles.reactLogo} />}
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{" "}
-          <ThemedText type="defaultSemiBold">{Platform.select({ ios: "cmd + d", android: "cmd + m" })}</ThemedText> to
-          open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>Tap the Explore tab to learn more about what's included in this starter app.</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{" "}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.mainContainer}>
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
+        headerImage={<Ionicons size={310} name="home-outline" style={styles.logo} />}
+      >
+        <View style={styles.container}>
+          <Text style={styles.header}>Today</Text>
+          <Text style={styles.subtitle}>Your personal selection of puzzles for different brain areas</Text>
+          <ScrollView>
+            <View style={styles.timelineContainer}>
+              {gameList.map((puzzle, index) => (
+                <View key={index} style={styles.puzzleContainer}>
+                  <View style={styles.circle} />
+                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }}>
+                    <TouchableOpacity style={styles.puzzle}>
+                      <Image source={puzzle.image} style={styles.image} />
+                      <View>
+                        <Text style={styles.title}>{puzzle.title}</Text>
+                        <Text style={styles.category}>{puzzle.levels}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </Link>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      </ParallaxScrollView>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Start playing</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  mainContainer: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 14,
+    marginBottom: 20,
+  },
+  timelineContainer: {
+    flexDirection: "column",
+  },
+  puzzleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    marginBottom: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    marginHorizontal: 10,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  circle: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 16,
+    alignSelf: "flex-start",
+    marginTop: 20,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  puzzle: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 10,
+    flex: 1,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    marginRight: 16,
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  category: {
+    fontSize: 12,
+  },
+  button: {
+    position: "absolute",
+    bottom: 10,
+    left: 16,
+    right: 16,
+    paddingVertical: 12,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00aaff",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
+  logo: {
+    color: "#dddddd",
+    bottom: -90,
+    left: -35,
     position: "absolute",
   },
 });

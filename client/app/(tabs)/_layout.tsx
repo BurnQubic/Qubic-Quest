@@ -1,12 +1,22 @@
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 
 import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
 import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
+import SplashScreen from "../components/SplashScreen";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
+
+  const handleSplashFinish = () => {
+    setIsSplashVisible(false);
+  };
+
+  if (isSplashVisible) {
+    return <SplashScreen onFinish={handleSplashFinish} />;
+  }
 
   return (
     <Tabs
@@ -23,20 +33,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="games"
         options={{
-          title: "Explore",
+          title: "Games",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="game"
-        options={{
-          title: "Game",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
+            <TabBarIcon name={focused ? "game-controller" : "game-controller-outline"} color={color} />
           ),
         }}
       />
@@ -44,9 +45,19 @@ export default function TabLayout() {
         name="user"
         options={{
           title: "User",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
-          ),
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? "person" : "person-outline"} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="auth"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="puzzles/[id]"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

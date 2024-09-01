@@ -27,24 +27,33 @@ const Tile = ({ index }: TileProps) => {
   };
 
   return (
-    <View style={[styles.tile]} data-index={index} data-tile ref={tileElementRef}>
-      <Text style={styles.indexText}>{index}</Text>
-    </View>
+    <View
+      style={[
+        styles.tile,
+        {
+          left: `${(index % COLUMN_NUMBER) * (100 / COLUMN_NUMBER)}%`,
+          top: `${Math.floor(index / COLUMN_NUMBER) * (100 / ROW_NUMBER)}%`,
+        },
+      ]}
+      data-index={index}
+      data-tile
+      ref={tileElementRef}
+    ></View>
   );
 };
 
 const styles = StyleSheet.create({
   tile: {
-    position: "relative",
+    position: "absolute",
     borderRadius: 8,
     overflow: "hidden",
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    // backgroundColor: "rgba(199, 144, 0, 0.4)",
+    backgroundColor: "rgba(199, 144, 0, 0.4)",
   },
   indexText: {
-    position: "absolute",
+    position: "relative",
     bottom: 0,
     right: 0,
     fontSize: 12,

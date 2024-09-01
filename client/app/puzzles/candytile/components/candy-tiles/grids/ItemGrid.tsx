@@ -1,9 +1,10 @@
 import React, { useMemo } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { COLUMN_NUMBER, ROW_NUMBER, TILE_COUNT } from "../../../config";
 import useSelectedLevel from "../../../hooks/useSelectedLevel";
 import LevelItem from "../level-item/LevelItem";
 import levelTitlesSnapshot from "../../../data/mocks/levelTitlesSnapshot";
+import EmptyItem from "../level-item/EmptyItem";
 
 export let liveItemsIds: string[] = [];
 export const removeLiveItem = (id: string): void => {
@@ -21,7 +22,7 @@ const ItemGrid = () => {
         .fill("")
         .map((_, index) => {
           return tilesLayout[index] === null ? (
-            <View key={index} style={[styles.emptyTile]} />
+            <EmptyItem key={index} index={index} />
           ) : (
             <LevelItem key={index} initialIndex={index} />
           );
@@ -32,19 +33,13 @@ const ItemGrid = () => {
 
 const styles = StyleSheet.create({
   grid: {
-    position: "relative",
+    position: "absolute",
     width: "100%",
     height: "100%",
     flexDirection: "row",
     flexWrap: "wrap",
     pointerEvents: "none"
-  },
-  emptyTile: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    width: `${100 / COLUMN_NUMBER}%`,
-    height: `${100 / ROW_NUMBER}%`,
-    aspectRatio: 1,
-  },
+  }
 });
 
 export default ItemGrid;

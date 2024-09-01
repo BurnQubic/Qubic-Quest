@@ -28,7 +28,7 @@ const FXGrid = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
+    position: "absolute",
     width: "100%",
     height: "100%",
     pointerEvents: "none", // Disables all touch events on the view

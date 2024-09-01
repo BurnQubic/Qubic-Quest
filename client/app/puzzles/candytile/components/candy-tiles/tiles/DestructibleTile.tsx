@@ -62,22 +62,31 @@ const DestructibleTile = (props: Props, ref: ForwardedRef<DestructibleTileRef>) 
   };
 
   return (
-    <View style={[styles.tile, props.style]} ref={ref}>
+    <View
+      style={[
+        styles.tile,
+        props.style,
+        {
+          left: `${(props.index % COLUMN_NUMBER) * (100 / COLUMN_NUMBER)}%`,
+          top: `${Math.floor(props.index / COLUMN_NUMBER) * (100 / ROW_NUMBER)}%`,
+        },
+      ]}
+      ref={ref}
+    >
       <Image source={{ uri: props.spriteSrc }} style={[styles.image, { opacity: damaged ? 0.6 : 1 }]} />
-      <Text style={styles.indexText}>{props.index}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   tile: {
-    position: "relative",
+    position: "absolute",
     borderRadius: 8,
     overflow: "hidden",
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    backgroundColor: "rgba(199, 144, 0, 0.3)"
+    backgroundColor: "rgba(199, 144, 0, 0.3)",
   },
   image: {
     width: "100%",

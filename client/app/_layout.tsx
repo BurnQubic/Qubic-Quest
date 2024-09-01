@@ -9,6 +9,7 @@ import { useColorScheme } from "@/config/hooks/useColorScheme";
 import store from "@/config/redux/store";
 import NotificationService from "./notification";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { RecoilRoot } from "recoil";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -16,7 +17,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    CascadiaMono: require("../assets/fonts/CascadiaMono.ttf"),
   });
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function RootLayout() {
   }
 
   return (
-    <Provider store={store}>
+    <RecoilRoot>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <NotificationService />
         <Stack>
@@ -38,6 +39,6 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
       </ThemeProvider>
-    </Provider>
+    </RecoilRoot>
   );
 }
