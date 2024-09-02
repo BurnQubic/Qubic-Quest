@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, TouchableOpacity, Text, View } from "react-native";
+import { StyleSheet, Platform, TouchableOpacity, View } from "react-native";
 import { HelloWave } from "@/app/components/HelloWave";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import GameScreen from "./games";
@@ -7,40 +7,43 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { gameList } from "@/config/game-list";
 import { Link } from "expo-router";
+import { ButtonWrapper } from "../components/common/buttons/ButtonWrapper";
+import { Button } from "../components/common/buttons/RectButton";
+import { theme } from "@/config/theme";
+import { ThemedText } from "@/app/components/common/ThemedText";
+import { ThemedView } from "../components/common/ThemedView";
 
 export default function HomeScreen() {
   return (
     <View style={styles.mainContainer}>
       <ParallaxScrollView
-        headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
+        headerBackgroundColor={theme.colors.secondary90}
         headerImage={<Ionicons size={310} name="home-outline" style={styles.logo} />}
       >
-        <View style={styles.container}>
-          <Text style={styles.header}>Today</Text>
-          <Text style={styles.subtitle}>Your personal selection of puzzles for different brain areas</Text>
+        <ThemedView style={styles.container}>
+          <ThemedText type="title" style={styles.header}>Today</ThemedText>
+          <ThemedText type="subtitle" style={styles.subtitle}>Your personal selection of puzzles for different brain areas</ThemedText>
           <ScrollView>
             <View style={styles.timelineContainer}>
               {gameList.map((puzzle, index) => (
-                <View key={index} style={styles.puzzleContainer}>
-                  <View style={styles.circle} />
-                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }}>
-                    <TouchableOpacity style={styles.puzzle}>
-                      <Image source={puzzle.image} style={styles.image} />
-                      <View>
-                        <Text style={styles.title}>{puzzle.title}</Text>
-                        <Text style={styles.category}>{puzzle.levels}</Text>
-                      </View>
-                    </TouchableOpacity>
+                <ButtonWrapper key={index} style={styles.puzzleContainer}>
+                  <ThemedView style={styles.circle} />
+                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }} style={styles.puzzle}>
+                    <Image source={puzzle.image} style={styles.image} />
+                    <ThemedView>
+                      <ThemedText type="default" style={styles.title}>{puzzle.title}</ThemedText>
+                      <ThemedText type="default" style={styles.category}>{puzzle.levels}</ThemedText>
+                    </ThemedView>
                   </Link>
-                </View>
+                </ButtonWrapper>
               ))}
             </View>
           </ScrollView>
-        </View>
+        </ThemedView>
       </ParallaxScrollView>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Start playing</Text>
-      </TouchableOpacity>
+      <ButtonWrapper style={styles.button}>
+        <ThemedText type="default" style={styles.buttonText}>Start playing</ThemedText>
+      </ButtonWrapper>
     </View>
   );
 }
@@ -91,6 +94,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   puzzle: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     padding: 16,
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#00aaff",
+    backgroundColor: theme.colors.primary,
   },
   buttonText: {
     fontSize: 16,

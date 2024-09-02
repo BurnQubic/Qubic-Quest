@@ -13,6 +13,8 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/config/store/auth";
 import AuthScreen from "./auth";
 import { router, useFocusEffect } from "expo-router";
+import { ButtonWrapper } from "../components/common/buttons/ButtonWrapper";
+import { theme } from "@/config/theme";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -47,10 +49,11 @@ export default function UserProfile() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
+      headerBackgroundColor={theme.colors.secondary90}
       headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
     >
-      <ThemedText type="title">User Profile</ThemedText>
+      <ThemedView style={styles.container}>
+        <ThemedText type="title">User Profile</ThemedText>
       <ThemedView style={styles.container}>
         {loading ? (
           <ActivityIndicator size="large" color={Colors[colorScheme].text} />
@@ -60,9 +63,9 @@ export default function UserProfile() {
             <ThemedText style={styles.info}>Email: {user.email}</ThemedText>
             <ThemedText style={styles.info}>User ID: {user.uid}</ThemedText>
             <ThemedText style={styles.info}>Account created: {user.metadata.creationTime}</ThemedText>
-            <TouchableOpacity onPress={handleSignOut} style={styles.button}>
+            <ButtonWrapper onPress={handleSignOut} style={styles.button}>
               <Text style={styles.buttonText}>Sign Out</Text>
-            </TouchableOpacity>
+            </ButtonWrapper>
           </>
         ) : (
           <>
@@ -71,6 +74,8 @@ export default function UserProfile() {
           </>
         )}
       </ThemedView>
+      </ThemedView>
+      
     </ParallaxScrollView>
   );
 }
@@ -100,7 +105,7 @@ const styles = StyleSheet.create({
   button: {
     width: "40%",
     height: 40,
-    backgroundColor: "#00aaff",
+    backgroundColor: theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,

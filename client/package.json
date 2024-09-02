@@ -15,6 +15,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.3",
+    "@expo-google-fonts/rajdhani": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",
     "@react-spring/three": "^9.7.4",
@@ -29,6 +31,7 @@
     "expo-font": "~12.0.9",
     "expo-gl": "^14.0.2",
     "expo-image": "~1.12.13",
+    "expo-linear-gradient": "~13.0.2",
     "expo-linking": "~6.3.1",
     "expo-notifications": "~0.28.15",
     "expo-router": "~3.5.21",

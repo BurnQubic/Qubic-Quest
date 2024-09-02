@@ -14,6 +14,7 @@ import { ThemedText } from "@/app/components/common/ThemedText";
 import * as Notifications from "expo-notifications";
 import { useRecoilState } from "recoil";
 import { authState } from "@/config/store/auth";
+import { theme } from "@/config/theme";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -141,7 +142,7 @@ export default function UserProfile() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
+      headerBackgroundColor={theme.colors.secondary90}
       headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
     >
       <ThemedText type="title">User Auth</ThemedText>

@@ -10,6 +10,9 @@ import store from "@/config/redux/store";
 import NotificationService from "./notification";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RecoilRoot } from "recoil";
+import { StatusBar } from "react-native";
+import { Inter_400Regular, Inter_500Medium } from "@expo-google-fonts/inter";
+import { Rajdhani_500Medium, Rajdhani_700Bold } from "@expo-google-fonts/rajdhani";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -17,7 +20,10 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    CascadiaMono: require("../assets/fonts/CascadiaMono.ttf"),
+    Inter_400Regular,
+    Inter_500Medium,
+    Rajdhani_500Medium,
+    Rajdhani_700Bold,
   });
 
   useEffect(() => {
@@ -33,6 +39,7 @@ export default function RootLayout() {
   return (
     <RecoilRoot>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
         <NotificationService />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

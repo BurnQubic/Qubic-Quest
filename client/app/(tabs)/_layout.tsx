@@ -5,6 +5,7 @@ import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
 import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import SplashScreen from "../components/SplashScreen";
+import { theme } from "@/config/theme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -21,7 +22,17 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.highlight,
+        tabBarStyle: {
+          backgroundColor: theme.colors.secondary100,
+          borderTopWidth: 0,
+          elevation: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "600",
+        },
         headerShown: false,
       }}
     >
