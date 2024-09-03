@@ -5,6 +5,7 @@ import useScore from "../../../hooks/useScore";
 import { matchListState } from "../../../store/matchList";
 import { levelTilesState } from "../../../store/levelTiles";
 import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
+import { theme } from "../../../extern";
 
 interface Props extends ViewProps {
   tileType: string;
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    backgroundColor: "rgba(199, 144, 0, 0.3)",
+    backgroundColor: theme.colors.secondary60,
+    opacity: 0.3,
   },
   image: {
     width: "100%",

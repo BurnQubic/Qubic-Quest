@@ -4,6 +4,7 @@ import useTileInteraction from "./hooks/useTileInteraction";
 import { useRecoilValue } from "recoil";
 import { levelItemsState } from "../../../store/levelItems";
 import { COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
+import { theme } from "../../../extern";
 
 export type TileProps = {
   index: number;
@@ -50,7 +51,8 @@ const styles = StyleSheet.create({
     width: `${100 / COLUMN_NUMBER}%`,
     height: `${100 / ROW_NUMBER}%`,
     aspectRatio: 1,
-    backgroundColor: "rgba(199, 144, 0, 0.4)",
+    backgroundColor: theme.colors.secondary60,
+    opacity: 0.3,
   },
   indexText: {
     position: "relative",

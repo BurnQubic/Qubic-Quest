@@ -90,7 +90,7 @@ const LevelManager = () => {
     setLevelItems(levelItemsSnapshot);
     setLevelTiles(levelTitlesSnapshot);
     // setLevelMoves({ done: 0, total: selectedLevel.maximumMoves, spentAllMoves: false });
-    setLevelMoves({ done: 0, total: 100, spentAllMoves: false });
+    setLevelMoves({ done: 0, total: 5, spentAllMoves: false });
   };
 
   const swapItems = (undo: boolean) => {

@@ -8,22 +8,23 @@ import LevelContainer from "./components/candy-tiles/LevelContainer";
 import { Image, ImageBackground } from "expo-image";
 import { backgroundImage, SUPER_CANDY_ASSETS } from "./extern";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
+import Header from "./components/header";
 // import LevelContextProvider from "./context/LevelContext";
 
 const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
   return (
-    // <RecoilRoot>
     <QueryClientProvider client={queryClient}>
       {/* <ImageBackground source={backgroundImage} style={styles.image}> */}
-        <View style={styles.container}>
-          {/* <LevelSelector></LevelSelector> */}
-          <LevelContainer />
-        </View>
+      <Header />
+      <View style={styles.container}>
+        {/* <LevelSelector></LevelSelector> */}
+        <LevelContainer />
+      </View>
       {/* </ImageBackground> */}
     </QueryClientProvider>
-    // </RecoilRoot>
   );
 };
 
