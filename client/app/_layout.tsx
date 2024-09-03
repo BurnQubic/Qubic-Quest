@@ -37,12 +37,23 @@ export default function RootLayout() {
 
   return (
     <RecoilRoot>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      <NotificationService />
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar
+          barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+          backgroundColor="transparent"
+          translucent
+        />
+        <NotificationService />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen name="puzzles/[id]" />
+        </Stack>
+      </GestureHandlerRootView>
     </RecoilRoot>
   );
 }
