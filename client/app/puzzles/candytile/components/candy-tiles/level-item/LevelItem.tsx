@@ -10,7 +10,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { getItemColumnIndex, getItemRowIndex } from "../../../game-logic/tile-matching";
 import { ANIMATION_TIME_MS, COLUMN_NUMBER, ROW_NUMBER } from "../../../config";
 import { levelItemsState } from "../../../store/levelItems";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from "react-native-reanimated";
 
 const getItemComponent = (item: LevelItemType | null, index: number): JSX.Element => {
   const id = item?.id || "";
@@ -35,12 +35,13 @@ const getItemComponent = (item: LevelItemType | null, index: number): JSX.Elemen
 const setPosition = (
   x: Animated.SharedValue<number>,
   y: Animated.SharedValue<number>,
-  index: number,
+  rowIndex: number,
+  colIndex: number,
   width: number,
   height: number
 ): void => {
-  x.value = withTiming(width * (getItemColumnIndex(index) - 1), { duration: ANIMATION_TIME_MS });
-  y.value = withTiming(height * (getItemRowIndex(index) - 1), { duration: ANIMATION_TIME_MS });
+  x.value = withTiming(width * (colIndex - 1), { duration: ANIMATION_TIME_MS });
+  y.value = withTiming(height * (rowIndex - 1), { duration: ANIMATION_TIME_MS });
 };
 
 const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
@@ -74,7 +75,8 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
 
   useEffect(() => {
     if (levelItemTarget && containerWidth && containerHeight) {
-      setPosition(translateX, translateY, getItemIndex(), containerWidth, containerHeight);
+      const index = getItemIndex()
+      setPosition(translateX, translateY, getItemRowIndex(index), getItemColumnIndex(index), containerWidth, containerHeight);
     }
   }, [levelItemTarget, containerHeight, containerWidth]);
 
@@ -88,10 +90,8 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
     if (!newTargetIsValid) return;
 
     liveItemsIds.push(newTarget?.id || "");
-    console.log(levelItems);
     currentIndexRef.current = levelItems.findIndex((x) => x?.id === newTarget.id);
     setLevelItemTarget(newTarget);
-    console.log(initialIndex, Math.floor(currentIndexRef.current / COLUMN_NUMBER), currentIndexRef.current % COLUMN_NUMBER);
     emptyTargetRef.current = false;
   };
 
@@ -101,7 +101,7 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
     rowIndexRef.current = getItemRowIndex(emptyTargetRef.current ? initialIndex : gridIndex);
     columnIndexRef.current = getItemColumnIndex(emptyTargetRef.current ? initialIndex : gridIndex);
 
-    setPosition(translateX, translateY, gridIndex, containerWidth, containerHeight);
+    setPosition(translateX, translateY, rowIndexRef.current, columnIndexRef.current, containerWidth, containerHeight);
   };
 
   const updatePosition = () => {
@@ -120,10 +120,6 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
     };
   });
 
-  const item = useMemo(() => {
-    return levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />;
-  }, [levelItemTarget]);
-
   return (
     <Animated.View
       style={[styles.container, animatedStyle]}
@@ -133,7 +129,7 @@ const LevelItem = ({ initialIndex }: { initialIndex: number }) => {
         setContainerHeight(height);
       }}
     >
-      {item}
+      {levelItemTarget !== null ? getItemComponent(levelItemTarget, currentIndexRef.current) : <View />}
     </Animated.View>
   );
 };
