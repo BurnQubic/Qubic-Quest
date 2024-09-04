@@ -13,7 +13,7 @@ import { useRecoilValue } from "recoil";
 import { authState } from "@/config/store/auth";
 import AuthScreen from "./auth";
 import { router, useFocusEffect } from "expo-router";
-import { ButtonWrapper } from "../components/common/buttons/ButtonWrapper";
+import { ButtonWrapper } from "../components/common/ButtonWrapper";
 import { theme } from "@/config/theme";
 
 export default function UserProfile() {

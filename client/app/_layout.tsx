@@ -12,6 +12,8 @@ import { RecoilRoot } from "recoil";
 import { StatusBar } from "react-native";
 import { Inter_400Regular, Inter_500Medium } from "@expo-google-fonts/inter";
 import { Rajdhani_500Medium, Rajdhani_700Bold } from "@expo-google-fonts/rajdhani";
+import Toast from "react-native-toast-message";
+import toastConfig from "@/config/ToastConfig";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -54,6 +56,7 @@ export default function RootLayout() {
           <Stack.Screen name="puzzles/[id]" />
         </Stack>
       </GestureHandlerRootView>
+      <Toast config={toastConfig} />
     </RecoilRoot>
   );
 }

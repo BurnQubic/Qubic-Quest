@@ -5,7 +5,7 @@ import { Image } from "expo-image";
 import ParallaxScrollView from "../components/common/ParallaxScrollView";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { ButtonWrapper } from "../components/common/buttons/ButtonWrapper";
+import { ButtonWrapper } from "../components/common/ButtonWrapper";
 import { theme } from "@/config/theme";
 import { ThemedView } from "../components/common/ThemedView";
 import { ThemedText } from "../components/common/ThemedText";
