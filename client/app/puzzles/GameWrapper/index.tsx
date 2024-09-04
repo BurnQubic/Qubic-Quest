@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { ThemedText } from "@/app/components/common/ThemedText";
-import { ButtonWrapper } from "@/app/components/common/buttons/ButtonWrapper";
+import { ButtonWrapper } from "@/app/components/common/ButtonWrapper";
 import { theme } from "@/config/theme";
 import Header from "./Header";
 

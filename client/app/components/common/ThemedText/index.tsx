@@ -1,5 +1,4 @@
 import { Text, type TextProps, StyleSheet } from "react-native";
-
 import { useThemeColor } from "@/config/hooks/useThemeColor";
 import { theme } from "@/config/theme";
 
@@ -10,7 +9,6 @@ export type ThemedTextProps = TextProps & {
 };
 
 export function ThemedText({ style, type = "default", ...rest }: ThemedTextProps) {
-
   return (
     <Text
       style={[
