@@ -7,14 +7,14 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
 import { firebaseAuth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
-import { ThemedInput } from "@/app/components/common/ThemedInput";
 import { StyleSheet, Module, Pressable, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
-import * as Notifications from "expo-notifications";
 import { useRecoilState } from "recoil";
 import { authState } from "@/config/store/auth";
 import { theme } from "@/config/theme";
+import { ThemedInput } from "../components/common/ThemedInput";
+import { useToast } from "@/config/hooks/useToast";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -25,12 +25,13 @@ export default function UserProfile() {
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useRecoilState(authState);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
       console.log("FIREBASE AUTH");
       console.log(currentUser);
-      // setUser(currentUser);
+      // setAuth(prevState => ({ ...prevState, user: currentUser }));
       // if (currentUser) {
       //   router.replace("/user");
 
@@ -66,27 +67,13 @@ export default function UserProfile() {
     if (validateEmail(email) && validatePassword(password)) {
       setLoading(true);
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
         const user = userCredential.user;
-        console.log(user);
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Success",
-            body: "Sign up successful",
-            sound: "default",
-          },
-          trigger: null,
-        });
+        console.log("user", user);
+        showToast({ title: "Sign up successful", body: "Sign up successful", type: "success" });
       } catch (error) {
         console.log(error.code, error.message);
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Error",
-            body: error.message,
-            sound: "default",
-          },
-          trigger: null,
-        });
+        showToast({ title: "Error", body: "Error", type: "error" });
       } finally {
         setLoading(false);
       }
@@ -97,27 +84,13 @@ export default function UserProfile() {
     if (validateEmail(email) && validatePassword(password)) {
       setLoading(true);
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
         const user = userCredential.user;
-        console.log(user);
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Success",
-            body: "Sign in successful",
-            sound: "default",
-          },
-          trigger: null,
-        });
+        console.log("user", user);
+        showToast({ title: "Sign in successful", body: "Sign in successful", type: "success" });
       } catch (error) {
         console.log(error.code, error.message);
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Error",
-            body: error.message,
-            sound: "default",
-          },
-          trigger: null,
-        });
+        showToast({ title: "Error", body: "Error", type: "error" });
       } finally {
         setLoading(false);
       }
@@ -127,16 +100,10 @@ export default function UserProfile() {
   const handleSignOut = async () => {
     try {
       await firebaseAuth.signOut();
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Success",
-          body: "Signed out successfully",
-          sound: "default",
-        },
-        trigger: null,
-      });
+      showToast("Signed out successfully", "success");
     } catch (error) {
       console.log(error.message);
+      showToast("Error", "error");
     }
   };
 
@@ -214,7 +181,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    color: Colors.light.text,
+    color: theme.colors.text,
     marginBottom: 20,
   },
   logo: {
