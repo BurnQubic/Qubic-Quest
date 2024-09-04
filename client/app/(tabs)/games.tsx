@@ -3,13 +3,13 @@ import { StyleSheet, ScrollView } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 import { Image } from "expo-image";
 import ParallaxScrollView from "../components/common/ParallaxScrollView";
-import { gameList } from "@/config/game-list";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { ButtonWrapper } from "../components/common/buttons/ButtonWrapper";
 import { theme } from "@/config/theme";
 import { ThemedView } from "../components/common/ThemedView";
 import { ThemedText } from "../components/common/ThemedText";
+import { gameList } from "@/config/constants/game-list";
 
 export default function GamesScreen() {
   const scale = useSharedValue(1);

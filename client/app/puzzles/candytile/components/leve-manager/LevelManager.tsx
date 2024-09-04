@@ -24,6 +24,7 @@ import { delay } from "../../utils/utils";
 import { ANIMATION_TIME_MS, COMBO_LIMIT } from "../../config";
 import levelItemsSnapshot from "../../data/mocks/levelItemsSnapshot";
 import levelTitlesSnapshot from "../../data/mocks/levelTitlesSnapshot";
+import useAudio from "../../hooks/useAudio";
 
 const applyMatches = (matchInfo: MatchResult, itemList: LevelItem[]) => {
   let itemsFused = false;
@@ -69,7 +70,7 @@ const LevelManager = () => {
   const setPossibleCombinations = useSetRecoilState(possibleCombinationsState);
   const [comboCount, setComboCount] = useRecoilState(comboCountState);
   // const selectedLevel = useMemo(() => selectedLevelQuery.data?.file, [selectedLevelQuery.data]) as LevelFile;
-  //   const playAudio = useAudio();
+  const playAudio = useAudio();
 
   const itemsWereSwapped = useRef(false);
 
@@ -134,10 +135,10 @@ const LevelManager = () => {
       setSwappedItems([null, null]);
       itemsWereSwapped.current = false;
 
-      //   playAudio({ audioName: "match", speed: 1 + (combo + 1) / 10 });
+      playAudio({ audioName: "match", speed: 1 + (combo + 1) / 10 });
       setComboCount((combo) => (combo < COMBO_LIMIT ? combo + 1 : combo));
       const { matchResult, itemsFused } = applyMatches(matchInfo, itemList);
-      //   itemsFused && playAudio({ audioName: "fusionMatch" });
+      itemsFused && playAudio({ audioName: "fusionMatch" });
 
       setLevelItems(matchResult);
       setMatchList(matchInfo.matchingList);

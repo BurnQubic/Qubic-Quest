@@ -101,3 +101,29 @@ export type LevelFile = {
 };
 
 export type LevelData = LevelDb & { file: LevelFile; isMainLevel: boolean };
+
+export type GameSFX = (typeof GAME_SFX_LIST)[number];
+
+export const GAME_SFX_LIST = [
+	'buttonClick1',
+	'candyBounce',
+	'chocolateMatch',
+	'fusionMatch',
+	'gameOver',
+	'iceCrack1',
+	'iceCrack2',
+	'iceCreamMatch',
+	'levelComplete',
+	'match',
+	'pop1',
+	'put1',
+	'rockCrack1',
+	'rockCrack2',
+	'starScore',
+	'superCandyMatch',
+	'taskComplete',
+	'tileClick',
+	'woosh1',
+] as const;
+
+export type AudioList = { [key in GameSFX]: string };

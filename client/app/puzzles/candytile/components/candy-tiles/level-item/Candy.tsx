@@ -9,7 +9,8 @@ import { CANDY_ASSETS } from "../../../extern";
 import useScore from "../../../hooks/useScore";
 import LevelManager from "../../leve-manager/LevelManager";
 import { ANIMATION_TIME_MS } from "../../../config";
-// import useAudio from '../../../../../hooks/useAudio';
+import useAudio from "../../../hooks/useAudio";
+import { randomNumber } from "../../../utils/math";
 
 export const CandyColors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 
@@ -33,7 +34,7 @@ const Candy = ({ color, id, index }: CandyProps) => {
   const levelItems = useRecoilValue(levelItemsState);
   const translateY = useSharedValue(-5000);
   const itemUsed = useRef(false);
-  // const playAudio = useAudio();
+  const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
 
   useScore(matched, index, "Candy", color);
@@ -57,7 +58,7 @@ const Candy = ({ color, id, index }: CandyProps) => {
 
   const playCandyBounceSound = () => {
     if (activeBounceSounds > activeBounceSoundsLimit) return;
-    // playAudio({ audioName: 'candyBounce', volume: 0.25, speed: randomNumber(0.9, 1.5) });
+    playAudio({ audioName: 'candyBounce', volume: 0.25, speed: randomNumber(0.9, 1.5) });
     activeBounceSounds += 1;
     setTimeout(() => {
       activeBounceSounds -= 1;

@@ -26,6 +26,7 @@
     "animejs": "^3.2.2",
     "expo": "~51.0.25",
     "expo-asset": "~10.0.10",
+    "expo-av": "~14.0.7",
     "expo-constants": "~16.0.2",
     "expo-device": "~6.0.2",
     "expo-font": "~12.0.9",

@@ -5,13 +5,13 @@ import GameScreen from "./games";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
-import { gameList } from "@/config/game-list";
 import { Link } from "expo-router";
 import { ButtonWrapper } from "../components/common/buttons/ButtonWrapper";
 import { Button } from "../components/common/buttons/RectButton";
 import { theme } from "@/config/theme";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import { ThemedView } from "../components/common/ThemedView";
+import { gameList } from "@/config/constants/game-list";
 
 export default function HomeScreen() {
   return (
