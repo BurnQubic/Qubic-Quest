@@ -19,7 +19,7 @@ import { ButtonWrapper } from "../components/common/ButtonWrapper";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -89,6 +89,7 @@ export default function UserProfile() {
         const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
         const user = userCredential.user;
         console.log("user", user);
+        setAuth((prevState) => ({ ...prevState, user: user, isAuthenticated: true }));
         showToast({ title: "Sign in successful", body: "Signed in as " + user.email, type: "success" });
       } catch (error) {
         console.log(error.code, error.message);
@@ -148,7 +149,7 @@ export default function UserProfile() {
             {passwordError && <ThemedText style={styles.errorText}>{passwordError}</ThemedText>}
             <ThemedView style={styles.buttonView}>
               {loading ? (
-                <ActivityIndicator size="large" color={Colors[colorScheme].text} />
+                <ActivityIndicator size="large" color={theme.colors.primary} />
               ) : (
                 <ButtonWrapper onPress={isSignUp ? handleSignUp : handleSignIn} style={styles.authButton}>
                   <Text style={styles.buttonText}>{isSignUp ? "Sign Up" : "Sign In"}</Text>

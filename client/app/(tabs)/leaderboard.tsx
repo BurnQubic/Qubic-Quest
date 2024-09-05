@@ -59,7 +59,7 @@ export default function LeaderboardScreen() {
     setTimeout(() => {
       setLeaderboardData(mockLeaderboardData);
       setLoading(false);
-    }, 3000);
+    }, 1000);
   };
 
   const renderLeaderboardItem = ({ item }) => (
