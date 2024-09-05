@@ -15,7 +15,7 @@ export function ThemedInput({ style, lightColor, darkColor, leftIcon, rightIcon,
   return (
     <View style={[styles.container, style]}>
       {leftIcon && <Image source={leftIcon} style={styles.icon} />}
-      <TextInput style={[styles.input]} {...otherProps} />
+      <TextInput style={[styles.input]} placeholderTextColor={theme.colors.text} {...otherProps} />
       {rightIcon && <Image source={rightIcon} style={styles.icon} />}
     </View>
   );

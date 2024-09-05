@@ -1,7 +1,6 @@
 import React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, ImageSourcePropType, Dimensions } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
-import { Image } from "expo-image";
 import ParallaxScrollView from "../components/common/ParallaxScrollView";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,42 +27,40 @@ export default function GamesScreen() {
           <ThemedText type="title" style={styles.header}>
             Games
           </ThemedText>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
             <ThemedText type="subtitle" style={styles.subHeader}>
-              Free game of the day
+              Top Game
             </ThemedText>
             <Animated.View style={animatedStyle}>
-              <Card style={styles.featuredGame}>
-                <ButtonWrapper style={styles.featuredGameButton}>
+              <Card style={styles.featuredGame} bannerImage={require("@/assets/images/main/candy-game.jpg")}>
+                <ThemedView style={styles.featuredGameButton}>
                   <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
-                    <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
                     <ThemedView style={styles.featuredGameText}>
                       <ThemedText type="default" style={styles.featuredTitle}>
                         {gameList[0].title}
                       </ThemedText>
-                      <ThemedText type="default" style={styles.playButtonText}>
-                        PLAY GAME
-                      </ThemedText>
+                      <ButtonWrapper style={styles.playButtonText}>
+                        <ThemedText type="default">PLAY GAME</ThemedText>
+                      </ButtonWrapper>
                     </ThemedView>
                   </Link>
-                </ButtonWrapper>
+                </ThemedView>
               </Card>
             </Animated.View>
 
             <ThemedText type="subtitle" style={styles.subHeader}>
-              Free games
+              All games
             </ThemedText>
             <ThemedView style={styles.gamesGrid}>
               {gameList.map((game, index) => (
-                <Card key={index} style={styles.gameCard}>
-                  <ButtonWrapper>
-                    <Image source={game.image} style={styles.gameImage} />
+                <ButtonWrapper key={index} style={styles.gameCard}>
+                  <Card bannerImage={game.image as ImageSourcePropType}>
                     <ThemedText type="default" style={styles.gameTitle}>
                       {game.title}
                     </ThemedText>
                     <ThemedText type="default" style={styles.levels}>{`LEVEL ${game.levels}`}</ThemedText>
-                  </ButtonWrapper>
-                </Card>
+                  </Card>
+                </ButtonWrapper>
               ))}
             </ThemedView>
           </ScrollView>
@@ -74,80 +71,79 @@ export default function GamesScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    paddingHorizontal: 0,
+  },
   mainContainer: {
     flex: 1,
   },
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
   logo: {
     color: "#dddddd",
-    bottom: -90,
-    left: -35,
+    bottom: -60,
+    left: -20,
     position: "absolute",
   },
   header: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+    marginTop: 10,
   },
   subHeader: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
-    marginVertical: 10,
+    marginVertical: 15,
   },
   featuredGame: {
-    marginBottom: 20,
+    marginBottom: 30,
+    borderRadius: 15,
+    overflow: "hidden",
   },
   featuredGameButton: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  featuredImage: {
-    width: 60,
-    height: 60,
-    marginRight: 16,
-    borderRadius: 10,
+    padding: 15,
   },
   featuredGameText: {
     flexDirection: "column",
   },
   featuredTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#fff",
+    color: theme.colors.heading,
+    marginBottom: 10,
   },
   playButtonText: {
-    fontSize: 16,
-    color: "#fff",
-    backgroundColor: "#ffa500",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    marginTop: 10,
+    fontSize: 18,
+    color: theme.colors.heading,
+    backgroundColor: theme.colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    overflow: "hidden",
+    textAlign: "center",
   },
   gamesGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
   },
   gameCard: {
-    marginBottom: 16,
-    width: "48%",
-  },
-  gameImage: {
-    width: 50,
-    height: 50,
-    marginBottom: 10,
-    borderRadius: 10,
+    width: "50%",
+    borderRadius: 15,
+    overflow: "hidden",
+    minWidth: 150,
   },
   gameTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
   },
   levels: {
-    fontSize: 12,
-    color: "#6c6c6c",
+    fontSize: 14,
+    color: theme.colors.highlight,
   },
 });

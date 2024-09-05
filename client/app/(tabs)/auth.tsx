@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthState
 import { firebaseAuth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Module, Pressable, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { StyleSheet, Module, Pressable, Text, TouchableOpacity, ActivityIndicator, View } from "react-native";
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import { useRecoilState } from "recoil";
@@ -15,6 +15,7 @@ import { authState } from "@/config/store/auth";
 import { theme } from "@/config/theme";
 import { ThemedInput } from "../components/common/ThemedInput";
 import { useToast } from "@/config/hooks/useToast";
+import { ButtonWrapper } from "../components/common/ButtonWrapper";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -70,10 +71,11 @@ export default function UserProfile() {
         const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
         const user = userCredential.user;
         console.log("user", user);
-        showToast({ title: "Sign up successful", body: "Sign up successful", type: "success" });
+        showToast({ title: "Sign up successful", body: "Welcome to our app!", type: "success" });
+        setAuth((prevState) => ({ ...prevState, user: user }));
       } catch (error) {
         console.log(error.code, error.message);
-        showToast({ title: "Error", body: "Error", type: "error" });
+        showToast({ title: "Sign Up Error", body: error.message, type: "error" });
       } finally {
         setLoading(false);
       }
@@ -87,10 +89,10 @@ export default function UserProfile() {
         const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
         const user = userCredential.user;
         console.log("user", user);
-        showToast({ title: "Sign in successful", body: "Sign in successful", type: "success" });
+        showToast({ title: "Sign in successful", body: "Signed in as " + user.email, type: "success" });
       } catch (error) {
         console.log(error.code, error.message);
-        showToast({ title: "Error", body: "Error", type: "error" });
+        showToast({ title: "Sign In Error", body: error.message, type: "error" });
       } finally {
         setLoading(false);
       }
@@ -100,27 +102,29 @@ export default function UserProfile() {
   const handleSignOut = async () => {
     try {
       await firebaseAuth.signOut();
-      showToast("Signed out successfully", "success");
+      showToast({ title: "Signed out successfully", body: "See you soon!", type: "success" });
     } catch (error) {
       console.log(error.message);
-      showToast("Error", "error");
+      showToast({ title: "Sign Out Error", body: error.message, type: "error" });
     }
   };
 
   return (
     <ParallaxScrollView bannerComponent={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}>
-      <ThemedText type="title">User Auth</ThemedText>
+      <ThemedText type="title" style={styles.pageTitle}>
+        User Authentication
+      </ThemedText>
       <ThemedView style={styles.container}>
         {auth.isAuthenticated ? (
-          <>
-            {/* <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText> */}
-            <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-              <Text>Sign Out</Text>
+          <View style={styles.authenticatedContainer}>
+            <ThemedText style={styles.welcomeText}>Welcome, {auth.user?.email}</ThemedText>
+            <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
+              <Text style={styles.buttonText}>Sign Out</Text>
             </TouchableOpacity>
-          </>
+          </View>
         ) : (
           <>
-            <ThemedText style={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</ThemedText>
+            <ThemedText style={styles.title}>{isSignUp ? "Create Account" : "Sign In"}</ThemedText>
             <ThemedInput
               placeholder="Email"
               value={email}
@@ -146,14 +150,9 @@ export default function UserProfile() {
               {loading ? (
                 <ActivityIndicator size="large" color={Colors[colorScheme].text} />
               ) : (
-                <>
-                  <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={handleSignIn} style={styles.button}>
-                    <Text style={styles.buttonText}>Sign In</Text>
-                  </TouchableOpacity>
-                </>
+                <ButtonWrapper onPress={isSignUp ? handleSignUp : handleSignIn} style={styles.authButton}>
+                  <Text style={styles.buttonText}>{isSignUp ? "Sign Up" : "Sign In"}</Text>
+                </ButtonWrapper>
               )}
             </ThemedView>
             <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)} style={styles.switchButton}>
@@ -175,6 +174,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: theme.colors.text,
+    marginBottom: 30,
+    textAlign: "center",
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -189,36 +195,52 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 40,
-    marginBottom: 10,
+    height: 50,
+    marginBottom: 15,
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
+    borderColor: theme.colors.text,
+    borderRadius: 10,
+    padding: 15,
+    fontSize: 16,
   },
-  button: {
-    width: "40%",
-    height: 40,
-    backgroundColor: "#00aaff",
+  authButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 20,
-    marginTop: 10,
+    borderRadius: 25,
+    marginTop: 20,
   },
   buttonText: {
     color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   buttonView: {
     width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 3,
   },
   errorText: {
-    color: "red",
+    color: theme.colors.error,
     marginBottom: 10,
+    fontSize: 14,
   },
   switchButton: {
     marginTop: 20,
+  },
+  authenticatedContainer: {
+    alignItems: "center",
+  },
+  welcomeText: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  signOutButton: {
+    width: 150,
+    height: 50,
+    backgroundColor: theme.colors.error,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 25,
   },
 });

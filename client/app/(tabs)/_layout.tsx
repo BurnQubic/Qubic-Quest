@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import React, { useState } from "react";
 
 import { TabBarIcon } from "@/app/components/navigation/TabBarIcon";
@@ -6,10 +6,14 @@ import { Colors } from "@/config/constants/Colors";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import SplashScreen from "../components/SplashScreen";
 import { theme } from "@/config/theme";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/config/store/auth";
+import Auth from "./auth";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [isSplashVisible, setIsSplashVisible] = useState(true);
+  const auth = useRecoilValue(authState);
 
   const handleSplashFinish = () => {
     setIsSplashVisible(false);
@@ -17,6 +21,10 @@ export default function TabLayout() {
 
   if (isSplashVisible) {
     return <SplashScreen onFinish={handleSplashFinish} />;
+  }
+
+  if (!auth.isAuthenticated) {
+    return <Auth />;
   }
 
   return (

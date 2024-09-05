@@ -20,7 +20,7 @@ export default function HomeScreen() {
       <ParallaxScrollView bannerComponent={<Ionicons size={310} name="home-outline" style={styles.logo} />}>
         <ThemedView style={styles.container}>
           <ThemedText type="title" style={styles.header}>
-            Today
+            Today's Choices
           </ThemedText>
           <ThemedText type="subtitle" style={styles.subtitle}>
             Your personal selection of puzzles for different brain areas
@@ -29,20 +29,22 @@ export default function HomeScreen() {
             <View style={styles.timelineContainer}>
               {gameList.map((puzzle, index) => (
                 <ButtonWrapper key={index} style={styles.puzzleContainer}>
-                  {/* <Card style={styles.puzzle}> */}
-                  <ThemedView style={styles.circle} />
-                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }} style={styles.puzzleLink}>
-                    <Image source={puzzle.image} style={styles.image} />
-                    <ThemedView>
-                      <ThemedText type="default" style={styles.title}>
-                        {puzzle.title}
-                      </ThemedText>
-                      <ThemedText type="default" style={styles.category}>
-                        {puzzle.levels}
-                      </ThemedText>
-                    </ThemedView>
-                  </Link>
-                  {/* </Card> */}
+                  <Card style={styles.puzzle}>
+                    <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }} style={styles.puzzleLink}>
+                      <View style={styles.imageContainer}>
+                        <Image source={puzzle.image} style={styles.image} />
+                      </View>
+
+                      <ThemedView style={styles.puzzleInfo}>
+                        <ThemedText type="default" style={styles.title}>
+                          {puzzle.title}
+                        </ThemedText>
+                        <ThemedText type="default" style={styles.category}>
+                          {puzzle.levels}
+                        </ThemedText>
+                      </ThemedView>
+                    </Link>
+                  </Card>
                 </ButtonWrapper>
               ))}
             </View>
@@ -83,29 +85,28 @@ const styles = StyleSheet.create({
   puzzleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
-    marginHorizontal: 10,
-  },
-  circle: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 16,
-    alignSelf: "flex-start",
-    marginTop: 20,
+    padding: 0,
   },
   puzzle: {
     flex: 1,
+  },
+  imageContainer: {},
+  puzzleInfo: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    padding: 10,
   },
   puzzleLink: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   image: {
-    width: 60,
-    height: 60,
-    marginRight: 16,
+    width: 64,
+    height: 64,
     borderRadius: 10,
   },
   title: {
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 12,
+    justifyContent: "flex-end"
   },
   button: {
     position: "absolute",

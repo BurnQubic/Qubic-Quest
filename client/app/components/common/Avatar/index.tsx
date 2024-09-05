@@ -4,16 +4,17 @@ import { Image, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { theme } from "@/config/theme";
+import { ButtonWrapper } from "../ButtonWrapper";
 
 type Props = {
   urlImage?: string;
 };
 
 export function Avatar({ urlImage }: Props) {
-  const { secondary50, secondary30 } = theme.colors;
+  const { lightBackground } = theme.colors;
 
   return (
-    <LinearGradient style={styles.container} colors={[secondary50, secondary30]}>
+    <LinearGradient style={styles.container} colors={[lightBackground, lightBackground]}>
       {urlImage ? (
         <Image source={{ uri: urlImage }} style={styles.avatar} resizeMode="cover" />
       ) : (
@@ -35,9 +36,9 @@ const styles = StyleSheet.create({
     marginRight: 22,
   },
   avatar: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     position: "absolute",
     top: "50%",
     left: "50%",

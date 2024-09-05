@@ -3,18 +3,26 @@ import React from "react";
 import { Avatar } from "../Avatar";
 import { ScoreBox } from "../ScoreBox"; // Import ScoreBox component
 import { theme } from "@/config/theme";
+import { useRecoilValue } from "recoil";
+import { authState } from "@/config/store/auth";
 
 const Header = () => {
+  const auth = useRecoilValue(authState);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.leftContainer}>
-        <Avatar />
-      </View>
-      <View style={styles.rightContainer}>
-        <ScoreBox type="level" label="Level 5" icon="star" />
-        <ScoreBox type="coins" label="50" icon="cash" />
-      </View>
-    </View>
+    <>
+      {auth.isAuthenticated ? (
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <Avatar />
+          </View>
+          <View style={styles.rightContainer}>
+            <ScoreBox type="level" label="Level 5" icon="star" />
+            <ScoreBox type="coins" label="50" icon="cash" />
+          </View>
+        </View>
+      ) : null}
+    </>
   );
 };
 

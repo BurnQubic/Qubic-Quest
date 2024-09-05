@@ -50,7 +50,9 @@ export default function UserProfile() {
   return (
     <ParallaxScrollView bannerComponent={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}>
       <ThemedView style={styles.container}>
-        <ThemedText type="title">User Profile</ThemedText>
+        <ThemedText type="title" style={styles.title}>
+          User Profile
+        </ThemedText>
         <ThemedView style={styles.container}>
           {loading ? (
             <ActivityIndicator size="large" color={Colors[colorScheme].text} />
