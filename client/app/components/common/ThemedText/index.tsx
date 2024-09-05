@@ -12,8 +12,8 @@ export function ThemedText({ style, type = "default", ...rest }: ThemedTextProps
   return (
     <Text
       style={[
+        styles.default,
         { color: theme.colors.text },
-        type === "default" ? styles.default : undefined,
         type === "title" ? styles.title : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
@@ -29,10 +29,9 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
     fontWeight: "600",
   },
   title: {

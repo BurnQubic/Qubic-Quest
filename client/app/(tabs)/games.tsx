@@ -10,6 +10,7 @@ import { theme } from "@/config/theme";
 import { ThemedView } from "../components/common/ThemedView";
 import { ThemedText } from "../components/common/ThemedText";
 import { gameList } from "@/config/constants/game-list";
+import { Card } from "../components/common/Card";
 
 export default function GamesScreen() {
   const scale = useSharedValue(1);
@@ -22,34 +23,47 @@ export default function GamesScreen() {
 
   return (
     <ThemedView style={styles.mainContainer}>
-      <ParallaxScrollView
-        headerBackgroundColor={theme.colors.secondary90}
-        headerImage={<Ionicons size={310} name="game-controller-outline" style={styles.logo} />}
-      >
+      <ParallaxScrollView bannerComponent={<Ionicons size={310} name="game-controller-outline" style={styles.logo} />}>
         <ThemedView style={styles.container}>
-          <ThemedText type="title" style={styles.header}>Games</ThemedText>
+          <ThemedText type="title" style={styles.header}>
+            Games
+          </ThemedText>
           <ScrollView>
-            <ThemedText type="subtitle" style={styles.subHeader}>Free game of the day</ThemedText>
-            <Animated.View style={[styles.featuredGame, animatedStyle]}>
-              <ButtonWrapper style={styles.featuredGameButton}>
-                <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
-                  <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
-                  <ThemedView style={styles.featuredGameText}>
-                    <ThemedText type="default" style={styles.featuredTitle}>{gameList[0].title}</ThemedText>
-                    <ThemedText type="default" style={styles.playButtonText}>PLAY GAME</ThemedText>
-                  </ThemedView>
-                </Link>
-              </ButtonWrapper>
+            <ThemedText type="subtitle" style={styles.subHeader}>
+              Free game of the day
+            </ThemedText>
+            <Animated.View style={animatedStyle}>
+              <Card style={styles.featuredGame}>
+                <ButtonWrapper style={styles.featuredGameButton}>
+                  <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
+                    <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
+                    <ThemedView style={styles.featuredGameText}>
+                      <ThemedText type="default" style={styles.featuredTitle}>
+                        {gameList[0].title}
+                      </ThemedText>
+                      <ThemedText type="default" style={styles.playButtonText}>
+                        PLAY GAME
+                      </ThemedText>
+                    </ThemedView>
+                  </Link>
+                </ButtonWrapper>
+              </Card>
             </Animated.View>
 
-            <ThemedText type="subtitle" style={styles.subHeader}>Free games</ThemedText>
+            <ThemedText type="subtitle" style={styles.subHeader}>
+              Free games
+            </ThemedText>
             <ThemedView style={styles.gamesGrid}>
               {gameList.map((game, index) => (
-                <ButtonWrapper key={index} style={styles.gameCard}>
-                  <Image source={game.image} style={styles.gameImage} />
-                  <ThemedText type="default" style={styles.gameTitle}>{game.title}</ThemedText>
-                  <ThemedText type="default" style={styles.levels}>{`LEVEL ${game.levels}`}</ThemedText>
-                </ButtonWrapper>
+                <Card key={index} style={styles.gameCard}>
+                  <ButtonWrapper>
+                    <Image source={game.image} style={styles.gameImage} />
+                    <ThemedText type="default" style={styles.gameTitle}>
+                      {game.title}
+                    </ThemedText>
+                    <ThemedText type="default" style={styles.levels}>{`LEVEL ${game.levels}`}</ThemedText>
+                  </ButtonWrapper>
+                </Card>
               ))}
             </ThemedView>
           </ScrollView>
@@ -83,14 +97,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   featuredGame: {
-    backgroundColor: theme.colors.secondary50,
-    borderRadius: 10,
     marginBottom: 20,
   },
   featuredGameButton: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
   },
   featuredImage: {
     width: 60,
@@ -121,12 +132,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   gameCard: {
-    backgroundColor: theme.colors.secondary50,
-    borderRadius: 10,
-    padding: 16,
     marginBottom: 16,
     width: "48%",
-    alignItems: "center",
   },
   gameImage: {
     width: 50,

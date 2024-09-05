@@ -12,8 +12,9 @@ import { RecoilRoot } from "recoil";
 import { StatusBar } from "react-native";
 import { Inter_400Regular, Inter_500Medium } from "@expo-google-fonts/inter";
 import { Rajdhani_500Medium, Rajdhani_700Bold } from "@expo-google-fonts/rajdhani";
+import { LilyScriptOne_400Regular } from "@expo-google-fonts/lily-script-one";
 import Toast from "react-native-toast-message";
-import toastConfig from "@/config/ToastConfig";
+import toastConfig from "@/config/toastConfig";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -25,6 +26,7 @@ export default function RootLayout() {
     Inter_500Medium,
     Rajdhani_500Medium,
     Rajdhani_700Bold,
+    LilyScriptOne_400Regular,
   });
 
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function RootLayout() {
           barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
           backgroundColor="transparent"
           translucent
+          hidden={true}
         />
         <NotificationService />
         <Stack

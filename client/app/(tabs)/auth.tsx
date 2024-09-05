@@ -108,10 +108,7 @@ export default function UserProfile() {
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={theme.colors.secondary90}
-      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
-    >
+    <ParallaxScrollView bannerComponent={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}>
       <ThemedText type="title">User Auth</ThemedText>
       <ThemedView style={styles.container}>
         {auth.isAuthenticated ? (

@@ -12,29 +12,37 @@ import { theme } from "@/config/theme";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import { ThemedView } from "../components/common/ThemedView";
 import { gameList } from "@/config/constants/game-list";
+import { Card } from "@/app/components/common/Card";
 
 export default function HomeScreen() {
   return (
     <View style={styles.mainContainer}>
-      <ParallaxScrollView
-        headerBackgroundColor={theme.colors.secondary90}
-        headerImage={<Ionicons size={310} name="home-outline" style={styles.logo} />}
-      >
+      <ParallaxScrollView bannerComponent={<Ionicons size={310} name="home-outline" style={styles.logo} />}>
         <ThemedView style={styles.container}>
-          <ThemedText type="title" style={styles.header}>Today</ThemedText>
-          <ThemedText type="subtitle" style={styles.subtitle}>Your personal selection of puzzles for different brain areas</ThemedText>
+          <ThemedText type="title" style={styles.header}>
+            Today
+          </ThemedText>
+          <ThemedText type="subtitle" style={styles.subtitle}>
+            Your personal selection of puzzles for different brain areas
+          </ThemedText>
           <ScrollView>
             <View style={styles.timelineContainer}>
               {gameList.map((puzzle, index) => (
                 <ButtonWrapper key={index} style={styles.puzzleContainer}>
+                  {/* <Card style={styles.puzzle}> */}
                   <ThemedView style={styles.circle} />
-                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }} style={styles.puzzle}>
+                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }} style={styles.puzzleLink}>
                     <Image source={puzzle.image} style={styles.image} />
                     <ThemedView>
-                      <ThemedText type="default" style={styles.title}>{puzzle.title}</ThemedText>
-                      <ThemedText type="default" style={styles.category}>{puzzle.levels}</ThemedText>
+                      <ThemedText type="default" style={styles.title}>
+                        {puzzle.title}
+                      </ThemedText>
+                      <ThemedText type="default" style={styles.category}>
+                        {puzzle.levels}
+                      </ThemedText>
                     </ThemedView>
                   </Link>
+                  {/* </Card> */}
                 </ButtonWrapper>
               ))}
             </View>
@@ -42,7 +50,9 @@ export default function HomeScreen() {
         </ThemedView>
       </ParallaxScrollView>
       <ButtonWrapper style={styles.button}>
-        <ThemedText type="default" style={styles.buttonText}>Start playing</ThemedText>
+        <ThemedText type="default" style={styles.buttonText}>
+          Start playing
+        </ThemedText>
       </ButtonWrapper>
     </View>
   );
@@ -74,16 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
     marginHorizontal: 10,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   circle: {
     width: 12,
@@ -94,12 +95,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   puzzle: {
+    flex: 1,
+  },
+  puzzleLink: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-    borderRadius: 10,
-    flex: 1,
   },
   image: {
     width: 60,

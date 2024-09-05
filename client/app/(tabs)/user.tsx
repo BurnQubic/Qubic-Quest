@@ -48,34 +48,30 @@ export default function UserProfile() {
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={theme.colors.secondary90}
-      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
-    >
+    <ParallaxScrollView bannerComponent={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}>
       <ThemedView style={styles.container}>
         <ThemedText type="title">User Profile</ThemedText>
-      <ThemedView style={styles.container}>
-        {loading ? (
-          <ActivityIndicator size="large" color={Colors[colorScheme].text} />
-        ) : user ? (
-          <>
-            <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText>
-            <ThemedText style={styles.info}>Email: {user.email}</ThemedText>
-            <ThemedText style={styles.info}>User ID: {user.uid}</ThemedText>
-            <ThemedText style={styles.info}>Account created: {user.metadata.creationTime}</ThemedText>
-            <ButtonWrapper onPress={handleSignOut} style={styles.button}>
-              <Text style={styles.buttonText}>Sign Out</Text>
-            </ButtonWrapper>
-          </>
-        ) : (
-          <>
-            <ThemedText style={styles.title}>Not Signed In</ThemedText>
-            <ThemedText style={styles.info}>Please sign in to view your profile</ThemedText>
-          </>
-        )}
+        <ThemedView style={styles.container}>
+          {loading ? (
+            <ActivityIndicator size="large" color={Colors[colorScheme].text} />
+          ) : user ? (
+            <>
+              <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText>
+              <ThemedText style={styles.info}>Email: {user.email}</ThemedText>
+              <ThemedText style={styles.info}>User ID: {user.uid}</ThemedText>
+              <ThemedText style={styles.info}>Account created: {user.metadata.creationTime}</ThemedText>
+              <ButtonWrapper onPress={handleSignOut} style={styles.button}>
+                <Text style={styles.buttonText}>Sign Out</Text>
+              </ButtonWrapper>
+            </>
+          ) : (
+            <>
+              <ThemedText style={styles.title}>Not Signed In</ThemedText>
+              <ThemedText style={styles.info}>Please sign in to view your profile</ThemedText>
+            </>
+          )}
+        </ThemedView>
       </ThemedView>
-      </ThemedView>
-      
     </ParallaxScrollView>
   );
 }

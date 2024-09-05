@@ -2,6 +2,11 @@ export const theme = {
   colors: {
     text: "#FFFFFF",
     primary: "#E51C44",
+    primary30: "#FF3366",
+    primary40: "#CC0033",
+    primary50: "#990033",
+    primary60: "#660033",
+    primary70: "#330033",
 
     secondary100: "#0A1033",
     secondary90: "#0D133D",
@@ -19,6 +24,8 @@ export const theme = {
     line: "#991F36",
     on: "#32BD50",
     error: "#FF0000",
+    gold: "#FFD700",
+    lightBackground: "#F5F5F5",
   },
 
   fonts: {
@@ -30,4 +37,3 @@ export const theme = {
 };
 
 export type Theme = typeof theme;
-
