@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { useSetRecoilState } from "recoil";
 // import { getMainLevel, getOnlineLevel } from "../api/levels";
 import { selectedLevelState } from "../store/selectedLevel";
+import _ from "lodash";
 
 const DEFAULT_LEVEL = "0";
 
@@ -22,7 +23,7 @@ export default (isMainLevel = true, selectedLevelId?: string) => {
       refetchInterval: false,
       retry: 1,
       onSuccess: (data) => {
-        setSelectedLevel(structuredClone(data));
+        setSelectedLevel(_.cloneDeep(data));
       },
     }
   );

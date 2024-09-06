@@ -12,7 +12,7 @@ export type TileProps = {
 
 const Tile = ({ index }: TileProps) => {
   const tileElementRef = useRef<View | null>(null);
-  useTileInteraction(index, tileElementRef.current as any);
+  // useTileInteraction(index, tileElementRef);
   const ALLOWED_ITEM_TYPES = ["Candy", "SuperCandy", "Chocolate"];
   const levelItems = useRecoilValue(levelItemsState);
   const [isAllowedType, setIsAllowedType] = useState(false);
@@ -36,8 +36,8 @@ const Tile = ({ index }: TileProps) => {
           top: `${Math.floor(index / COLUMN_NUMBER) * (100 / ROW_NUMBER)}%`,
         },
       ]}
-      data-index={index}
-      data-tile
+      // data-index={index}
+      // data-tile
       ref={tileElementRef}
     ></View>
   );

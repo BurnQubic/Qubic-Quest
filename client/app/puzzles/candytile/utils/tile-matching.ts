@@ -1,3 +1,4 @@
+import _ from "lodash";
 import uuid from "react-uuid";
 
 const COLUMN_NUMBER = 9;
@@ -122,7 +123,7 @@ type RepositionResult = {
 };
 
 export const repositionItems = (items: readonly LevelItem[], tiles: readonly LevelTile[]): RepositionResult => {
-  const repositionedItems = structuredClone(items) as LevelItem[];
+  const repositionedItems = _.cloneDeep(items) as LevelItem[];
   const newPositions: NewItemPosition[] = [];
 
   for (let i = repositionedItems.length - 1; i > 0; i--) {
@@ -133,7 +134,7 @@ export const repositionItems = (items: readonly LevelItem[], tiles: readonly Lev
     if (item === null) {
       const itemAbove = getItemAbove(i, repositionedItems, tiles);
       if (itemAbove.index !== null) {
-        repositionedItems[i] = structuredClone(repositionedItems[itemAbove.index]);
+        repositionedItems[i] = _.cloneDeep(repositionedItems[itemAbove.index]);
         repositionedItems[itemAbove.index] = null;
         newPositions.push({ index: itemAbove.index, tilesToMove: itemAbove.tileDistanceCount });
       }
@@ -148,7 +149,7 @@ export const repositionItems = (items: readonly LevelItem[], tiles: readonly Lev
 
 const candyColorArray: string[] = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 export const generateNewCandies = (items: readonly LevelItem[], tiles: readonly LevelTile[]): LevelItem[] => {
-  const newCandies = structuredClone(items) as LevelItem[];
+  const newCandies = _.cloneDeep(items) as LevelItem[];
   newCandies.forEach((item, index) => {
     const tileAvaliable = tiles[index] !== null;
     if (item === null && tileAvaliable) {

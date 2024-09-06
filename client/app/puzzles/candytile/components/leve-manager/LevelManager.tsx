@@ -25,10 +25,11 @@ import { ANIMATION_TIME_MS, COMBO_LIMIT } from "../../config";
 import levelItemsSnapshot from "../../data/mocks/levelItemsSnapshot";
 import levelTitlesSnapshot from "../../data/mocks/levelTitlesSnapshot";
 import useAudio from "../../hooks/useAudio";
+import _ from "lodash";
 
 const applyMatches = (matchInfo: MatchResult, itemList: LevelItem[]) => {
   let itemsFused = false;
-  const matchResult = structuredClone(itemList) as LevelItem[];
+  const matchResult = _.cloneDeep(itemList) as LevelItem[];
   const matchGroupsCenters = matchInfo.matchingGroups.map((group) =>
     getMatchGroupCenterIndex(group, matchInfo.matchingList)
   );
@@ -101,10 +102,10 @@ const LevelManager = () => {
     const firstIndex = swappedItems[0] ?? -1;
     const secondIndex = swappedItems[1] ?? -1;
 
-    const firstItem = structuredClone(levelItems[firstIndex]) as LevelItem;
-    const secondItem = structuredClone(levelItems[secondIndex]) as LevelItem;
+    const firstItem = _.cloneDeep(levelItems[firstIndex]) as LevelItem;
+    const secondItem = _.cloneDeep(levelItems[secondIndex]) as LevelItem;
 
-    const newLevelItems = structuredClone(levelItems) as LevelItem[];
+    const newLevelItems = _.cloneDeep(levelItems) as LevelItem[];
     newLevelItems[firstIndex] = undo ? firstItem : secondItem;
     newLevelItems[secondIndex] = undo ? secondItem : firstItem;
 

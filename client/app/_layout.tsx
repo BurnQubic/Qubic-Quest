@@ -15,6 +15,7 @@ import { Rajdhani_500Medium, Rajdhani_700Bold } from "@expo-google-fonts/rajdhan
 import { LilyScriptOne_400Regular } from "@expo-google-fonts/lily-script-one";
 import Toast from "react-native-toast-message";
 import toastConfig from "@/config/toastConfig";
+import CandyTiles from "@/app/puzzles/candytile";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -42,7 +43,7 @@ export default function RootLayout() {
   return (
     <RecoilRoot>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar
+        {/* <StatusBar
           barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
           backgroundColor="transparent"
           translucent
@@ -57,7 +58,9 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="+not-found" />
           <Stack.Screen name="puzzles/[id]" />
-        </Stack>
+        </Stack> */}
+
+        <CandyTiles />
       </GestureHandlerRootView>
       <Toast config={toastConfig} />
     </RecoilRoot>
