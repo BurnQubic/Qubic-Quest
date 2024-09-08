@@ -1,11 +1,11 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ViewProps } from "react-native";
 import { ThemedText } from "@/app/components/common/ThemedText";
 import { ButtonWrapper } from "@/app/components/common/ButtonWrapper";
 import { theme } from "@/config/theme";
 import Header from "./Header";
 
-interface GameWrapperProps {
+interface GameWrapperProps extends ViewProps {
   score: number;
   moves: { done: number; total: number; spentAllMoves: boolean };
   startGame?: () => void;
@@ -13,9 +13,9 @@ interface GameWrapperProps {
   children: React.ReactNode;
 }
 
-const GameWrapper: React.FC<GameWrapperProps> = ({ score, moves, startGame, endGame, children }) => {
+const GameWrapper: React.FC<GameWrapperProps> = ({ score, moves, startGame, endGame, children, ...props }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...props}>
       <View style={styles.gameArea}>{children}</View>
       <Header score={score} moves={moves} startGame={startGame} endGame={endGame}></Header>
     </View>

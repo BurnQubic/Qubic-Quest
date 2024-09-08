@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scoreText: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     margin: 0,

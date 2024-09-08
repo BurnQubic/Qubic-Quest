@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scoreText: {
-    fontSize: 34,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     margin: 0,
-    fontFamily: "YellowCandy",
+    fontFamily: "LilyScriptOne_400Regular",
     color: "#FFC107",
   },
 });
