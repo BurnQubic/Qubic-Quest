@@ -17,8 +17,8 @@ const Header = () => {
             <Avatar />
           </View>
           <View style={styles.rightContainer}>
-            <ScoreBox type="level" label="Level 5" icon="star" />
-            <ScoreBox type="coins" label="50" icon="cash" />
+            <ScoreBox type="level" label="Level 1" icon="star" />
+            <ScoreBox type="coins" label="0" icon="cash" />
           </View>
         </View>
       ) : null}

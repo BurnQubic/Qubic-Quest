@@ -4,7 +4,6 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { Provider } from "react-redux";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import NotificationService from "./notification";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -43,13 +42,13 @@ export default function RootLayout() {
   return (
     <RecoilRoot>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {/* <StatusBar
+        <StatusBar
           barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
           backgroundColor="transparent"
           translucent
           hidden={true}
         />
-        <NotificationService />
+        {/* <NotificationService /> */}
         <Stack
           screenOptions={{
             headerShown: false,
@@ -58,9 +57,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="+not-found" />
           <Stack.Screen name="puzzles/[id]" />
-        </Stack> */}
-
-        <CandyTiles />
+        </Stack>
       </GestureHandlerRootView>
       <Toast config={toastConfig} />
     </RecoilRoot>

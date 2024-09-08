@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({ score, moves, startGame, endGame }) => 
         <View style={[styles.moveProgress, { width: `${Math.min(moves.done / moves.total, 1) * 100}%` }]}></View>
         <View style={styles.statsTextContainer}>
           <Text style={styles.statsText}>
-            {moves.done}/{moves.total}
+            {score}
           </Text>
         </View>
       </View>

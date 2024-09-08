@@ -23,9 +23,9 @@ export default function TabLayout() {
     return <SplashScreen onFinish={handleSplashFinish} />;
   }
 
-  // if (!auth.isAuthenticated) {
-  //   return <Auth />;
-  // }
+  if (!auth.isAuthenticated) {
+    return <Auth />;
+  }
 
   return (
     <Tabs
