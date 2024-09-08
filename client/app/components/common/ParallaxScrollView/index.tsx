@@ -1,17 +1,19 @@
 import type { PropsWithChildren, ReactElement } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from "react-native-reanimated";
-import { ThemedView } from "./ThemedView";
+import { ThemedView } from "../ThemedView";
+import { Background } from "../Background";
+import Header from "../Header";
+import { theme } from "@/config/theme";
 
 const HEADER_HEIGHT = 250;
 
 type Props = PropsWithChildren<{
-  headerImage: ReactElement;
-  headerBackgroundColor: { dark: string; light: string };
+  bannerComponent?: ReactElement;
+  headerBackgroundColor?: string;
 }>;
 
-export default function ParallaxScrollView({ children, headerImage, headerBackgroundColor }: Props) {
-  const colorScheme = useColorScheme() ?? "light";
+export default function ParallaxScrollView({ children, bannerComponent, headerBackgroundColor = theme.colors.overlay }: Props) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
 
@@ -34,13 +36,14 @@ export default function ParallaxScrollView({ children, headerImage, headerBackgr
 
   return (
     <ThemedView style={styles.container}>
-      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
-        <Animated.View
-          style={[styles.header, { backgroundColor: headerBackgroundColor[colorScheme] }, headerAnimatedStyle]}
-        >
-          {headerImage}
-        </Animated.View>
-        <ThemedView style={styles.content}>{children}</ThemedView>
+      <Header />
+      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16} contentContainerStyle={{ minHeight: "100%" }}>
+        {bannerComponent && (
+          <Animated.View style={[styles.header, { backgroundColor: headerBackgroundColor }, headerAnimatedStyle]}>
+            {bannerComponent}
+          </Animated.View>
+        )}
+        <Background style={styles.content}>{children}</Background>
       </Animated.ScrollView>
     </ThemedView>
   );
@@ -56,8 +59,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 32,
+    padding: 10,
     gap: 16,
     overflow: "hidden",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderColor: "red",
+    marginTop: -20,
   },
 });

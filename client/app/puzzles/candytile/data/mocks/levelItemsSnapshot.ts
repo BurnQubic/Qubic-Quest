@@ -79,8 +79,9 @@ export default [
     id: "e9e5bb8b-9078-b034-3335-4b5a69cafe75",
   },
   {
-    type: "IceCream",
-    id: "93b66896-ce74-3353-a147-a909206cf7ef",
+    type: "Candy",
+    color: "Blue",
+    id: "e9e5bb8b-9178-b034-3335-4b5a69cafe75",
   },
   {
     type: "Candy",
@@ -294,7 +295,7 @@ export default [
   },
   {
     type: "Candy",
-    color: "Red",
+    color: "Yellow",
     id: "dca38633-8d28-765f-bab8-54dc88665aa3",
   },
   {
@@ -333,8 +334,9 @@ export default [
     id: "68f9e4da-b90b-eee4-f74c-b367e6ab30a2",
   },
   {
-    type: "IceCream",
-    id: "c0534a3e-ea0c-4df5-a154-b6bd9689a8f0",
+    type: "Candy",
+    color: "Purple",
+    id: "68f9e4da-b90b-eee4-f74c-b467e6ab30a2",
   },
   {
     type: "Candy",

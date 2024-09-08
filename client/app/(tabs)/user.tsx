@@ -1,75 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, ActivityIndicator } from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 import { firebaseAuth } from "@/config/firebase";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedView } from "@/app/components/common/ThemedView";
 import { ThemedText } from "@/app/components/common/ThemedText";
-import * as Notifications from "expo-notifications";
-import { Colors } from "@/config/constants/Colors";
-import { useColorScheme } from "@/config/hooks/useColorScheme";
 import { useRecoilValue } from "recoil";
 import { authState } from "@/config/store/auth";
-import AuthScreen from "./auth";
-import { router, useFocusEffect } from "expo-router";
+import { ButtonWrapper } from "../components/common/ButtonWrapper";
+import { theme } from "@/config/theme";
+import { useToast } from "@/config/hooks/useToast";
 
 export default function UserProfile() {
-  const colorScheme = useColorScheme();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const auth = useRecoilValue(authState);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+  const { showToast } = useToast();
 
   const handleSignOut = async () => {
     try {
       await firebaseAuth.signOut();
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "Success",
-          body: "Signed out successfully",
-          sound: "default",
-        },
-        trigger: null,
+      showToast({
+        title: "Success",
+        body: "Signed out successfully",
+        type: "success",
       });
     } catch (error) {
       console.log(error.message);
+      showToast({
+        title: "Error",
+        body: "Failed to sign out",
+        type: "error",
+      });
     }
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
-      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}
-    >
-      <ThemedText type="title">User Profile</ThemedText>
+    <ParallaxScrollView bannerComponent={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}>
       <ThemedView style={styles.container}>
-        {loading ? (
-          <ActivityIndicator size="large" color={Colors[colorScheme].text} />
-        ) : user ? (
-          <>
-            <ThemedText style={styles.title}>Welcome, {user.email}</ThemedText>
-            <ThemedText style={styles.info}>Email: {user.email}</ThemedText>
-            <ThemedText style={styles.info}>User ID: {user.uid}</ThemedText>
-            <ThemedText style={styles.info}>Account created: {user.metadata.creationTime}</ThemedText>
-            <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-              <Text style={styles.buttonText}>Sign Out</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <ThemedText style={styles.title}>Not Signed In</ThemedText>
-            <ThemedText style={styles.info}>Please sign in to view your profile</ThemedText>
-          </>
-        )}
+        <ThemedText type="title" style={styles.title}>
+          {auth.user ? auth.user.email : "Not Signed In"}
+        </ThemedText>
+        <ThemedView style={styles.innerContainer}>
+          {auth.user ? (
+            <>
+              <ThemedText style={styles.info}>Email: {auth.user.email}</ThemedText>
+              <ThemedText style={styles.info}>User ID: {auth.user.uid}</ThemedText>
+              <ThemedText style={styles.info}>Account created: {auth.user.displayName}</ThemedText>
+              <ButtonWrapper onPress={handleSignOut} style={styles.button}>
+                <Text style={styles.buttonText}>Sign Out</Text>
+              </ButtonWrapper>
+            </>
+          ) : (
+            <>
+              <ThemedText style={styles.title}>Not Signed In</ThemedText>
+              <ThemedText style={styles.info}>Please sign in to view your profile</ThemedText>
+            </>
+          )}
+        </ThemedView>
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -82,10 +68,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
+  innerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+    marginTop: 20, // Added margin for better spacing
+  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  welcome: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   logo: {
     color: "#dddddd",
@@ -98,16 +96,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    width: "40%",
-    height: 40,
-    backgroundColor: "#00aaff",
+    height: 50,
+    backgroundColor: theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 20,
+    borderRadius: 25,
     marginTop: 20,
+    paddingHorizontal: 20,
   },
   buttonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

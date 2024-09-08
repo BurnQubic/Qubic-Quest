@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
     backgroundColor: "inherit",
   },
   horizontal: {
-    width: 1500,
+    width: 2000,
     height: "100%",
     transform: [{ translateX: -750 }],
   },
   vertical: {
     width: "100%",
-    height: 1500,
+    height: 2000,
     transform: [{ translateY: -750 }],
   },
 });

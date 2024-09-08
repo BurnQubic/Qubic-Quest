@@ -1,0 +1,42 @@
+<svg id="Top_100" data-name="Top 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="163.057" height="95.275" viewBox="0 0 163.057 95.275">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Clip_2" data-name="Clip 2" d="M0,0H85.487V94.958H0Z" transform="translate(0.478 0.155)" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <path id="Clip_7" data-name="Clip 7" d="M0,0H35.914V22.931H0Z" transform="translate(0 0.806)" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <path id="Clip_12" data-name="Clip 12" d="M0,0H35.914V22.931H0Z" transform="translate(0.332 0.806)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="star" transform="translate(4)">
+    <g id="Group_3" data-name="Group 3" transform="translate(35.385 0.162)">
+      <path id="Clip_2-2" data-name="Clip 2" d="M0,0H85.487V94.958H0Z" transform="translate(0.478 0.155)" fill="none"/>
+      <g id="Group_3-2" data-name="Group 3" clip-path="url(#clip-path)">
+        <path id="Fill_1" data-name="Fill 1" d="M43.025,94.958C-3.211,79.687.05,21.194.05,21.194,18.658,2.493,42.744,0,42.744,0S66.83,2.493,85.437,21.194c0,0,3.261,58.493-42.975,73.764Z" transform="translate(0.478 0.155)" fill="#ffd34d"/>
+      </g>
+    </g>
+    <path id="Fill_4" data-name="Fill 4" d="M36.578,82.038h0l-.754-.3C3.287,68.835.189,30.123.014,18.566L0,17.625.7,17A71.572,71.572,0,0,1,36.251.048L36.564,0l.313.049C41.643.8,58.294,4.244,72.452,16.993l.7.629-.014.944a97.739,97.739,0,0,1-4.03,26.1c-5.647,18.5-16.337,30.977-31.774,37.077l-.754.3ZM36.554,4.186h0A68.177,68.177,0,0,0,4.148,19.448C4.435,30.036,7.62,65.523,36.581,77.585c13.807-5.724,23.426-17.209,28.591-34.136a94.047,94.047,0,0,0,3.829-24C56.04,8.154,40.889,4.911,36.554,4.186Z" transform="translate(42.03 6.569)" fill="#f2ba49"/>
+    <g id="Group_8" data-name="Group 8" transform="translate(0 53.921)">
+      <path id="Clip_7-2" data-name="Clip 7" d="M0,0H35.914V22.931H0Z" transform="translate(0 0.806)" fill="none"/>
+    </g>
+    <g id="Group_13" data-name="Group 13" transform="translate(120.969 53.921)">
+      <path id="Clip_12-2" data-name="Clip 12" d="M0,0H35.914V22.931H0Z" transform="translate(0.332 0.806)" fill="none"/>
+    </g>
+    <path id="Fill_17" data-name="Fill 17" d="M13,0l4.017,7.9L26,9.167l-6.5,6.15L21.035,24,13,19.9,4.965,24,6.5,15.317,0,9.167,8.983,7.9Z" transform="translate(65.231 18)" fill="#fcbd11"/>
+    <path id="Fill_18" data-name="Fill 18" d="M9.624,3.787H5.856V0H3.768V3.787H0v2.1H3.768V9.673H5.856V5.886H9.624Z" transform="translate(28 5.725)" fill="#ffd34d"/>
+    <path id="Fill_19" data-name="Fill 19" d="M5.7,2.862A2.849,2.849,0,1,1,2.849,0,2.855,2.855,0,0,1,5.7,2.862" transform="translate(38.349 0)" fill="#f2ba49"/>
+    <path id="Fill_22" data-name="Fill 22" d="M4.71,2.366A2.355,2.355,0,1,1,2.355,0,2.36,2.36,0,0,1,4.71,2.366" transform="translate(115.181 6.57)" fill="#ffd34d"/>
+    <path id="Fill_23" data-name="Fill 23" d="M8.311,3.27H5.058V0h-1.8V3.27H0V5.082H3.254V8.353h1.8V5.082H8.311Z" transform="translate(123.56 33.875)" fill="#ffd34d"/>
+    <path id="Fill_24" data-name="Fill 24" d="M4.462,2.242A2.231,2.231,0,1,1,2.232,0a2.236,2.236,0,0,1,2.23,2.242" transform="translate(25.037 35.809)" fill="#f2ba49"/>
+  </g>
+  <g id="ribbon" transform="translate(0 49)">
+    <path id="Fill_6" data-name="Fill 6" d="M0,0,13.567,13.464,0,26.929v.3H43.188V0Z" transform="translate(0 10.688)" fill="#ea9975"/>
+    <path id="Fill_9" data-name="Fill 9" d="M0,0,15.427,7.7V0Z" transform="translate(27.761 30.222)" fill="#ca7a57"/>
+    <path id="Fill_11" data-name="Fill 11" d="M43.188,0,29.621,13.464,43.188,26.929v.3H0V0Z" transform="translate(119.868 10.688)" fill="#ea9975"/>
+    <path id="Fill_14" data-name="Fill 14" d="M0,29.416H108V0H0Z" transform="translate(27.529 0.805)" fill="#fbc399"/>
+    <text id="TOP_100-2" data-name="TOP 100" transform="translate(51 22)" fill="#d47a52" font-size="15" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">TOP 100</tspan></text>
+    <path id="Fill_16" data-name="Fill 16" d="M15.427,0,0,7.7V0Z" transform="translate(119.869 30.222)" fill="#ca7a57"/>
+  </g>
+</svg>

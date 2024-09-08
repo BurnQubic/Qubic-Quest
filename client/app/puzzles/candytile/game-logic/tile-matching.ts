@@ -14,6 +14,7 @@ import {
   SuperCandy,
   SwappedItems,
 } from "../types";
+import _ from "lodash";
 export const CANDY_COLOR_LIST: string[] = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 export const CANDY_TYPES_ARRAY = ["Candy", "SuperCandy"];
 const DEFAULT_SWAPPED_CANDY_COLOR: CandyColor = "Red";
@@ -369,7 +370,7 @@ export type NewItemPosition = {
 };
 
 export const repositionItems = (items: readonly LevelItem[], tiles: readonly LevelTile[]): LevelItem[] => {
-  const repositionedItems = structuredClone(items) as LevelItem[];
+  const repositionedItems = _.cloneDeep(items) as LevelItem[];
   const newPositions: NewItemPosition[] = [];
 
   for (let i = repositionedItems.length - 1; i > 0; i--) {
@@ -380,7 +381,7 @@ export const repositionItems = (items: readonly LevelItem[], tiles: readonly Lev
     if (item === null) {
       const itemAbove = getItemAbove(i, repositionedItems, tiles);
       if (itemAbove.index !== null) {
-        repositionedItems[i] = structuredClone(repositionedItems[itemAbove.index]);
+        repositionedItems[i] = _.cloneDeep(repositionedItems[itemAbove.index]);
         repositionedItems[itemAbove.index] = null;
         newPositions.push({
           index: itemAbove.index,
@@ -401,7 +402,7 @@ const getRandomColorCandy = (): LevelItem => {
 };
 
 export const generateNewCandies = (items: readonly LevelItem[], tiles: readonly LevelTile[]): LevelItem[] => {
-  const newCandies = structuredClone(items) as LevelItem[];
+  const newCandies = _.cloneDeep(items) as LevelItem[];
   newCandies.forEach((item, index) => {
     const tileAvaliable = tiles[index] !== null;
     if (item === null && tileAvaliable) newCandies[index] = getRandomColorCandy();
@@ -424,7 +425,7 @@ export const getHorizontalAndVerticalItems = (originIndex: number): number[] => 
 };
 
 export const allTilesFilled = (items: readonly LevelItem[], tiles: readonly LevelTile[]): boolean => {
-  return !(structuredClone(items) as LevelItem[]).some((x, index) => tiles[index] !== null && x === null);
+  return !(_.cloneDeep(items) as LevelItem[]).some((x, index) => tiles[index] !== null && x === null);
 };
 
 export const checkForAdjacentMatch = (index: number, matchList: readonly MatchDetail[]): boolean => {
@@ -498,7 +499,7 @@ export const levelHasPossibleCombinations = (
     const adjacents = getAdjacentIndexes(index);
 
     const adjacentSwapMatched = adjacents.some((adjacentIndex) => {
-      const adjacentItem = structuredClone(interactableItems[adjacentIndex]);
+      const adjacentItem = _.cloneDeep(interactableItems[adjacentIndex]);
       const validAdjacentItem =
         adjacentItem !== null && adjacentIndex > 0 && interactableItemTypes.includes(adjacentItem?.type || "");
       if (!validAdjacentItem) return false;

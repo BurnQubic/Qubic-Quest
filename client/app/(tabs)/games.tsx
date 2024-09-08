@@ -1,11 +1,15 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, ImageSourcePropType, Dimensions } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
-import { Image } from "expo-image";
 import ParallaxScrollView from "../components/common/ParallaxScrollView";
-import { gameList } from "@/config/game-list";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { ButtonWrapper } from "../components/common/ButtonWrapper";
+import { theme } from "@/config/theme";
+import { ThemedView } from "../components/common/ThemedView";
+import { ThemedText } from "../components/common/ThemedText";
+import { gameList } from "@/config/constants/game-list";
+import { Card } from "../components/common/Card";
 
 export default function GamesScreen() {
   const scale = useSharedValue(1);
@@ -16,135 +20,136 @@ export default function GamesScreen() {
     };
   });
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.95);
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1);
-  };
-
   return (
-    <View style={styles.mainContainer}>
-      <ParallaxScrollView
-        headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
-        headerImage={<Ionicons size={310} name="game-controller-outline" style={styles.logo} />}
-      >
-        <View style={styles.container}>
-          <Text style={styles.header}>Games</Text>
-          <ScrollView>
-            <Text style={styles.subHeader}>Free gam e of the day</Text>
-            <Animated.View style={[styles.featuredGame, animatedStyle]}>
-              <TouchableOpacity style={styles.featuredGameButton} onPressIn={handlePressIn} onPressOut={handlePressOut}>
-                <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
-                  <Image source={require("@/assets/images/main/candy-game.jpg")} style={styles.featuredImage} />
-                  <View style={styles.featuredGameText}>
-                    <Text style={styles.featuredTitle}>{gameList[0].title}</Text>
-                    <Text style={styles.playButtonText}>PLAY GAME</Text>
-                  </View>
-                </Link>
-              </TouchableOpacity>
+    <ThemedView style={styles.mainContainer}>
+      <ParallaxScrollView bannerComponent={<Ionicons size={310} name="game-controller-outline" style={styles.logo} />}>
+        <ThemedView style={styles.container}>
+          <ThemedText type="title" style={styles.header}>
+            Games
+          </ThemedText>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+            <ThemedText type="subtitle" style={styles.subHeader}>
+              Top Game
+            </ThemedText>
+            <Animated.View style={animatedStyle}>
+              <Card style={styles.featuredGame} bannerImage={require("@/assets/images/main/candy-game.jpg")}>
+                <ThemedView style={styles.featuredGameButton}>
+                  <ThemedView style={styles.featuredGameText}>
+                    <ThemedText type="default" style={styles.featuredTitle}>
+                      {gameList[0].title}
+                    </ThemedText>
+                    <ButtonWrapper style={styles.playButtonText}>
+                      <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
+                        <ThemedText type="default" style={{ fontFamily: "LilyScriptOne_400Regular" }}>
+                          PLAY GAME
+                        </ThemedText>
+                      </Link>
+                    </ButtonWrapper>
+                  </ThemedView>
+                </ThemedView>
+              </Card>
             </Animated.View>
 
-            <Text style={styles.subHeader}>Free games</Text>
-            <View style={styles.gamesGrid}>
+            <ThemedText type="subtitle" style={styles.subHeader}>
+              All games
+            </ThemedText>
+            <ThemedView style={styles.gamesGrid}>
               {gameList.map((game, index) => (
-                <TouchableOpacity key={index} style={styles.gameCard}>
-                  <Image source={game.image} style={styles.gameImage} />
-                  <Text style={styles.gameTitle}>{game.title}</Text>
-                  <Text style={styles.levels}>{`LEVEL ${game.levels}`}</Text>
-                </TouchableOpacity>
+                <ButtonWrapper key={index} style={styles.gameCard}>
+                  <Card bannerImage={game.image as ImageSourcePropType}>
+                    <ThemedText type="default" style={styles.gameTitle}>
+                      {game.title}
+                    </ThemedText>
+                    <ThemedText type="default" style={styles.levels}>{`LEVEL ${game.levels}`}</ThemedText>
+                  </Card>
+                </ButtonWrapper>
               ))}
-            </View>
+            </ThemedView>
           </ScrollView>
-        </View>
+        </ThemedView>
       </ParallaxScrollView>
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    paddingHorizontal: 0,
+  },
   mainContainer: {
     flex: 1,
   },
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
   logo: {
     color: "#dddddd",
-    bottom: -90,
-    left: -35,
+    bottom: -60,
+    left: -20,
     position: "absolute",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginTop: 10,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   subHeader: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
-    marginVertical: 10,
+    marginVertical: 15,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   featuredGame: {
-    backgroundColor: "#00aaff",
-    borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 30,
+    borderRadius: 15,
+    overflow: "hidden",
   },
   featuredGameButton: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
-  },
-  featuredImage: {
-    width: 60,
-    height: 60,
-    marginRight: 16,
-    borderRadius: 10,
+    padding: 15,
   },
   featuredGameText: {
     flexDirection: "column",
   },
   featuredTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#fff",
+    color: theme.colors.heading,
+    marginBottom: 10,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   playButtonText: {
-    fontSize: 16,
-    color: "#fff",
-    backgroundColor: "#ffa500",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    marginTop: 10,
+    fontSize: 18,
+    color: theme.colors.heading,
+    backgroundColor: theme.colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    overflow: "hidden",
+    textAlign: "center",
   },
   gamesGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
   },
   gameCard: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 16,
-    marginBottom: 16,
-    width: "48%",
-    alignItems: "center",
-  },
-  gameImage: {
-    width: 50,
-    height: 50,
-    marginBottom: 10,
-    borderRadius: 10,
+    width: "50%",
+    borderRadius: 15,
+    overflow: "hidden",
+    minWidth: 150,
   },
   gameTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   levels: {
-    fontSize: 12,
-    color: "#6c6c6c",
+    fontSize: 14,
+    color: theme.colors.highlight,
+    fontFamily: "LilyScriptOne_400Regular",
   },
 });

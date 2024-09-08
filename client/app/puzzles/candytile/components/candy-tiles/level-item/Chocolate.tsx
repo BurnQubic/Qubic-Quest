@@ -5,6 +5,7 @@ import useScore from "../../../hooks/useScore";
 import { levelItemsState } from "../../../store/levelItems";
 import { chocolateSprite } from "../../../extern";
 import { Image } from "expo-image";
+import useAudio from "../../../hooks/useAudio";
 
 const animateItemSpawn = (scaleValue: Animated.Value, onComplete: () => void): void => {
   Animated.sequence([
@@ -45,7 +46,7 @@ const Chocolate = ({ id, index }: ChocolateProps) => {
   const levelItems = useRecoilValue(levelItemsState);
   const scaleValue = useRef(new Animated.Value(0)).current;
   const rotationValue = useRef(new Animated.Value(0)).current;
-  //   const playAudio = useAudio();
+  const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
   useScore(matched, index, "Chocolate");
 
@@ -68,7 +69,7 @@ const Chocolate = ({ id, index }: ChocolateProps) => {
   const onItemMatch = () => {
     itemUsedRef.current = true;
     setShow(false);
-    // playAudio({ audioName: "chocolateMatch", volume: 0.5 });
+    playAudio({ audioName: "chocolateMatch", volume: 0.5 });
   };
 
   const spin = rotationValue.interpolate({

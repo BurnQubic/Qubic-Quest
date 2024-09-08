@@ -1,22 +1,21 @@
 import { Text, type TextProps, StyleSheet } from "react-native";
-
-import { useThemeColor } from "@/config/hooks/useThemeColor";
+import { theme } from "@/config/theme";
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
+  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link" | "gameText";
+
 };
 
-export function ThemedText({ style, lightColor, darkColor, type = "default", ...rest }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-
+export function ThemedText({ style, type = "default", ...rest }: ThemedTextProps) {
   return (
     <Text
       style={[
-        { color },
-        type === "default" ? styles.default : undefined,
+        styles.default,
+        { color: theme.colors.text },
         type === "title" ? styles.title : undefined,
+        type === "gameText" ? styles.gameText : undefined,
         type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
         type === "subtitle" ? styles.subtitle : undefined,
         type === "link" ? styles.link : undefined,
@@ -33,8 +32,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
     fontWeight: "600",
   },
   title: {
@@ -45,6 +42,9 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  gameText: {
+    fontFamily: "LilyScriptOne_400Regular",
   },
   link: {
     lineHeight: 30,

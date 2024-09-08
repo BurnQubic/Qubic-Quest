@@ -2,28 +2,35 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import LevelSelector from "./components/level-selector";
 // import CandyTiles from "./components/candy-tiles/CandyTiles";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValue } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import LevelContainer from "./components/candy-tiles/LevelContainer";
 import { Image, ImageBackground } from "expo-image";
 import { backgroundImage, SUPER_CANDY_ASSETS } from "./extern";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
+import GameWrapper from "../GameWrapper";
+import { scoreState } from "./store/score";
+import { levelMovesState } from "./store/levelMoves";
 // import LevelContextProvider from "./context/LevelContext";
 
 const queryClient = new QueryClient();
 
 const CandyTilePuzzle = () => {
+  const score = useRecoilValue(scoreState);
+  const moves = useRecoilValue(levelMovesState);
+
   return (
-    // <RecoilRoot>
-    <QueryClientProvider client={queryClient}>
-      {/* <ImageBackground source={backgroundImage} style={styles.image}> */}
-        <View style={styles.container}>
-          {/* <LevelSelector></LevelSelector> */}
-          <LevelContainer />
-        </View>
-      {/* </ImageBackground> */}
-    </QueryClientProvider>
-    // </RecoilRoot>
+    <GameWrapper score={score} moves={moves} startGame={() => {}} endGame={() => {}}>
+      <QueryClientProvider client={queryClient}>
+        <ImageBackground source={backgroundImage} style={styles.image}>
+          <View style={styles.container}>
+            {/* <LevelSelector></LevelSelector> */}
+            <LevelContainer />
+          </View>
+        </ImageBackground>
+      </QueryClientProvider>
+    </GameWrapper>
   );
 };
 

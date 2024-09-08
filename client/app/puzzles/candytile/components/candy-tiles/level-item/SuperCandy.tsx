@@ -8,6 +8,7 @@ import useScore from "../../../hooks/useScore";
 import { SuperCandyFX } from "../../../types";
 import { SUPER_CANDY_ASSETS } from "../../../extern";
 import { Image } from "expo-image";
+import useAudio from "../../../hooks/useAudio";
 
 export const CandyColors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 
@@ -39,7 +40,7 @@ const SuperCandy = ({ color, id, index }: SuperCandyProps) => {
   const itemUsedRef = useRef(false);
   const levelItems = useRecoilValue(levelItemsState);
   const setLevelFxList = useSetRecoilState(levelFxListState);
-  //   const playAudio = useAudio();
+  const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
   const scaleValue = useRef(new Animated.Value(0)).current;
   const rotateValue = useRef(new Animated.Value(180)).current;
@@ -60,7 +61,7 @@ const SuperCandy = ({ color, id, index }: SuperCandyProps) => {
   const onItemMatch = () => {
     itemUsedRef.current = true;
     setShow(false);
-    // playAudio({ audioName: "superCandyMatch" });
+    playAudio({ audioName: "superCandyMatch" });
     setLevelFxList((list) => [
       ...list,
       {

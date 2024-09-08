@@ -1,46 +1,63 @@
-import { StyleSheet, Platform, TouchableOpacity, Text, View } from "react-native";
+import { StyleSheet, Platform, TouchableOpacity, View } from "react-native";
 import { HelloWave } from "@/app/components/HelloWave";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import GameScreen from "./games";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
-import { gameList } from "@/config/game-list";
 import { Link } from "expo-router";
+import { ButtonWrapper } from "../components/common/ButtonWrapper";
+import { Button } from "../components/common/RectButton";
+import { theme } from "@/config/theme";
+import { ThemedText } from "@/app/components/common/ThemedText";
+import { ThemedView } from "../components/common/ThemedView";
+import { gameList } from "@/config/constants/game-list";
+import { Card } from "@/app/components/common/Card";
 
 export default function HomeScreen() {
   return (
     <View style={styles.mainContainer}>
-      <ParallaxScrollView
-        headerBackgroundColor={{ light: "#34568B", dark: "#34568B" }}
-        headerImage={<Ionicons size={310} name="home-outline" style={styles.logo} />}
-      >
-        <View style={styles.container}>
-          <Text style={styles.header}>Today</Text>
-          <Text style={styles.subtitle}>Your personal selection of puzzles for different brain areas</Text>
+      <ParallaxScrollView bannerComponent={<Ionicons size={310} name="home-outline" style={styles.logo} />}>
+        <ThemedView style={styles.container}>
+          <ThemedText type="title" style={styles.header}>
+            Today's Choices
+          </ThemedText>
+          <ThemedText type="subtitle" style={styles.subtitle}>
+            Your personal selection of puzzles for different brain areas
+          </ThemedText>
           <ScrollView>
             <View style={styles.timelineContainer}>
               {gameList.map((puzzle, index) => (
-                <View key={index} style={styles.puzzleContainer}>
-                  <View style={styles.circle} />
-                  <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }}>
-                    <TouchableOpacity style={styles.puzzle}>
-                      <Image source={puzzle.image} style={styles.image} />
-                      <View>
-                        <Text style={styles.title}>{puzzle.title}</Text>
-                        <Text style={styles.category}>{puzzle.levels}</Text>
+                <ButtonWrapper key={index} style={styles.puzzleContainer}>
+                  <Card style={styles.puzzle}>
+                    <Link href={{ pathname: "./puzzles/[id]", params: { id: puzzle.id } }} style={styles.puzzleLink}>
+                      <View style={styles.imageContainer}>
+                        <Image source={puzzle.image} style={styles.image} />
                       </View>
-                    </TouchableOpacity>
-                  </Link>
-                </View>
+
+                      <ThemedView style={styles.puzzleInfo}>
+                        <ThemedText type="default" style={styles.title}>
+                          {puzzle.title}
+                        </ThemedText>
+                        <ThemedText type="default" style={styles.category}>
+                          {puzzle.levels}
+                        </ThemedText>
+                      </ThemedView>
+                    </Link>
+                  </Card>
+                </ButtonWrapper>
               ))}
             </View>
           </ScrollView>
-        </View>
+        </ThemedView>
       </ParallaxScrollView>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Start playing</Text>
-      </TouchableOpacity>
+      <ButtonWrapper style={styles.button}>
+        <Link href={{ pathname: "./puzzles/[id]", params: { id: "candytile" } }} style={styles.puzzleLink}>
+          <ThemedText type="default" style={styles.buttonText}>
+            Start playing
+          </ThemedText>
+        </Link>
+      </ButtonWrapper>
     </View>
   );
 }
@@ -59,10 +76,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    fontFamily: "LilyScriptOne_400Regular"
   },
   subtitle: {
     fontSize: 14,
     marginBottom: 20,
+    fontFamily: "LilyScriptOne_400Regular"
   },
   timelineContainer: {
     flexDirection: "column",
@@ -70,37 +89,29 @@ const styles = StyleSheet.create({
   puzzleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    marginHorizontal: 10,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  circle: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-    marginRight: 16,
-    alignSelf: "flex-start",
-    marginTop: 20,
+    padding: 0,
   },
   puzzle: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderRadius: 10,
     flex: 1,
   },
+  imageContainer: {},
+  puzzleInfo: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    padding: 10,
+    fontFamily: "LilyScriptOne_400Regular"
+  },
+  puzzleLink: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   image: {
-    width: 60,
-    height: 60,
-    marginRight: 16,
+    width: 64,
+    height: 64,
     borderRadius: 10,
   },
   title: {
@@ -109,6 +120,7 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 12,
+    justifyContent: "flex-end",
   },
   button: {
     position: "absolute",
@@ -119,12 +131,13 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#00aaff",
+    backgroundColor: theme.colors.primary,
   },
   buttonText: {
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
+    fontFamily: "LilyScriptOne_400Regular"
   },
   logo: {
     color: "#dddddd",

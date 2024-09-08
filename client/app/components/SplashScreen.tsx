@@ -28,7 +28,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.bannerContainer, animatedStyle]}>
-        <Image source={require("../../assets/images/splash.png")} style={styles.banner} />
+        <Image source={require("../../assets/images/favicon.png")} style={styles.banner} />
       </Animated.View>
       <Text style={styles.text}>Loading...</Text>
       <ActivityIndicator size="small" color="#0000ff" />

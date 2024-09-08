@@ -7,6 +7,7 @@ import { LevelTasks } from "../../../types";
 import useScore from "../../../hooks/useScore";
 import { Image } from "expo-image";
 import { iceCreamSprite } from "../../../extern";
+import useAudio from "../../../hooks/useAudio";
 
 type IceCreamProps = {
   id: string;
@@ -18,7 +19,7 @@ const IceCream = ({ id, index }: IceCreamProps) => {
   const opacity = useRef(new Animated.Value(1)).current;
   const itemUsedRef = useRef(false);
   const levelItems = useRecoilValue(levelItemsState);
-  //   const playAudio = useAudio();
+  const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
   const setLevelTasks = useSetRecoilState<LevelTasks>(levelTasksState);
 
@@ -32,7 +33,7 @@ const IceCream = ({ id, index }: IceCreamProps) => {
 
   const onItemMatch = () => {
     itemUsedRef.current = true;
-    // playAudio({ audioName: "iceCreamMatch" });
+    playAudio({ audioName: "iceCreamMatch" });
     Animated.timing(opacity, {
       toValue: 0,
       duration: 200,

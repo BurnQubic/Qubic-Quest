@@ -92,11 +92,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scoreText: {
-    fontSize: 24, // Replace with a numeric value
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    margin: 0, // Use numeric values
-    fontFamily: "YellowCandy", // Ensure this font is loaded in your project
+    margin: 0,
+    fontFamily: "LilyScriptOne_400Regular",
   },
 });
 

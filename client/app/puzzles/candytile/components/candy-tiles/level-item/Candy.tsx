@@ -3,21 +3,24 @@ import { Image } from "expo-image";
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 import { useFocusEffect } from "expo-router";
 import { useRecoilValue } from "recoil";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { levelItemsState } from "../../../store/levelItems";
 import { CANDY_ASSETS } from "../../../extern";
 import useScore from "../../../hooks/useScore";
 import LevelManager from "../../leve-manager/LevelManager";
-// import useAudio from '../../../../../hooks/useAudio';
+import { ANIMATION_TIME_MS } from "../../../config";
+import useAudio from "../../../hooks/useAudio";
+import { randomNumber } from "../../../utils/math";
 
 export const CandyColors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple"];
 
 let activeBounceSounds = 0;
 const activeBounceSoundsLimit = 10;
 
-const animateItemSpawn = (positionX: any, positionY: any) => {
-  positionX.value = withTiming((positionX.value * 1) / 100, { duration: 750 });
-  positionY.value = withTiming((positionY.value * 1) / 100, { duration: 750 });
+const animateItemSpawn = (positionY: any) => {
+  positionY.value = withTiming(positionY.value / 100, {
+    duration: ANIMATION_TIME_MS * 1.5,
+  });
 };
 
 type CandyProps = {
@@ -29,20 +32,23 @@ type CandyProps = {
 const Candy = ({ color, id, index }: CandyProps) => {
   const [show, setShow] = useState(false);
   const levelItems = useRecoilValue(levelItemsState);
-  const translateY = useSharedValue(-500);
+  const translateY = useSharedValue(-5000);
   const itemUsed = useRef(false);
-  // const playAudio = useAudio();
+  const playAudio = useAudio();
   const matched = useMemo(() => !levelItems.some((x) => x?.id === id), [levelItems]);
 
   useScore(matched, index, "Candy", color);
 
   useEffect(() => {
-    translateY.value = withSpring(0, { damping: 5, stiffness: 80 });
+    translateY.value = withSpring(0, {
+      damping: 22,
+      stiffness: 200,
+    });
     playCandyBounceSound();
   }, []);
 
   useEffect(() => {
-    if (id) setShow(true);
+    !!id && setShow(true);
   }, [id]);
 
   useEffect(() => {
@@ -52,7 +58,7 @@ const Candy = ({ color, id, index }: CandyProps) => {
 
   const playCandyBounceSound = () => {
     if (activeBounceSounds > activeBounceSoundsLimit) return;
-    // playAudio({ audioName: 'candyBounce', volume: 0.25, speed: randomNumber(0.9, 1.5) });
+    playAudio({ audioName: 'candyBounce', volume: 0.25, speed: randomNumber(0.9, 1.5) });
     activeBounceSounds += 1;
     setTimeout(() => {
       activeBounceSounds -= 1;
@@ -69,7 +75,7 @@ const Candy = ({ color, id, index }: CandyProps) => {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
-      <Image source={CANDY_ASSETS[color]} style={styles.image} />
+      {show && <Image source={CANDY_ASSETS[color]} style={styles.image} />}
     </Animated.View>
   );
 };

@@ -24,10 +24,12 @@ import { delay } from "../../utils/utils";
 import { ANIMATION_TIME_MS, COMBO_LIMIT } from "../../config";
 import levelItemsSnapshot from "../../data/mocks/levelItemsSnapshot";
 import levelTitlesSnapshot from "../../data/mocks/levelTitlesSnapshot";
+import useAudio from "../../hooks/useAudio";
+import _ from "lodash";
 
 const applyMatches = (matchInfo: MatchResult, itemList: LevelItem[]) => {
   let itemsFused = false;
-  const matchResult = structuredClone(itemList) as LevelItem[];
+  const matchResult = _.cloneDeep(itemList) as LevelItem[];
   const matchGroupsCenters = matchInfo.matchingGroups.map((group) =>
     getMatchGroupCenterIndex(group, matchInfo.matchingList)
   );
@@ -69,7 +71,7 @@ const LevelManager = () => {
   const setPossibleCombinations = useSetRecoilState(possibleCombinationsState);
   const [comboCount, setComboCount] = useRecoilState(comboCountState);
   // const selectedLevel = useMemo(() => selectedLevelQuery.data?.file, [selectedLevelQuery.data]) as LevelFile;
-  //   const playAudio = useAudio();
+  const playAudio = useAudio();
 
   const itemsWereSwapped = useRef(false);
 
@@ -90,7 +92,7 @@ const LevelManager = () => {
     setLevelItems(levelItemsSnapshot);
     setLevelTiles(levelTitlesSnapshot);
     // setLevelMoves({ done: 0, total: selectedLevel.maximumMoves, spentAllMoves: false });
-    setLevelMoves({ done: 0, total: 100, spentAllMoves: false });
+    setLevelMoves({ done: 0, total: 5, spentAllMoves: false });
   };
 
   const swapItems = (undo: boolean) => {
@@ -100,10 +102,10 @@ const LevelManager = () => {
     const firstIndex = swappedItems[0] ?? -1;
     const secondIndex = swappedItems[1] ?? -1;
 
-    const firstItem = structuredClone(levelItems[firstIndex]) as LevelItem;
-    const secondItem = structuredClone(levelItems[secondIndex]) as LevelItem;
+    const firstItem = _.cloneDeep(levelItems[firstIndex]) as LevelItem;
+    const secondItem = _.cloneDeep(levelItems[secondIndex]) as LevelItem;
 
-    const newLevelItems = structuredClone(levelItems) as LevelItem[];
+    const newLevelItems = _.cloneDeep(levelItems) as LevelItem[];
     newLevelItems[firstIndex] = undo ? firstItem : secondItem;
     newLevelItems[secondIndex] = undo ? secondItem : firstItem;
 
@@ -134,10 +136,10 @@ const LevelManager = () => {
       setSwappedItems([null, null]);
       itemsWereSwapped.current = false;
 
-      //   playAudio({ audioName: "match", speed: 1 + (combo + 1) / 10 });
+      playAudio({ audioName: "match", speed: 1 + (combo + 1) / 10 });
       setComboCount((combo) => (combo < COMBO_LIMIT ? combo + 1 : combo));
       const { matchResult, itemsFused } = applyMatches(matchInfo, itemList);
-      //   itemsFused && playAudio({ audioName: "fusionMatch" });
+      itemsFused && playAudio({ audioName: "fusionMatch" });
 
       setLevelItems(matchResult);
       setMatchList(matchInfo.matchingList);
