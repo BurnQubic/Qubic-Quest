@@ -37,8 +37,6 @@ const TileGrid = () => {
 
   const gesture = Gesture.Pan()
     .onBegin((e) => {
-      // const touchedElement = findTouchedTile(e.x, e.y, gridLayout);
-
       if (!gridLayout) return null;
       const gridX = e.x - gridLayout.x;
       const gridY = e.y - gridLayout.y;
@@ -49,14 +47,11 @@ const TileGrid = () => {
       if (touchedElement !== null) {
         dragging.current = true;
         firstTile.current = touchedElement;
-        console.log("Gesture started on tile:", firstTile.current, touchedElement);
       }
     })
     .onUpdate((e) => {
       console.log("firstTile.current:", firstTile.current);
       if (!dragging.current || !firstTile.current || !finishedMoving) return;
-      // const touchedElement = findTouchedTile(e.x, e.y, gridLayout);
-
       if (!gridLayout) return null;
       const gridX = e.x - gridLayout.x;
       const gridY = e.y - gridLayout.y;

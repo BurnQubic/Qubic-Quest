@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <>
-      {auth.isAuthenticated ? (
+      {/* {auth.isAuthenticated ? ( */}
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <Avatar />
@@ -21,7 +21,7 @@ const Header = () => {
             <ScoreBox type="coins" label="0" icon="cash" />
           </View>
         </View>
-      ) : null}
+      {/* ) : null} */}
     </>
   );
 };

@@ -52,9 +52,11 @@ export default function HomeScreen() {
         </ThemedView>
       </ParallaxScrollView>
       <ButtonWrapper style={styles.button}>
-        <ThemedText type="default" style={styles.buttonText}>
-          Start playing
-        </ThemedText>
+        <Link href={{ pathname: "./puzzles/[id]", params: { id: "candytile" } }} style={styles.puzzleLink}>
+          <ThemedText type="default" style={styles.buttonText}>
+            Start playing
+          </ThemedText>
+        </Link>
       </ButtonWrapper>
     </View>
   );
@@ -74,10 +76,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    fontFamily: "LilyScriptOne_400Regular"
   },
   subtitle: {
     fontSize: 14,
     marginBottom: 20,
+    fontFamily: "LilyScriptOne_400Regular"
   },
   timelineContainer: {
     flexDirection: "column",
@@ -97,6 +101,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     padding: 10,
+    fontFamily: "LilyScriptOne_400Regular"
   },
   puzzleLink: {
     display: "flex",
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 12,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   button: {
     position: "absolute",
@@ -132,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
+    fontFamily: "LilyScriptOne_400Regular"
   },
   logo: {
     color: "#dddddd",

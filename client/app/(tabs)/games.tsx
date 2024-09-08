@@ -34,16 +34,18 @@ export default function GamesScreen() {
             <Animated.View style={animatedStyle}>
               <Card style={styles.featuredGame} bannerImage={require("@/assets/images/main/candy-game.jpg")}>
                 <ThemedView style={styles.featuredGameButton}>
-                  <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
-                    <ThemedView style={styles.featuredGameText}>
-                      <ThemedText type="default" style={styles.featuredTitle}>
-                        {gameList[0].title}
-                      </ThemedText>
-                      <ButtonWrapper style={styles.playButtonText}>
-                        <ThemedText type="default">PLAY GAME</ThemedText>
-                      </ButtonWrapper>
-                    </ThemedView>
-                  </Link>
+                  <ThemedView style={styles.featuredGameText}>
+                    <ThemedText type="default" style={styles.featuredTitle}>
+                      {gameList[0].title}
+                    </ThemedText>
+                    <ButtonWrapper style={styles.playButtonText}>
+                      <Link href={{ pathname: "./puzzles/[id]", params: { id: gameList[0].id } }}>
+                        <ThemedText type="default" style={{ fontFamily: "LilyScriptOne_400Regular" }}>
+                          PLAY GAME
+                        </ThemedText>
+                      </Link>
+                    </ButtonWrapper>
+                  </ThemedView>
                 </ThemedView>
               </Card>
             </Animated.View>
@@ -88,15 +90,16 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   header: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
     marginTop: 10,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   subHeader: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     marginVertical: 15,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   featuredGame: {
     marginBottom: 30,
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: theme.colors.heading,
     marginBottom: 10,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   playButtonText: {
     fontSize: 18,
@@ -141,9 +145,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
+    fontFamily: "LilyScriptOne_400Regular",
   },
   levels: {
     fontSize: 14,
     color: theme.colors.highlight,
+    fontFamily: "LilyScriptOne_400Regular",
   },
 });

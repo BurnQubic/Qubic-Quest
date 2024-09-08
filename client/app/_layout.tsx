@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import NotificationService from "./notification";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
 import { RecoilRoot } from "recoil";
 import { StatusBar } from "react-native";
 import { Inter_400Regular, Inter_500Medium } from "@expo-google-fonts/inter";
