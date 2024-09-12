@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: theme.colors.text,
     fontWeight: "600",
+    fontFamily: "LilyScriptOne_400Regular",
   },
   icon: {
     color: theme.colors.text,
