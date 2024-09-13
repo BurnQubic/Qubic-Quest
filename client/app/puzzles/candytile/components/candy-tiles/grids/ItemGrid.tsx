@@ -15,6 +15,7 @@ const ItemGrid = () => {
   // const selectedLevel = useSelectedLevel();
   // const tilesLayout = useMemo(() => selectedLevel.data?.file.initialTiles || [], [selectedLevel.data]);
   const tilesLayout = levelTitlesSnapshot;
+  console.log("ItemGrid RENDERING...");
 
   return (
     <View style={styles.grid}>

@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Modal } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
 import { theme } from "@/config/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
+import { ButtonWrapper } from "@/app/components/common/ButtonWrapper";
 
 interface HeaderProps {
   score: number;
@@ -25,6 +25,7 @@ const Header: React.FC<HeaderProps> = ({ score, moves, startGame, endGame }) => 
   }, [confirmModalVisible]);
 
   const handleExitGame = () => {
+    console.log("EXIT")
     setConfirmAction("exit");
     setConfirmModalVisible(true);
   };
@@ -59,9 +60,9 @@ const Header: React.FC<HeaderProps> = ({ score, moves, startGame, endGame }) => 
 
   return (
     <View style={styles.container}>
-      <RectButton style={styles.button} onPress={() => setModalVisible(true)}>
+      <ButtonWrapper style={styles.button} onPress={() => setModalVisible(true)}>
         <Ionicons size={20} name="settings-outline" style={styles.icon} />
-      </RectButton>
+      </ButtonWrapper>
       <View style={styles.statsContainer}>
         <View style={[styles.moveProgress, { width: `${Math.min(moves.done / moves.total, 1) * 100}%` }]}></View>
         <View style={styles.statsTextContainer}>
@@ -70,9 +71,9 @@ const Header: React.FC<HeaderProps> = ({ score, moves, startGame, endGame }) => 
           </Text>
         </View>
       </View>
-      <RectButton style={styles.button} onPress={handleHowToPlay}>
+      <ButtonWrapper style={styles.button} onPress={handleHowToPlay}>
         <Ionicons size={20} name="help-outline" style={styles.icon} />
-      </RectButton>
+      </ButtonWrapper>
 
       <Modal
         animationType="slide"
@@ -82,22 +83,22 @@ const Header: React.FC<HeaderProps> = ({ score, moves, startGame, endGame }) => 
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <RectButton style={styles.modalButton} onPress={() => setModalVisible(false)}>
+            <ButtonWrapper style={styles.modalButton} onPress={() => setModalVisible(false)}>
               <Ionicons name="play" size={24} color={theme.colors.text} style={styles.modalButtonIcon} />
               <Text style={styles.modalButtonText}>Continue</Text>
-            </RectButton>
-            <RectButton style={styles.modalButton} onPress={handleRestartGame}>
+            </ButtonWrapper>
+            <ButtonWrapper style={styles.modalButton} onPress={handleRestartGame}>
               <Ionicons name="refresh" size={24} color={theme.colors.text} style={styles.modalButtonIcon} />
               <Text style={styles.modalButtonText}>Restart Game</Text>
-            </RectButton>
-            <RectButton style={styles.modalButton} onPress={handleHowToPlay}>
+            </ButtonWrapper>
+            <ButtonWrapper style={styles.modalButton} onPress={handleHowToPlay}>
               <Ionicons name="help-circle" size={24} color={theme.colors.text} style={styles.modalButtonIcon} />
               <Text style={styles.modalButtonText}>How to Play</Text>
-            </RectButton>
-            <RectButton style={styles.modalButton} onPress={handleExitGame}>
+            </ButtonWrapper>
+            <ButtonWrapper style={styles.modalButton} onPress={handleExitGame}>
               <Ionicons name="exit" size={24} color={theme.colors.text} style={styles.modalButtonIcon} />
               <Text style={styles.modalButtonText}>Exit Game</Text>
-            </RectButton>
+            </ButtonWrapper>
           </View>
         </View>
       </Modal>
@@ -116,15 +117,15 @@ const Header: React.FC<HeaderProps> = ({ score, moves, startGame, endGame }) => 
                 : "Are you sure you want to restart the game?"}
             </Text>
             <View style={styles.confirmButtonContainer}>
-              <RectButton style={styles.confirmButton} onPress={handleCancelConfirm}>
+              <ButtonWrapper style={styles.confirmButton} onPress={handleCancelConfirm}>
                 <Text style={styles.confirmButtonText}>Cancel</Text>
-              </RectButton>
-              <RectButton
+              </ButtonWrapper>
+              <ButtonWrapper
                 style={[styles.confirmButton, styles.confirmYesButton]}
                 onPress={confirmAction === "exit" ? confirmExit : confirmRestart}
               >
                 <Text style={styles.confirmButtonText}>Yes</Text>
-              </RectButton>
+              </ButtonWrapper>
             </View>
           </View>
         </View>

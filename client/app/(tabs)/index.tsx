@@ -1,8 +1,7 @@
-import { StyleSheet, Platform, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Platform, TouchableOpacity, View, ScrollView } from "react-native";
 import { HelloWave } from "@/app/components/HelloWave";
 import ParallaxScrollView from "@/app/components/common/ParallaxScrollView";
 import GameScreen from "./games";
-import { ScrollView } from "react-native-gesture-handler";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
