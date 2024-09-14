@@ -28,20 +28,20 @@ export default function UserProfile() {
   const [auth, setAuth] = useRecoilState(authState);
   const { showToast } = useToast();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
-      console.log("FIREBASE AUTH");
-      console.log(currentUser);
-      // setAuth(prevState => ({ ...prevState, user: currentUser }));
-      // if (currentUser) {
-      //   router.replace("/user");
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+  //     console.log("FIREBASE AUTH");
+  //     console.log(currentUser);
+  //     // setAuth(prevState => ({ ...prevState, user: currentUser }));
+  //     // if (currentUser) {
+  //     //   router.replace("/user");
 
-      //   router.replace("/user");
-      // }
-    });
+  //     //   router.replace("/user");
+  //     // }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
   const validateEmail = (email: string) => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
