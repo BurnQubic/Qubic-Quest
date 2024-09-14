@@ -8,10 +8,10 @@ interface IBackgroundProps extends ViewProps {
 }
 
 export function Background({ children, ...props }: IBackgroundProps) {
-  const { secondary30, secondary100 } = theme.colors;
+  const { secondary100, secondary70 } = theme.colors;
 
   return (
-    <LinearGradient style={styles.container} colors={[secondary30, secondary100]} {...props}>
+    <LinearGradient style={styles.container} colors={[secondary100, secondary70]} {...props}>
       {children}
     </LinearGradient>
   );

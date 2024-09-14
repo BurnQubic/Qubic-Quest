@@ -133,9 +133,8 @@ export default function UserProfile() {
                 setEmail(text);
                 validateEmail(text);
               }}
-              style={styles.input}
+              errorText={emailError}
             />
-            {emailError && <ThemedText style={styles.errorText}>{emailError}</ThemedText>}
             <ThemedInput
               placeholder="Password"
               value={password}
@@ -144,9 +143,8 @@ export default function UserProfile() {
                 validatePassword(text);
               }}
               secureTextEntry
-              style={styles.input}
+              errorText={passwordError}
             />
-            {passwordError && <ThemedText style={styles.errorText}>{passwordError}</ThemedText>}
             <ThemedView style={styles.buttonView}>
               {loading ? (
                 <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -156,11 +154,11 @@ export default function UserProfile() {
                 </ButtonWrapper>
               )}
             </ThemedView>
-            <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)} style={styles.switchButton}>
+            <ButtonWrapper onPress={() => setIsSignUp(!isSignUp)} style={styles.switchButton}>
               <ThemedText>
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </ThemedText>
-            </TouchableOpacity>
+            </ButtonWrapper>
           </>
         )}
       </ThemedView>
@@ -179,7 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: theme.colors.text,
-    marginBottom: 30,
     textAlign: "center",
   },
   title: {
@@ -193,16 +190,6 @@ const styles = StyleSheet.create({
     bottom: -90,
     left: -35,
     position: "absolute",
-  },
-  input: {
-    width: "100%",
-    height: 50,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: theme.colors.text,
-    borderRadius: 10,
-    padding: 15,
-    fontSize: 16,
   },
   authButton: {
     width: "100%",
