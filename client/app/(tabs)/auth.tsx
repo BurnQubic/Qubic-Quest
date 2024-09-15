@@ -16,6 +16,8 @@ import { theme } from "@/config/theme";
 import { ThemedInput } from "../components/common/ThemedInput";
 import { useToast } from "@/config/hooks/useToast";
 import { ButtonWrapper } from "../components/common/ButtonWrapper";
+import { Image } from "expo-image";
+import favicon from "@/assets/images/favicon.png";
 
 export default function UserProfile() {
   const colorScheme = useColorScheme();
@@ -28,20 +30,20 @@ export default function UserProfile() {
   const [auth, setAuth] = useRecoilState(authState);
   const { showToast } = useToast();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
-      console.log("FIREBASE AUTH");
-      console.log(currentUser);
-      // setAuth(prevState => ({ ...prevState, user: currentUser }));
-      // if (currentUser) {
-      //   router.replace("/user");
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+  //     console.log("FIREBASE AUTH");
+  //     console.log(currentUser);
+  //     // setAuth(prevState => ({ ...prevState, user: currentUser }));
+  //     // if (currentUser) {
+  //     //   router.replace("/user");
 
-      //   router.replace("/user");
-      // }
-    });
+  //     //   router.replace("/user");
+  //     // }
+  //   });
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
   const validateEmail = (email: string) => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -111,10 +113,7 @@ export default function UserProfile() {
   };
 
   return (
-    <ParallaxScrollView bannerComponent={<Ionicons size={310} name="person-circle-outline" style={styles.logo} />}>
-      <ThemedText type="title" style={styles.pageTitle}>
-        User Authentication
-      </ThemedText>
+    <ParallaxScrollView>
       <ThemedView style={styles.container}>
         {auth.isAuthenticated ? (
           <View style={styles.authenticatedContainer}>
@@ -125,7 +124,10 @@ export default function UserProfile() {
           </View>
         ) : (
           <>
-            <ThemedText style={styles.title}>{isSignUp ? "Create Account" : "Sign In"}</ThemedText>
+            <ThemedView style={styles.titleContainer}>
+              <Image source={favicon} style={styles.icon}></Image>
+              <ThemedText style={styles.title}>{isSignUp ? "SignUp" : "Sign In"}</ThemedText>
+            </ThemedView>
             <ThemedInput
               placeholder="Email"
               value={email}
@@ -133,9 +135,8 @@ export default function UserProfile() {
                 setEmail(text);
                 validateEmail(text);
               }}
-              style={styles.input}
+              errorText={emailError}
             />
-            {emailError && <ThemedText style={styles.errorText}>{emailError}</ThemedText>}
             <ThemedInput
               placeholder="Password"
               value={password}
@@ -144,9 +145,8 @@ export default function UserProfile() {
                 validatePassword(text);
               }}
               secureTextEntry
-              style={styles.input}
+              errorText={passwordError}
             />
-            {passwordError && <ThemedText style={styles.errorText}>{passwordError}</ThemedText>}
             <ThemedView style={styles.buttonView}>
               {loading ? (
                 <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -156,11 +156,11 @@ export default function UserProfile() {
                 </ButtonWrapper>
               )}
             </ThemedView>
-            <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)} style={styles.switchButton}>
+            <ButtonWrapper onPress={() => setIsSignUp(!isSignUp)} style={styles.switchButton}>
               <ThemedText>
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </ThemedText>
-            </TouchableOpacity>
+            </ButtonWrapper>
           </>
         )}
       </ThemedView>
@@ -179,8 +179,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: theme.colors.text,
-    marginBottom: 30,
     textAlign: "center",
+  },
+  titleContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
@@ -194,15 +198,13 @@ const styles = StyleSheet.create({
     left: -35,
     position: "absolute",
   },
-  input: {
-    width: "100%",
-    height: 50,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: theme.colors.text,
-    borderRadius: 10,
-    padding: 15,
-    fontSize: 16,
+  icon: {
+    width: 160,
+    height: 160,
+    resizeMode: "contain",
+    alignSelf: "center",
+    marginTop: 20,
+    marginBottom: 20,
   },
   authButton: {
     width: "100%",

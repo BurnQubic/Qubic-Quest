@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
+import { View, Text, StyleSheet, Image, useColorScheme } from "react-native";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -14,7 +16,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
       onFinish();
     }, 2000);
 
-    fadeAnim.value = withTiming(1, { duration: 2000 });
+    fadeAnim.value = withTiming(1, { duration: 1000 });
 
     return () => clearTimeout(timer);
   }, [onFinish, fadeAnim]);
@@ -26,13 +28,14 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={["#0A1033", "#1B2565"]} style={styles.container}>
       <Animated.View style={[styles.bannerContainer, animatedStyle]}>
         <Image source={require("../../assets/images/favicon.png")} style={styles.banner} />
       </Animated.View>
-      <Text style={styles.text}>Loading...</Text>
-      <ActivityIndicator size="small" color="#0000ff" />
-    </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>Qubic Quest</Text>
+      </View>
+    </LinearGradient>
   );
 };
 
@@ -41,20 +44,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
   },
   bannerContainer: {
-    marginBottom: 20,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   banner: {
-    width: 300,
-    height: 100,
+    width: 240,
+    height: 240,
     resizeMode: "contain",
   },
+  textContainer: {
+    position: "absolute",
+    bottom: 50,
+    alignItems: "center",
+  },
   text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+    fontSize: 36,
+    color: "#FFFFFF",
   },
 });
 

@@ -1,12 +1,11 @@
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/config/hooks/useColorScheme";
 import NotificationService from "./notification";
-import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RecoilRoot } from "recoil";
 import { StatusBar } from "react-native";
 import { Inter_400Regular, Inter_500Medium } from "@expo-google-fonts/inter";
@@ -14,10 +13,7 @@ import { Rajdhani_500Medium, Rajdhani_700Bold } from "@expo-google-fonts/rajdhan
 import { LilyScriptOne_400Regular } from "@expo-google-fonts/lily-script-one";
 import Toast from "react-native-toast-message";
 import toastConfig from "@/config/toastConfig";
-import CandyTiles from "@/app/puzzles/candytile";
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import SplashScreen from "@/app/components/SplashScreen";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -29,14 +25,18 @@ export default function RootLayout() {
     LilyScriptOne_400Regular,
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+  const [showSplash, setShowSplash] = useState(true);
 
-  if (!loaded) {
-    return null;
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!loaded || showSplash) {
+    return <SplashScreen onFinish={() => {}} />;
   }
 
   return (
